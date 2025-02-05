@@ -1,42 +1,50 @@
 extends Node2D
 
-var max_health: float = 100.0
-var health: float = max_health
-
 @onready var sprite = $Sprite2D
 @onready var health_bar = $HealthBar
+@onready var attackable = $Attackable
 
 func _ready():
-    add_to_group("walls")
-    _update_health_bar()
+	add_to_group("walls")
+	
+	# Initialize attackable component
+	if not attackable:
+		push_error("Wall: Attackable component not found!")
+		return
+		
+	attackable.initialize(100.0)  # 100 health, no armor
+	attackable.health_changed.connect(_on_health_changed)
+	attackable.destroyed.connect(_on_wall_destroyed)
+	print("Wall initialized with health: ", attackable.current_health)
 
+func _on_health_changed(current: float, maximum: float):
+	print("Wall health changed: ", current, "/", maximum)
+	if not health_bar:
+		return
+		
+	health_bar.size.x = (current / maximum) * 32
+	
+	# Update color based on health percentage
+	var health_percent = current / maximum
+	if health_percent > 0.6:
+		health_bar.color = Color(0, 0.8, 0, 1)  # Green
+	elif health_percent > 0.3:
+		health_bar.color = Color(0.8, 0.8, 0, 1)  # Yellow
+	else:
+		health_bar.color = Color(0.8, 0, 0, 1)  # Red
+
+func _on_wall_destroyed(pos: Vector2):
+	print("Wall destroyed at position: ", pos)
+	# Tell the grid to remove this wall
+	var grid = get_parent()
+	if grid and grid.has_method("world_to_grid"):
+		var grid_pos = grid.world_to_grid(position)
+		grid.set_cell_type(grid_pos, grid.TILE_TYPE.EMPTY)
+
+# Forward take_damage to attackable component
 func take_damage(amount: float):
-    health -= amount
-    _update_health_bar()
-    
-    # Visual feedback
-    sprite.modulate = Color(1, 0.3, 0.3)  # Flash red
-    create_tween().tween_property(sprite, "modulate", Color.WHITE, 0.2)
-    
-    # Update appearance based on health
-    var health_percent = health / max_health
-    sprite.modulate.a = 0.5 + (health_percent * 0.5)  # Fade out as health decreases
-    
-    if health <= 0:
-        # Tell the grid to remove this wall
-        var grid_pos = get_parent().world_to_grid(position)
-        get_parent().set_cell_type(grid_pos, get_parent().TILE_TYPE.EMPTY)
-        queue_free()
-
-func _update_health_bar():
-    if health_bar:
-        health_bar.size.x = (health / max_health) * 32
-        
-        # Change color based on health percentage
-        var health_percent = health / max_health
-        if health_percent > 0.6:
-            health_bar.color = Color(0, 0.8, 0, 1)  # Green
-        elif health_percent > 0.3:
-            health_bar.color = Color(0.8, 0.8, 0, 1)  # Yellow
-        else:
-            health_bar.color = Color(0.8, 0, 0, 1)  # Red 
+	print("Wall taking damage: ", amount)
+	if attackable:
+		attackable.take_damage(amount)
+	else:
+		push_error("Wall: Cannot take damage, no Attackable component!")

@@ -3,31 +3,28 @@ extends Node2D
 signal died(gold_value)
 signal reached_flag(damage)
 
+# Core states with clear transitions
 enum AI_STATE {
-	MOVING,      # Moving towards target (flag or wall)
-	ATTACKING    # Attacking current target (flag or wall)
+	MOVING,    # Moving towards target or finding path
+	ATTACKING  # Actively attacking target
 }
 
-var current_state: AI_STATE = AI_STATE.MOVING
-var target_position: Vector2  # Flag position
-var current_target = null     # Current attack target (flag or wall)
-const MELEE_RANGE: float = 80.0
-const MIN_ENEMY_SPACING: float = 40.0
+# Combat configuration
+const ATTACK_RANGE = 40.0  # Reduced to a more reasonable range
+const ATTACK_INTERVAL = 0.5
+const WALL_DAMAGE = 20
+const FLAG_DAMAGE = 1
 
-# Movement and stats
+# Movement and state
+var current_state: AI_STATE = AI_STATE.MOVING
+var current_target: Node2D = null
+var attack_timer: float = 0.0
+
+# Base stats
 var base_speed: float = 100.0
-var speed: float = base_speed
 var health: float = 100.0
 var max_health: float = 100.0
 var gold_value: int = 10
-var damage_to_flag: int = 1
-var damage_to_wall: int = 5
-var attack_interval: float = 1.0
-var attack_timer: float = 0.0
-
-# Slow effect
-var slow_factor: float = 1.0
-var slow_duration: float = 0.0
 
 @onready var health_bar = $HealthBar
 @onready var sprite = $Sprite2D
@@ -38,152 +35,103 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 
 func _process(delta):
-	if slow_duration > 0:
-		slow_duration -= delta
-		if slow_duration <= 0:
-			slow_factor = 1.0
-			_update_appearance()
-	
 	match current_state:
 		AI_STATE.MOVING:
 			_process_movement(delta)
 		AI_STATE.ATTACKING:
-			_process_attacking(delta)
+			_process_combat(delta)
 
 func _process_movement(delta):
-	var flag = get_parent().flag
-	if not flag:
+	var target = _find_target()
+	if not target:
 		return
 		
-	# First, check if we can attack the flag directly
-	if position.distance_to(flag.position) <= MELEE_RANGE and _can_attack_position(position):
-		current_target = flag
+	var dist = position.distance_to(target.position)
+	if dist <= ATTACK_RANGE:
+		current_target = target
 		current_state = AI_STATE.ATTACKING
-		return
-		
-	# Check for walls blocking direct path to flag
-	var blocking_wall = _find_blocking_wall()
-	if blocking_wall:
-		current_target = blocking_wall
-		current_state = AI_STATE.ATTACKING
-		return
-	
-	# Move towards flag while avoiding other enemies
-	var move_direction = _get_move_direction(flag.position)
-	position += move_direction * base_speed * slow_factor * delta
+	else:
+		_move_towards(target.position, delta)
 
-func _process_attacking(delta):
+func _find_target() -> Node2D:
+	# First check for nearby walls
+	var walls = get_tree().get_nodes_in_group("walls")
+	var closest_wall = null
+	var closest_dist = INF
+	
+	for wall in walls:
+		var dist = position.distance_to(wall.position)
+		if dist < closest_dist:
+			closest_wall = wall
+			closest_dist = dist
+	
+	# If we found a wall within range, target it
+	if closest_wall and closest_dist <= ATTACK_RANGE * 1.5:
+		return closest_wall
+	
+	# Otherwise target flag
+	return get_parent().flag
+
+func _process_combat(delta):
 	if not current_target or not is_instance_valid(current_target):
 		current_state = AI_STATE.MOVING
+		current_target = null
 		return
-	
-	# Check if still in range and position valid
-	var target_pos = current_target.position
-	if position.distance_to(target_pos) > MELEE_RANGE or not _can_attack_position(position):
+		
+	var dist = position.distance_to(current_target.position)
+	if dist > ATTACK_RANGE:
 		current_state = AI_STATE.MOVING
+		current_target = null
 		return
-	
-	# Attack
+		
 	attack_timer += delta
-	if attack_timer >= attack_interval:
+	if attack_timer >= ATTACK_INTERVAL:
 		attack_timer = 0.0
-		if current_target.has_method("take_damage"):
-			# Check if target is a wall by checking its script path
-			var is_wall = current_target.get_script().resource_path.ends_with("Wall.gd")
-			var damage = damage_to_wall if is_wall else damage_to_flag
-			current_target.take_damage(damage)
-			# Check if target is the flag by checking its script path
-			if current_target.get_script().resource_path.ends_with("Flag.gd"):
-				reached_flag.emit(damage)
+		_perform_attack()
 
-func _get_move_direction(target_pos: Vector2) -> Vector2:
-	var base_direction = (target_pos - position).normalized()
+func _perform_attack():
+	if not current_target or not is_instance_valid(current_target):
+		return
+		
+	var damage = WALL_DAMAGE if current_target.is_in_group("walls") else FLAG_DAMAGE
+	print("Enemy: Performing attack - Target: ", current_target.name, " Damage: ", damage)
 	
-	# Add avoidance vector from nearby enemies
-	var avoidance = Vector2.ZERO
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	for enemy in enemies:
-		if enemy != self and is_instance_valid(enemy):
-			var to_enemy = position - enemy.position
-			var distance = to_enemy.length()
-			if distance < MIN_ENEMY_SPACING:
-				avoidance += to_enemy.normalized() * (1.0 - distance / MIN_ENEMY_SPACING)
-	
-	# Combine base direction with avoidance
-	var final_direction = (base_direction + avoidance * 0.5).normalized()
-	return final_direction
+	if current_target.has_method("take_damage"):
+		current_target.take_damage(damage)
+		_play_attack_effects()
+		
+		if current_target.is_in_group("flags"):
+			print("Enemy: Flag hit - Emitting reached_flag signal")
+			reached_flag.emit(damage)
+	else:
+		print("Enemy: Target has no take_damage method!")
 
-func _find_blocking_wall() -> Node2D:
-	var grid = get_parent().grid
-	var current_pos = grid.world_to_grid(position)
-	var flag_pos = target_position
-	
-	# Check cells between current position and flag
-	var direction = (flag_pos - current_pos).normalized()
-	var check_pos = current_pos
-	for _i in range(5):  # Check up to 5 cells ahead
-		check_pos += direction.round()
-		if not grid.is_valid_cell(check_pos):
-			break
-			
-		if grid.get_cell_type(check_pos) == grid.TILE_TYPE.WALL:
-			return grid.walls.get(str(check_pos))
-	
-	return null
+func _move_towards(target_pos: Vector2, delta: float):
+	var direction = (target_pos - position).normalized()
+	position += direction * base_speed * delta
 
-func _can_attack_position(pos: Vector2) -> bool:
-	# Check spacing with other enemies
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	for enemy in enemies:
-		if enemy != self and is_instance_valid(enemy):
-			if pos.distance_to(enemy.position) < MIN_ENEMY_SPACING:
-				return false
+func _play_attack_effects():
+	sprite.modulate = Color(1.2, 0.8, 0.2)
+	create_tween().tween_property(sprite, "modulate", Color.WHITE, 0.2)
 	
-	# Check if position is on valid ground
-	var grid = get_parent().grid
-	var grid_pos = grid.world_to_grid(pos)
-	if not grid.is_valid_cell(grid_pos):
-		return false
-	
-	var cell_type = grid.get_cell_type(grid_pos)
-	return cell_type != grid.TILE_TYPE.WALL and cell_type != grid.TILE_TYPE.TOWER
+	sprite.scale = Vector2(1.2, 1.2)
+	create_tween().tween_property(sprite, "scale", Vector2.ONE, 0.2)
 
-func set_target(grid_pos: Vector2):
-	target_position = grid_pos
-
-func set_stats(new_health: float, new_speed: float, new_gold: int, new_damage: int):
+func set_stats(new_health: float, new_speed: float, new_gold: int, _new_damage: int):
 	max_health = new_health
 	health = new_health
 	base_speed = new_speed
-	speed = new_speed
 	gold_value = new_gold
-	damage_to_flag = new_damage
-	damage_to_wall = max(1, new_damage / 2)
 	_update_health_bar()
 
 func take_damage(amount: float):
 	health -= amount
 	_update_health_bar()
 	
-	sprite.modulate = Color(1, 0.3, 0.3)
-	create_tween().tween_property(sprite, "modulate", Color.WHITE, 0.2)
-	
 	if health <= 0:
 		died.emit(gold_value)
 		queue_free()
 
-func apply_slow(factor: float, duration: float):
-	if factor < slow_factor:
-		slow_factor = factor
-		slow_duration = max(duration, slow_duration)
-		_update_appearance()
-
 func _update_health_bar():
 	if health_bar:
 		health_bar.size.x = (health / max_health) * 32
-
-func _update_appearance():
-	if slow_factor < 1.0:
-		sprite.modulate = Color(0.7, 0.7, 1.0)
-	else:
-		sprite.modulate = Color.WHITE

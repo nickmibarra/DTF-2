@@ -18,6 +18,8 @@ config/icon="res://resources/sprites/icon.tres"
 [autoload]
 
 GameSettings="*res://scripts/autoload/GameSettings.gd"
+CollisionSystem="*res://scripts/autoload/CollisionSystem.gd"
+CombatManager="*res://scripts/components/CombatManager.gd"
 
 [debug]
 
@@ -33,6 +35,10 @@ window/size/window_width_override=3440
 window/size/window_height_override=1440
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[global]
+
+class_name_Barrier="res://scripts/autoload/Barrier.gd"
 
 [gui]
 

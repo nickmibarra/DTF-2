@@ -87,17 +87,16 @@ func spawn_enemy():
 	# Get spawn position
 	var grid = get_parent().grid
 	var spawn_pos = grid.get_random_spawn_point()
-	enemy.position = grid.grid_to_world(spawn_pos)
+	enemy.position = spawn_pos
 	
-	# Set initial target as flag position
-	enemy.set_target(grid.flag_position)
+	# Enemy will automatically find and target the flag or walls through its AI
 	
 	# Connect signals
 	enemy.died.connect(_on_enemy_died.bind(enemy))
 	enemy.reached_flag.connect(_on_enemy_reached_flag)
 	
 	enemies_remaining -= 1
-	print("Spawned enemy at position: ", enemy.position)
+	print("Spawned enemy at grid-aligned position: ", enemy.position)
 
 func _on_enemy_died(gold_value: int, enemy: Node2D):
 	active_enemies.erase(enemy)

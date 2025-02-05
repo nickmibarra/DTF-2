@@ -14,6 +14,7 @@ var attack_timer: float = 0.0
 var target: Node2D = null
 var kills: int = 0
 var rank: int = 1
+var barrier: Barrier
 
 # Veteran system
 const RANK_THRESHOLDS = GameSettings.RANK_THRESHOLDS
@@ -38,6 +39,15 @@ func _ready():
 	if range_indicator:
 		range_indicator.scale = Vector2.ONE * (attack_range / 100.0)
 		range_indicator.visible = false
+	
+	add_to_group("towers")
+	add_to_group("barriers")
+	
+	# Add barrier component
+	barrier = Barrier.new()
+	barrier.name = "Barrier"  # Give it a consistent name
+	add_child(barrier)
+	barrier.setup(self, CollisionSystem.COLLISION_LAYER.TOWER)
 	
 	_update_appearance()
 

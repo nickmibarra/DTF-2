@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/Grid.gd" id="1_m4n2p"]
 [ext_resource type="Script" path="res://scripts/GameCamera.gd" id="2_k8m2l"]
-[ext_resource type="Script" path="res://scripts/Flag.gd" id="3_n4r5e"]
+[ext_resource type="PackedScene" path="res://scenes/Flag.tscn" id="3_n4r5e"]
 [ext_resource type="Script" path="res://scripts/WaveManager.gd" id="4_p6s7t"]
 [ext_resource type="Script" path="res://scripts/TestMap.gd" id="5_q8u9v"]
 [ext_resource type="PackedScene" uid="uid://c4q8h6g7y3dlv" path="res://scenes/Enemy.tscn" id="6_r7s8w"]
@@ -13,9 +13,8 @@ script = ExtResource("5_q8u9v")
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource("1_m4n2p")
 
-[node name="Flag" type="Node2D" parent="."]
+[node name="Flag" parent="." instance=ExtResource("3_n4r5e")]
 position = Vector2(1920, 540)
-script = ExtResource("3_n4r5e")
 
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource("4_p6s7t")

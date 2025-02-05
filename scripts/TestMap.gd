@@ -24,7 +24,15 @@ var tower_scene = preload("res://scenes/Tower.tscn")
 
 func _ready():
 	print("TestMap: Ready called")
-	# Connect signals
+	
+	# Ensure grid is in group for CombatManager
+	grid.add_to_group("grid")
+	
+	# Connect combat signals
+	CombatManager.attack_performed.connect(_on_attack_performed)
+	CombatManager.target_destroyed.connect(_on_target_destroyed)
+	
+	# Connect other signals
 	wave_manager.wave_started.connect(_on_wave_started)
 	wave_manager.wave_completed.connect(_on_wave_completed)
 	wave_manager.all_waves_completed.connect(_on_all_waves_completed)
@@ -203,3 +211,14 @@ func select_tower(type: int):
 	for t in tower_buttons:
 		var button = tower_buttons[t]
 		button.modulate = Color(1, 1, 1, 1) if t != type else Color(0.7, 1.0, 0.7) 
+
+func _on_attack_performed(attacker: Node2D, target: Node2D, damage: float):
+	if target.is_in_group("walls"):
+		print("Wall at ", target.position, " took ", damage, " damage from enemy")
+	elif target.is_in_group("flags"):
+		print("Flag took ", damage, " damage from enemy")
+
+func _on_target_destroyed(pos: Vector2):
+	print("Target destroyed at position: ", pos)
+	# Additional game logic for destroyed targets can go here
+	# For example, updating score, spawning effects, etc.

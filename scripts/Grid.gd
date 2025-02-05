@@ -43,9 +43,14 @@ func _on_viewport_size_changed():
 	queue_redraw()
 
 func initialize_spawn_points():
-	# Add spawn points along the left edge
+	# Clear existing spawn points
+	spawn_points.clear()
+	
+	# Add spawn points along the left edge with proper spacing
 	for y in range(2, GRID_HEIGHT - 2):  # Leave some margin at top/bottom
-		spawn_points.append(Vector2(0, y))
+		var spawn_point = Vector2(0, y)
+		spawn_points.append(spawn_point)
+		print("Added spawn point at grid position: ", spawn_point)  # Debug log
 
 func initialize_grid():
 	# Initialize the grid with empty cells
@@ -134,8 +139,6 @@ func world_to_grid(screen_pos: Vector2) -> Vector2:
 	var grid_x = floor(local_pos.x / BASE_GRID_SIZE)
 	var grid_y = floor(local_pos.y / BASE_GRID_SIZE)
 	
-	print("Screen pos: ", screen_pos, " -> Local pos: ", local_pos, " -> Grid pos: (", grid_x, ", ", grid_y, ")")
-	
 	return Vector2(
 		clamp(grid_x, 0, GRID_WIDTH - 1),
 		clamp(grid_y, 0, GRID_HEIGHT - 1)
@@ -148,7 +151,7 @@ func grid_to_world(grid_pos: Vector2) -> Vector2:
 		grid_pos.y * BASE_GRID_SIZE + BASE_GRID_SIZE / 2
 	)
 	
-	# Convert to global position
+	# Convert to global position using to_global
 	return to_global(local_pos)
 
 # A* pathfinding implementation
@@ -230,4 +233,8 @@ func get_random_spawn_point() -> Vector2:
 		push_error("No spawn points defined")
 		return Vector2.ZERO
 	
-	return spawn_points[randi() % spawn_points.size()]
+	var spawn_point = spawn_points[randi() % spawn_points.size()]
+	# Convert grid position to world position
+	var world_pos = grid_to_world(spawn_point)
+	print("Selected spawn point: grid=", spawn_point, " world=", world_pos)  # Debug log
+	return world_pos
