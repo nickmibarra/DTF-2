@@ -19,6 +19,16 @@ enum TILE_TYPE {
 	FLAG
 }
 
+class PathResult:
+	var path: Array
+	var wall_target: Vector2
+	var is_wall_path: bool
+	
+	func _init(p: Array, wall: Vector2 = Vector2.ZERO, is_wall: bool = false):
+		path = p
+		wall_target = wall
+		is_wall_path = is_wall
+
 func _ready():
 	print("Grid: Ready called")
 	initialize_grid()
@@ -148,12 +158,115 @@ func grid_to_world(grid_pos: Vector2) -> Vector2:
 	return world_pos
 
 # A* pathfinding implementation
-func find_path(start: Vector2, end: Vector2) -> Array:
+func find_path(start: Vector2, end: Vector2) -> PathResult:
 	var open_set = []
 	var closed_set = {}
 	var came_from = {}
 	
-	var g_score = {str(start): 0}
+	var g_score = {str(start): 0.0}
+	var f_score = {str(start): heuristic(start, end)}
+	
+	open_set.append(start)
+	
+	while open_set.size() > 0:
+		var current = get_lowest_f_score_node(open_set, f_score)
+		if current == end:
+			return PathResult.new(reconstruct_path(came_from, current))
+		
+		open_set.erase(current)
+		closed_set[str(current)] = true
+		
+		for neighbor_data in get_neighbors(current):
+			var neighbor = neighbor_data.pos
+			var move_cost = neighbor_data.cost
+			
+			if closed_set.has(str(neighbor)):
+				continue
+			
+			var tentative_g_score = g_score[str(current)] + move_cost
+			
+			if not open_set.has(neighbor):
+				open_set.append(neighbor)
+			elif tentative_g_score >= g_score[str(neighbor)]:
+				continue
+			
+			came_from[str(neighbor)] = current
+			g_score[str(neighbor)] = tentative_g_score
+			f_score[str(neighbor)] = g_score[str(neighbor)] + heuristic(neighbor, end)
+	
+	# If no path found, find wall to break
+	var wall_result = find_wall_breakthrough_path(start, end, closed_set)
+	if not wall_result.path.is_empty():
+		print("Grid: Found wall-breaking path to wall at ", wall_result.wall_target)
+		return wall_result
+	return PathResult.new([])
+
+func find_wall_breakthrough_path(start: Vector2, end: Vector2, explored_cells: Dictionary) -> PathResult:
+	print("\nSearching for wall to break:")
+	print("- From: ", start)
+	print("- To: ", end)
+	print("- Explored cells: ", explored_cells.size())
+	
+	var best_wall_pos = null
+	var best_score = INF
+	var best_path = []
+	
+	# First, find all walls in our way
+	var walls_found = []
+	for x in range(GRID_WIDTH):
+		for y in range(GRID_HEIGHT):
+			var pos = Vector2(x, y)
+			if get_cell_type(pos) == TILE_TYPE.WALL:
+				walls_found.append(pos)
+	
+	print("- Found ", walls_found.size(), " walls in grid")
+	
+	# Check each wall
+	for wall_pos in walls_found:
+		# Calculate scores based on position relative to start and end
+		var dist_to_start = wall_pos.distance_to(start)
+		var dist_to_end = wall_pos.distance_to(end)
+		var score = dist_to_start + dist_to_end
+		
+		print("- Evaluating wall at ", wall_pos)
+		print("  Distance to start: ", dist_to_start)
+		print("  Distance to end: ", dist_to_end)
+		print("  Total score: ", score)
+		
+		if score < best_score:
+			# Find a path to a position adjacent to the wall
+			var adjacent_positions = get_adjacent_positions(wall_pos)
+			for adj_pos in adjacent_positions:
+				if is_valid_cell(adj_pos) and get_cell_type(adj_pos) != TILE_TYPE.WALL:
+					var path_to_wall = find_path_to_position(start, adj_pos)
+					if not path_to_wall.is_empty():
+						best_score = score
+						best_wall_pos = wall_pos
+						best_path = path_to_wall
+						print("  Found valid path to wall!")
+						break
+	
+	if best_wall_pos != null:
+		print("Selected wall to break at: ", best_wall_pos)
+		return PathResult.new(best_path, best_wall_pos, true)
+	
+	print("No valid wall found to break")
+	return PathResult.new([])
+
+func get_adjacent_positions(pos: Vector2) -> Array:
+	return [
+		pos + Vector2(1, 0),
+		pos + Vector2(-1, 0),
+		pos + Vector2(0, 1),
+		pos + Vector2(0, -1)
+	]
+
+func find_path_to_position(start: Vector2, end: Vector2) -> Array:
+	var open_set = []
+	var closed_set = {}
+	var came_from = {}
+	
+	var g_score = {str(start): 0.0}
 	var f_score = {str(start): heuristic(start, end)}
 	
 	open_set.append(start)
@@ -166,11 +279,14 @@ func find_path(start: Vector2, end: Vector2) -> Array:
 		open_set.erase(current)
 		closed_set[str(current)] = true
 		
-		for neighbor in get_neighbors(current):
+		for neighbor_data in get_neighbors(current):
+			var neighbor = neighbor_data.pos
+			var move_cost = neighbor_data.cost
+			
 			if closed_set.has(str(neighbor)):
 				continue
 			
-			var tentative_g_score = g_score[str(current)] + 1
+			var tentative_g_score = g_score[str(current)] + move_cost
 			
 			if not open_set.has(neighbor):
 				open_set.append(neighbor)
@@ -184,7 +300,8 @@ func find_path(start: Vector2, end: Vector2) -> Array:
 	return []
 
 func heuristic(start: Vector2, end: Vector2) -> float:
-	return abs(start.x - end.x) + abs(start.y - end.y)
+	# Use Euclidean distance for more natural diagonal paths
+	return start.distance_to(end)
 
 func get_lowest_f_score_node(nodes: Array, f_score: Dictionary) -> Vector2:
 	var lowest_node = nodes[0]
@@ -201,16 +318,18 @@ func get_lowest_f_score_node(nodes: Array, f_score: Dictionary) -> Vector2:
 func get_neighbors(pos: Vector2) -> Array:
 	var neighbors = []
 	var directions = [
-		Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1),
-		Vector2(1, 1), Vector2(-1, 1), Vector2(1, -1), Vector2(-1, -1)  # Add diagonals
+		Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1),  # Cardinals
+		Vector2(1, 1), Vector2(-1, 1), Vector2(1, -1), Vector2(-1, -1)  # Diagonals
 	]
 	
 	for dir in directions:
 		var neighbor = pos + dir
 		if is_valid_cell(neighbor):
-			# Enemies can't walk through walls or towers
+			# Check if we can move to this cell
 			if grid[neighbor.x][neighbor.y] != TILE_TYPE.WALL and grid[neighbor.x][neighbor.y] != TILE_TYPE.TOWER:
-				neighbors.append(neighbor)
+				# Add movement cost for diagonal
+				var cost = 1.0 if dir.x == 0 or dir.y == 0 else 1.414
+				neighbors.append({"pos": neighbor, "cost": cost})
 	
 	return neighbors
 

@@ -60,12 +60,12 @@ func _process_movement(delta):
 		_transition_to_attack(target)
 		return
 		
-	# Check for walls to break first
-	var wall = _find_wall_to_break(target.position)
-	if wall:  # Removed distance check as it's already done in _find_wall_to_break
-		_transition_to_attack(wall)
-		return
-		
+	# If we're already attacking a wall, keep at it unless conditions change
+	if current_state == AI_STATE.ATTACKING and current_target and current_target.is_in_group("walls"):
+		var attack_dist = position.distance_to(current_target.position)
+		if attack_dist <= ATTACK_RANGE * 1.5:
+			return
+	
 	# If we're not attacking, handle movement
 	var current_grid_pos = grid.world_to_grid(position)
 	var target_grid_pos = grid.world_to_grid(target.position)
@@ -76,9 +76,22 @@ func _process_movement(delta):
 						   is_stuck(current_grid_pos)
 	
 	if should_recalculate:
-		_recalculate_path(target)
+		print("Enemy: Recalculating path from ", current_grid_pos, " to ", target_grid_pos)
+		var path_result = grid.find_path(current_grid_pos, target_grid_pos)
+		
+		if path_result.is_wall_path:
+			print("Enemy: Found wall-breaking path, transitioning to attack wall at ", path_result.wall_target)
+			var wall = grid.walls.get(str(path_result.wall_target))
+			if wall:
+				_transition_to_attack(wall)
+				return
+		
+		current_path = path_result.path
+		if not current_path.is_empty():
+			print("Enemy: Found path with ", current_path.size(), " steps")
 	
-	_follow_path(delta)
+	if not current_path.is_empty():
+		_follow_path(delta)
 
 func _find_target() -> Node2D:
 	# First check for nearby walls
@@ -131,6 +144,7 @@ func _move_towards(target_pos: Vector2, delta: float):
 
 func _transition_to_attack(new_target: Node2D):
 	print("Enemy: Transitioning to attack state, target: ", new_target.name)
+	print("Enemy: Distance to target: ", position.distance_to(new_target.position))
 	current_target = new_target
 	current_state = AI_STATE.ATTACKING
 	attack_timer = ATTACK_INTERVAL  # Reset timer to allow immediate first attack
@@ -248,18 +262,26 @@ func _process_combat(delta):
 	var dist = position.distance_to(current_target.position)
 	print("Enemy: Combat - Distance to target: ", dist, ", Attack Range: ", ATTACK_RANGE)
 	
-	if dist > ATTACK_RANGE * 1.5:  # Use same range as wall detection
-		print("Enemy: Combat - Target out of range, returning to movement")
-		current_state = AI_STATE.MOVING
-		current_target = null
-		return
-		
-	# Move closer if needed but stay in attack state
+	# If we're too far away, move closer
 	if dist > ATTACK_RANGE:
 		var direction = (current_target.position - position).normalized()
-		position += direction * behavior.get_effective_speed() * delta
-		print("Enemy: Combat - Moving closer to target")
+		var proposed_position = position + direction * behavior.get_effective_speed() * delta
+		
+		# Check if proposed position would be in a wall (that's not our target)
+		var proposed_grid_pos = grid.world_to_grid(proposed_position)
+		var cell_type = grid.get_cell_type(proposed_grid_pos)
+		var can_move = true
+		
+		if cell_type == grid.TILE_TYPE.WALL:
+			var wall = grid.walls.get(str(proposed_grid_pos))
+			if wall != current_target:
+				can_move = false
+		
+		if can_move:
+			position = proposed_position
+			print("Enemy: Combat - Moving closer to target")
 	else:
+		# We're in range, perform attack
 		attack_timer += delta
 		if attack_timer >= ATTACK_INTERVAL:
 			attack_timer = 0.0

@@ -12,7 +12,7 @@ func _ready():
 		push_error("Wall: Attackable component not found!")
 		return
 		
-	attackable.initialize(100.0)  # 100 health, no armor
+	attackable.initialize(1000.0)  # 100 health, no armor
 	attackable.health_changed.connect(_on_health_changed)
 	attackable.destroyed.connect(_on_wall_destroyed)
 	print("Wall initialized with health: ", attackable.current_health)
