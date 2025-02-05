@@ -1,0 +1,42 @@
+[gd_resource type="GradientTexture2D" load_steps=2 format=3 uid="uid://c2k4y8gyl4p6n"]
+
+[sub_resource type="Gradient" id="Gradient_1"]
+colors = PackedColorArray(1, 0.8, 0.2, 1, 1, 0.6, 0.2, 1)
+
+[resource]
+gradient = SubResource("Gradient_1")
+width = 16
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.8)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_projectile"]
+resource_local_to_scene = true
+width = 16
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.7, 0.7)
+gradient = SubResource("Gradient_1")
+metadata/effect_type = "projectile"
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_explosion"]
+resource_local_to_scene = true
+width = 64
+height = 64
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+gradient = SubResource("Gradient_2")
+metadata/effect_type = "explosion"
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_range"]
+resource_local_to_scene = true
+width = 200
+height = 200
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+gradient = SubResource("Gradient_3")
+metadata/effect_type = "range" 

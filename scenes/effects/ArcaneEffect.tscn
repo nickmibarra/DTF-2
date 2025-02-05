@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://resources/sprites/effects/explosion.tres" id="1"]
+
+[sub_resource type="GDScript" id="1"]
+script/source = "extends Node2D
+
+var lifetime: float = 0.3
+var damage: float = 0.0
+var slow_factor: float = 0.5
+var slow_duration: float = 2.0
+
+func _process(delta):
+    lifetime -= delta
+    if lifetime <= 0:
+        queue_free()
+        return
+    
+    # Pulse effect
+    var pulse = sin(lifetime * 20) * 0.2 + 0.8
+    scale = Vector2.ONE * pulse
+    modulate.a = lifetime / 0.3
+
+func init(pos: Vector2, effect_damage: float):
+    position = pos
+    damage = effect_damage
+    
+    # Initial setup
+    scale = Vector2.ONE
+    modulate = Color(0.5, 0.2, 0.8, 0.8)  # Purple arcane color
+    
+    # Apply immediate effects
+    _apply_effects()
+
+func _apply_effects():
+    var effect_radius = 60.0
+    var enemies = get_tree().get_nodes_in_group(\"enemies\")
+    
+    for enemy in enemies:
+        if position.distance_to(enemy.position) <= effect_radius:
+            if enemy.has_method(\"take_damage\"):
+                enemy.take_damage(damage)
+            if enemy.has_method(\"apply_slow\"):
+                enemy.apply_slow(slow_factor, slow_duration)"
+
+[node name="ArcaneEffect" type="Node2D"]
+script = SubResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.5, 0.2, 0.8, 0.8)
+texture = ExtResource("1") 

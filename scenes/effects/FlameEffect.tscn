@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://resources/sprites/effects/explosion.tres" id="1"]
+
+[sub_resource type="GDScript" id="1"]
+script/source = "extends Node2D
+
+var lifetime: float = 0.5
+var damage: float = 0.0
+var damage_interval: float = 0.1
+var damage_timer: float = 0.0
+
+func _process(delta):
+    lifetime -= delta
+    if lifetime <= 0:
+        queue_free()
+        return
+    
+    # Scale down as effect fades
+    var scale_factor = lifetime * 2
+    scale = Vector2.ONE * scale_factor
+    modulate.a = lifetime * 2
+    
+    # Apply damage over time
+    damage_timer += delta
+    if damage_timer >= damage_interval:
+        damage_timer = 0
+        _apply_damage()
+
+func init(pos: Vector2, effect_damage: float):
+    position = pos
+    damage = effect_damage
+    
+    # Random rotation for variety
+    rotation = randf() * PI * 2
+    
+    # Start with full size
+    scale = Vector2.ONE
+    modulate = Color(1, 0.5, 0, 0.8)  # Orange flame color
+
+func _apply_damage():
+    # Find enemies in range
+    var damage_radius = 40.0
+    var enemies = get_tree().get_nodes_in_group(\"enemies\")
+    
+    for enemy in enemies:
+        if position.distance_to(enemy.position) <= damage_radius:
+            if enemy.has_method(\"take_damage\"):
+                enemy.take_damage(damage * damage_interval)"
+
+[node name="FlameEffect" type="Node2D"]
+script = SubResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0.5, 0, 0.8)
+texture = ExtResource("1") 
