@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" path="res://scenes/Flag.tscn" id="3_n4r5e"]
 [ext_resource type="Script" path="res://scripts/WaveManager.gd" id="4_p6s7t"]
 [ext_resource type="Script" path="res://scripts/TestMap.gd" id="5_q8u9v"]
-[ext_resource type="PackedScene" uid="uid://c4q8h6g7y3dlv" path="res://scenes/Enemy.tscn" id="6_r7s8w"]
+[ext_resource type="PackedScene" uid="uid://bpges3o80ee2y" path="res://scenes/Enemy.tscn" id="6_r7s8w"]
 
 [node name="TestMap" type="Node2D"]
 script = ExtResource("5_q8u9v")

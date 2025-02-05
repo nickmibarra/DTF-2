@@ -42,3 +42,11 @@ func _unhandled_input(event):
 
 # Remove all custom coordinate transformation functions
 # Let Godot handle coordinate transformations natively 
+
+func get_screen_to_canvas(screen_pos: Vector2) -> Vector2:
+	# Convert screen position to world position considering camera position and zoom
+	var canvas_pos = screen_pos
+	canvas_pos -= get_viewport_rect().size / 2  # Center of screen
+	canvas_pos /= zoom.x  # Account for zoom
+	canvas_pos += position  # Add camera position
+	return canvas_pos 

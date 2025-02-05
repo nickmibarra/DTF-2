@@ -1,20 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://c4q8h6g7y3dlv"]
+[gd_scene load_steps=4 format=3 uid="uid://bpges3o80ee2y"]
 
-[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_n4r5e"]
-[ext_resource type="Texture2D" uid="uid://b2k4y8gyl4p6n" path="res://resources/sprites/enemies.tres" id="2_k8m2l"]
+[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://b2k4y8gyl4p6n" path="res://resources/sprites/enemies.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/components/EnemyBehavior.gd" id="3"]
 
 [node name="Enemy" type="Node2D" groups=["enemies"]]
-script = ExtResource("1_n4r5e")
+script = ExtResource("1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_k8m2l")
-
-[node name="HealthBar" type="ColorRect" parent="."]
-offset_left = -16.0
-offset_top = -24.0
-offset_right = 16.0
-offset_bottom = -20.0
-color = Color(0, 0.8, 0, 1)
+texture = ExtResource("2")
 
 [node name="HealthBarBG" type="ColorRect" parent="."]
 show_behind_parent = true
@@ -23,3 +17,14 @@ offset_top = -24.0
 offset_right = 16.0
 offset_bottom = -20.0
 color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="HealthBar" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = -20.0
+color = Color(0, 0.8, 0, 1)
+
+[node name="EnemyBehavior" type="Node" parent="."]
+script = ExtResource("3")
+attack_damage = 20.0

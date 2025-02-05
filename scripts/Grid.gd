@@ -21,21 +21,14 @@ enum TILE_TYPE {
 
 func _ready():
 	print("Grid: Ready called")
-	set_process_input(true)  # Enable input processing
 	initialize_grid()
 	initialize_spawn_points()
 	setup_grid_transform()
 	get_tree().get_root().size_changed.connect(_on_viewport_size_changed)
 
-func _input(event):
-	if not event is InputEventMouseMotion:  # Don't log mouse motion
-		print("Grid: Input event received: ", event)
-
 func setup_grid_transform():
-	# Center the grid at (0,0) - camera will handle viewport positioning
+	# Grid should be at origin with no transform
 	position = Vector2.ZERO
-	
-	# No scaling at grid level - camera will handle viewport scaling
 	scale = Vector2.ONE
 
 func _on_viewport_size_changed():
@@ -98,7 +91,9 @@ func _draw():
 					draw_rect(Rect2(pos, Vector2(BASE_GRID_SIZE, BASE_GRID_SIZE)), Color(0.2, 0.8, 0.2, 0.3))
 
 func is_valid_cell(pos: Vector2) -> bool:
-	return pos.x >= 0 and pos.x < GRID_WIDTH and pos.y >= 0 and pos.y < GRID_HEIGHT
+	var x = int(pos.x)
+	var y = int(pos.y)
+	return x >= 0 and x < GRID_WIDTH and y >= 0 and y < GRID_HEIGHT
 
 func get_cell_type(pos: Vector2) -> int:
 	if not is_valid_cell(pos):
@@ -107,11 +102,9 @@ func get_cell_type(pos: Vector2) -> int:
 
 func set_cell_type(pos: Vector2, type: int) -> bool:
 	if not is_valid_cell(pos):
-		print("Invalid cell position: ", pos)
 		return false
 	
 	if type != TILE_TYPE.EMPTY and (pos in spawn_points or pos == flag_position):
-		print("Cannot build on spawn point or flag")
 		return false
 	
 	# Remove existing wall if any
@@ -124,35 +117,35 @@ func set_cell_type(pos: Vector2, type: int) -> bool:
 	# Create wall instance if needed
 	if type == TILE_TYPE.WALL:
 		var wall = wall_scene.instantiate()
-		wall.position = grid_to_world(pos)
+		var final_pos = grid_to_world(pos)
+		print("Placing wall at: ", final_pos)
+		wall.position = final_pos
 		add_child(wall)
 		walls[str(pos)] = wall
 	
 	queue_redraw()
 	return true
 
-func world_to_grid(screen_pos: Vector2) -> Vector2:
-	# Convert screen position to local position using Godot's built-in functionality
-	var local_pos = to_local(get_global_mouse_position())
+func world_to_grid(world_pos: Vector2) -> Vector2:
+	# Direct conversion from world position to grid coordinates
+	var grid_x = int(world_pos.x / BASE_GRID_SIZE)
+	var grid_y = int(world_pos.y / BASE_GRID_SIZE)
 	
-	# Convert to grid coordinates
-	var grid_x = floor(local_pos.x / BASE_GRID_SIZE)
-	var grid_y = floor(local_pos.y / BASE_GRID_SIZE)
-	
-	return Vector2(
+	var grid_pos = Vector2(
 		clamp(grid_x, 0, GRID_WIDTH - 1),
 		clamp(grid_y, 0, GRID_HEIGHT - 1)
 	)
+	print("World ", world_pos, " -> Grid ", grid_pos)
+	return grid_pos
 
 func grid_to_world(grid_pos: Vector2) -> Vector2:
-	# Convert grid coordinates to local position
-	var local_pos = Vector2(
-		grid_pos.x * BASE_GRID_SIZE + BASE_GRID_SIZE / 2,
-		grid_pos.y * BASE_GRID_SIZE + BASE_GRID_SIZE / 2
+	# Convert grid coordinates to world position (center of cell)
+	var world_pos = Vector2(
+		grid_pos.x * BASE_GRID_SIZE + BASE_GRID_SIZE/2,
+		grid_pos.y * BASE_GRID_SIZE + BASE_GRID_SIZE/2
 	)
-	
-	# Convert to global position using to_global
-	return to_global(local_pos)
+	print("Grid ", grid_pos, " -> World ", world_pos)
+	return world_pos
 
 # A* pathfinding implementation
 func find_path(start: Vector2, end: Vector2) -> Array:

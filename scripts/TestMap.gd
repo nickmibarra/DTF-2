@@ -53,17 +53,10 @@ func _input(event):
 		print("TestMap: Input event received: ", event)
 
 func _unhandled_input(event):
-	if not event is InputEventMouseMotion:  # Don't log mouse motion
-		print("TestMap: Unhandled input event: ", event)
-	
 	if game_over:
 		return
 	
-	if event.is_action_pressed("place_tower"):
-		print("TestMap: Attempting to place tower")
-		attempt_place_tower()
-	elif event.is_action_pressed("place_wall"):
-		print("TestMap: Attempting to place wall")
+	if event.is_action_pressed("place_wall"):
 		attempt_place_wall()
 
 func attempt_place_tower():
@@ -98,29 +91,38 @@ func attempt_place_tower():
 	update_tower_buttons()
 
 func attempt_place_wall():
-	var mouse_pos = get_viewport().get_mouse_position()
-	var grid_pos = grid.world_to_grid(mouse_pos)
-	print("TestMap: Wall placement - Mouse pos: ", mouse_pos, " Grid pos: ", grid_pos)
+	# Get mouse position relative to viewport
+	var viewport_mouse_pos = get_viewport().get_mouse_position()
+	
+	# Convert to world space considering camera
+	var camera = $GameCamera
+	var world_pos = camera.get_screen_to_canvas(viewport_mouse_pos)
+	
+	print("\nWall Placement Debug:")
+	print("Viewport Mouse Position: ", viewport_mouse_pos)
+	print("World Position: ", world_pos)
+	
+	# Convert to grid coordinates
+	var grid_pos = grid.world_to_grid(world_pos)
+	print("Grid Position: ", grid_pos)
 	
 	if not grid.is_valid_cell(grid_pos):
-		print("TestMap: Invalid grid cell")
+		print("Invalid grid position")
 		return
 	
 	if grid.get_cell_type(grid_pos) != grid.TILE_TYPE.EMPTY:
-		print("TestMap: Cell not empty")
+		print("Cell not empty")
 		return
 	
 	if gold < GameSettings.WALL_COST:
-		print("TestMap: Not enough gold")
+		print("Not enough gold")
 		return
 	
-	print("TestMap: Placing wall")
-	# Place wall
+	print("Placing wall...")
 	if grid.set_cell_type(grid_pos, grid.TILE_TYPE.WALL):
 		gold -= GameSettings.WALL_COST
 		update_gold_display()
-	else:
-		print("TestMap: Wall placement failed")
+		update_tower_buttons()
 
 func _on_start_wave_pressed():
 	wave_manager.start_wave()
