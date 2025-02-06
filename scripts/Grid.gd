@@ -1,15 +1,25 @@
 extends Node2D
 
 # Base grid configuration
-const BASE_GRID_SIZE = 64  # Base size of each grid cell in pixels
-const GRID_WIDTH = 40  # Number of cells horizontally
-const GRID_HEIGHT = 22  # Number of cells vertically
+const BASE_GRID_SIZE = GameSettings.BASE_GRID_SIZE
+const GRID_WIDTH = GameSettings.GRID_WIDTH
+const GRID_HEIGHT = GameSettings.GRID_HEIGHT
 
 var grid = []  # 2D array to store grid data
 var spawn_points = []  # List of possible enemy spawn points
 var flag_position = Vector2(GRID_WIDTH - 3, GRID_HEIGHT / 2)
 var wall_scene = preload("res://scenes/Wall.tscn")
 var walls = {}  # Dictionary to store wall instances
+
+# Cache for attackable objects
+var attackable_objects = {}  # Dictionary of attackable objects by position
+var spatial_grid = {}  # Spatial partitioning for quick neighbor lookups
+const SPATIAL_CELL_SIZE = 128  # Size of spatial partitioning cells
+
+# Add path caching
+var path_cache = {}
+const PATH_CACHE_TIME = 1.0  # How long to keep cached paths (seconds)
+const MAX_CACHE_SIZE = 100   # Maximum number of cached paths
 
 enum TILE_TYPE {
 	EMPTY,
@@ -30,6 +40,8 @@ class PathResult:
 		is_wall_path = is_wall
 
 signal obstacle_changed(position)  # Emitted when wall placed/destroyed
+signal attackable_added(object, position)
+signal attackable_removed(object, position)
 
 func _ready():
 	print("Grid: Ready called")
@@ -37,6 +49,19 @@ func _ready():
 	initialize_spawn_points()
 	setup_grid_transform()
 	get_tree().get_root().size_changed.connect(_on_viewport_size_changed)
+	
+	# Initialize spatial grid
+	_initialize_spatial_grid()
+	
+	# Connect to existing attackable objects
+	call_deferred("_cache_existing_attackables")
+	
+	# Start cache cleanup timer
+	var timer = Timer.new()
+	timer.wait_time = PATH_CACHE_TIME
+	timer.timeout.connect(_cleanup_path_cache)
+	add_child(timer)
+	timer.start()
 
 func setup_grid_transform():
 	# Grid should be at origin with no transform
@@ -122,7 +147,9 @@ func set_cell_type(pos: Vector2, type: int) -> bool:
 	
 	# Remove existing wall if any
 	if grid[pos.x][pos.y] == TILE_TYPE.WALL and walls.has(str(pos)):
-		walls[str(pos)].queue_free()
+		var wall = walls[str(pos)]
+		_remove_from_spatial_cache(wall)
+		wall.queue_free()
 		walls.erase(str(pos))
 	
 	grid[pos.x][pos.y] = type
@@ -134,6 +161,7 @@ func set_cell_type(pos: Vector2, type: int) -> bool:
 		wall.position = final_pos
 		add_child(wall)
 		walls[str(pos)] = wall
+		_add_to_spatial_cache(wall)
 	
 	# Notify if obstacle state changed
 	if (old_type == TILE_TYPE.WALL or type == TILE_TYPE.WALL):
@@ -162,6 +190,36 @@ func grid_to_world(grid_pos: Vector2) -> Vector2:
 
 # A* pathfinding implementation
 func find_path(start: Vector2, end: Vector2) -> PathResult:
+	# Check cache first
+	var cache_key = _get_path_cache_key(start, end)
+	if path_cache.has(cache_key):
+		var cache_entry = path_cache[cache_key]
+		if (Time.get_ticks_msec() / 1000.0) - cache_entry.time <= PATH_CACHE_TIME:
+			return cache_entry.result
+	
+	# If cache is too large, remove oldest entries
+	if path_cache.size() >= MAX_CACHE_SIZE:
+		var oldest_time = INF
+		var oldest_key = null
+		for key in path_cache:
+			if path_cache[key].time < oldest_time:
+				oldest_time = path_cache[key].time
+				oldest_key = key
+		if oldest_key:
+			path_cache.erase(oldest_key)
+	
+	# Calculate new path
+	var result = _calculate_path(start, end)
+	
+	# Cache the result
+	path_cache[cache_key] = {
+		"result": result,
+		"time": Time.get_ticks_msec() / 1000.0
+	}
+	
+	return result
+
+func _calculate_path(start: Vector2, end: Vector2) -> PathResult:
 	var open_set = []
 	var closed_set = {}
 	var came_from = {}
@@ -200,7 +258,6 @@ func find_path(start: Vector2, end: Vector2) -> PathResult:
 	# If no path found, find wall to break
 	var wall_result = find_wall_breakthrough_path(start, end, closed_set)
 	if not wall_result.path.is_empty():
-		print("Grid: Found wall-breaking path to wall at ", wall_result.wall_target)
 		return wall_result
 	return PathResult.new([])
 
@@ -343,3 +400,67 @@ func get_random_spawn_point() -> Vector2:
 	
 	var spawn_point = spawn_points[randi() % spawn_points.size()]
 	return grid_to_world(spawn_point)
+
+func _initialize_spatial_grid():
+	spatial_grid.clear()
+	for x in range(0, GRID_WIDTH * BASE_GRID_SIZE, SPATIAL_CELL_SIZE):
+		for y in range(0, GRID_HEIGHT * BASE_GRID_SIZE, SPATIAL_CELL_SIZE):
+			spatial_grid[_get_spatial_key(Vector2(x, y))] = []
+
+func _get_spatial_key(pos: Vector2) -> String:
+	var cell_x = floor(pos.x / SPATIAL_CELL_SIZE)
+	var cell_y = floor(pos.y / SPATIAL_CELL_SIZE)
+	return "%d,%d" % [cell_x, cell_y]
+
+func _cache_existing_attackables():
+	for obj in get_tree().get_nodes_in_group("attackable"):
+		if obj is Node2D:
+			_add_to_spatial_cache(obj)
+
+func _add_to_spatial_cache(obj: Node2D):
+	var key = _get_spatial_key(obj.position)
+	if not spatial_grid.has(key):
+		spatial_grid[key] = []
+	spatial_grid[key].append(obj)
+	attackable_objects[obj.get_instance_id()] = obj
+	attackable_added.emit(obj, obj.position)
+
+func _remove_from_spatial_cache(obj: Node2D):
+	var key = _get_spatial_key(obj.position)
+	if spatial_grid.has(key):
+		spatial_grid[key].erase(obj)
+	attackable_objects.erase(obj.get_instance_id())
+	attackable_removed.emit(obj, obj.position)
+
+# Get attackable objects within range of a position
+func get_attackables_in_range(pos: Vector2, range: float) -> Array:
+	var result = []
+	var center_key = _get_spatial_key(pos)
+	var cells_to_check = 1 + int(range / SPATIAL_CELL_SIZE)
+	
+	var cell_x = floor(pos.x / SPATIAL_CELL_SIZE)
+	var cell_y = floor(pos.y / SPATIAL_CELL_SIZE)
+	
+	for x in range(cell_x - cells_to_check, cell_x + cells_to_check + 1):
+		for y in range(cell_y - cells_to_check, cell_y + cells_to_check + 1):
+			var key = "%d,%d" % [x, y]
+			if spatial_grid.has(key):
+				for obj in spatial_grid[key]:
+					if is_instance_valid(obj) and obj.position.distance_to(pos) <= range:
+						result.append(obj)
+	
+	return result
+
+func _cleanup_path_cache():
+	var current_time = Time.get_ticks_msec() / 1000.0
+	var keys_to_remove = []
+	
+	for key in path_cache:
+		if current_time - path_cache[key].time > PATH_CACHE_TIME:
+			keys_to_remove.append(key)
+	
+	for key in keys_to_remove:
+		path_cache.erase(key)
+
+func _get_path_cache_key(start: Vector2, end: Vector2) -> String:
+	return "%d,%d-%d,%d" % [start.x, start.y, end.x, end.y]

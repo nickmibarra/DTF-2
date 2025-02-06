@@ -16,27 +16,21 @@ var flash_on_hit: bool = true
 var destruction_effect: bool = true
 
 func _ready():
-	print("Attackable: Ready called")
 	add_to_group("attackable")
-	# Don't set health here, wait for initialize
 
 func initialize(initial_health: float, initial_armor: float = 0.0):
-	print("Attackable: Initializing with health: ", initial_health)
 	max_health = initial_health
 	current_health = initial_health
 	armor = initial_armor
 	emit_signal("health_changed", current_health, max_health)
-	print("Attackable: Initialization complete. Current health: ", current_health)
 
 func take_damage(amount: float, source: Node = null) -> float:
-	print("Attackable: Taking damage: ", amount, " Current health: ", current_health)
 	if is_invulnerable:
 		return 0.0
 		
 	var actual_damage = amount * (1.0 - armor)
 	current_health -= actual_damage
 	
-	print("Attackable: After damage - Health: ", current_health, "/", max_health)
 	emit_signal("damage_taken", actual_damage, source)
 	emit_signal("health_changed", current_health, max_health)
 	
@@ -44,7 +38,6 @@ func take_damage(amount: float, source: Node = null) -> float:
 		_play_damage_effect()
 	
 	if current_health <= 0:
-		print("Attackable: Health depleted, handling destruction")
 		_handle_destruction()
 	
 	return actual_damage
@@ -61,7 +54,6 @@ func _handle_destruction():
 	if destruction_effect:
 		_play_destruction_effect()
 	
-	print("Attackable: Emitting destroyed signal")
 	emit_signal("destroyed", get_parent().position)
 	get_parent().queue_free()
 

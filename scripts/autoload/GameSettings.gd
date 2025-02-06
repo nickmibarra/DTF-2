@@ -4,6 +4,11 @@ extends Node
 const STARTING_GOLD = 1000
 const WALL_COST = 20
 
+# Grid settings
+const BASE_GRID_SIZE = 64  # Base size of each grid cell in pixels
+const GRID_WIDTH = 40  # Number of cells horizontally
+const GRID_HEIGHT = 22  # Number of cells vertically
+
 const TOWER_COSTS = {
 	0: 50,  # Ballista
 	1: 75,  # Flamethrower

@@ -26,4 +26,4 @@ offset_bottom = -20.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="Attackable" type="Node" parent="."]
-script = ExtResource("3_m4n5f") 
+script = ExtResource("3_m4n5f")

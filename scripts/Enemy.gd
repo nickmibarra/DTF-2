@@ -45,13 +45,35 @@ const PATH_RECALC_INTERVAL: float = 1.0  # Recalculate path every second if need
 var init_timer: float = 0.0
 const INIT_DELAY: float = 0.1  # Short delay before starting pathfinding
 
+# Cache the flag reference
+var _flag: Node2D = null
+
 func _ready():
 	add_to_group("enemies")
 	assert(behavior != null, "Enemy must have EnemyBehavior component")
 	assert(grid != null, "Enemy needs Grid node for pathfinding")
 	_update_health_bar()
 	process_mode = Node.PROCESS_MODE_PAUSABLE
-	last_position = position  # Set initial position for stuck detection
+	last_position = position
+	
+	# Connect to grid signals
+	grid.obstacle_changed.connect(_on_obstacle_changed)
+
+func _on_obstacle_changed(pos: Vector2):
+	# Only recalculate if the changed obstacle is near our path
+	if not current_path.is_empty():
+		var obstacle_world_pos = grid.grid_to_world(pos)
+		var should_recalc = false
+		
+		# Check if obstacle is near our current path
+		for path_pos in current_path:
+			var world_path_pos = grid.grid_to_world(path_pos)
+			if world_path_pos.distance_to(obstacle_world_pos) < GameSettings.BASE_GRID_SIZE * 2:
+				should_recalc = true
+				break
+		
+		if should_recalc:
+			_recalculate_path_if_needed()
 
 func _process(delta):
 	# Wait for initialization delay
@@ -66,107 +88,161 @@ func _process(delta):
 			_process_combat(delta)
 
 func _process_movement(delta):
-	# First movement after spawn
+	# Always check if we can attack flag from current position first
+	var flag = _find_target()
+	if flag:
+		var dist = position.distance_to(flag.position)
+		# Only log every half second
+		if int(Time.get_ticks_msec() / 500) != int((Time.get_ticks_msec() - delta * 1000) / 500):
+			print("Distance to flag: ", int(dist), ", ATTACK_RANGE: ", ATTACK_RANGE)
+		if dist <= ATTACK_RANGE:
+			_transition_to_attack(flag)
+			return
+	
+	# If we can't attack flag, handle movement
 	if current_path.is_empty() and target_position == Vector2.ZERO:
-		var target = _find_target()
-		if target:
-			target_position = target.position
+		if flag:  # We already found flag above
+			# Instead of pathing to flag position, path directly to flag
+			target_position = flag.position  # Path directly to flag
 			target_grid_pos = grid.world_to_grid(target_position)
+			print("Calculated target position: ", target_position)
 			_recalculate_path_if_needed()
 			return
 	
-	path_recalc_timer += delta
-	
-	# Check for nearby walls first
-	var wall_target = _find_wall_to_attack()
-	if wall_target:
-		_transition_to_attack(wall_target)
-		return
-	
-	# Only find target and recalculate path periodically
-	if path_recalc_timer >= PATH_RECALC_INTERVAL:
-		path_recalc_timer = 0.0
-		var target = _find_target()
-		if not target:
+	# Check for walls only if we're stuck or don't have a path
+	if current_path.is_empty() or is_stuck(grid.world_to_grid(position)):
+		var wall_target = _find_wall_to_attack()
+		if wall_target:
+			_transition_to_attack(wall_target)
 			return
-			
-		var new_target_pos = target.position
-		if new_target_pos != target_position:
-			target_position = new_target_pos
-			target_grid_pos = grid.world_to_grid(target_position)
-			_recalculate_path_if_needed()
-	
-	# Check if we're close enough to attack flag
-	var dist = position.distance_to(target_position)
-	if dist <= ATTACK_RANGE:
-		var target = _find_target()  # Only find target when needed
-		if target:
-			_transition_to_attack(target)
-		return
+		_recalculate_path_if_needed()
 	
 	# Follow current path
 	if not current_path.is_empty():
 		_follow_path(delta)
-	elif is_stuck(grid.world_to_grid(position)):
-		_recalculate_path_if_needed()
 
 func _find_wall_to_attack() -> Node2D:
-	var attackables = get_tree().get_nodes_in_group("attackable")
-	var closest_target = null
-	var closest_dist = INF
+	var flag = _find_target()
+	if not flag:
+		return null
 	
-	for potential_target in attackables:
-		if not is_instance_valid(potential_target):
+	# First check if we have a clear path to flag
+	var current_grid_pos = grid.world_to_grid(position)
+	var flag_grid_pos = grid.world_to_grid(flag.position)
+	var path_to_flag = grid.find_path(current_grid_pos, flag_grid_pos)
+	
+	# If we have a valid path that doesn't require wall breaking, don't attack walls
+	if not path_to_flag.path.is_empty() and not path_to_flag.is_wall_path:
+		return null
+	
+	var nearby_attackables = grid.get_attackables_in_range(position, ATTACK_RANGE * 1.5)
+	var best_target = null
+	var best_score = INF
+	
+	var to_flag_dir = (flag.position - position).normalized()
+	
+	for potential_target in nearby_attackables:
+		# Skip if it's the enemy itself or not a wall
+		if potential_target == self or not potential_target.is_in_group("walls"):
 			continue
 			
-		# Skip if it's the enemy itself
-		if potential_target == self:
-			continue
-			
-		# Get the attackable component
 		var attackable_component = potential_target.get_node_or_null("Attackable")
 		if not attackable_component:
 			continue
 			
-		var dist = position.distance_to(potential_target.position)
-		if dist <= ATTACK_RANGE * 1.5:  # Only consider targets within attack range
+		var wall_pos = potential_target.position
+		var dist = position.distance_to(wall_pos)
+		
+		# Check if wall is in the general direction of the flag
+		var to_wall_dir = (wall_pos - position).normalized()
+		var dot_product = to_flag_dir.dot(to_wall_dir)
+		
+		# Calculate a score based on multiple factors
+		if dot_product > 0.0:  # Wall is roughly in the direction we want to go
+			var wall_grid_pos = grid.world_to_grid(wall_pos)
+			
+			# Check if there's a path around this wall
+			var temp_grid_state = grid.get_cell_type(wall_grid_pos)
+			grid.set_cell_type(wall_grid_pos, grid.TILE_TYPE.EMPTY)  # Temporarily remove wall
+			var alternate_path = grid.find_path(current_grid_pos, flag_grid_pos)
+			grid.set_cell_type(wall_grid_pos, temp_grid_state)  # Restore wall
+			
+			# If there's a good path around, skip this wall
+			if not alternate_path.path.is_empty() and alternate_path.path.size() < path_to_flag.path.size() + 5:
+				continue
+			
+			# Score based on distance and direction
+			var score = dist * (2.0 - dot_product)  # Lower score is better
+			
 			if behavior.should_attack_target(attackable_component.current_health, dist):
-				if dist < closest_dist:
-					closest_target = potential_target
-					closest_dist = dist
+				if score < best_score:
+					best_target = potential_target
+					best_score = score
 	
-	return closest_target
+	return best_target
 
 func _find_target() -> Node2D:
-	# Find flag in our test case or parent
-	var parent = get_parent()
-	var flag = parent.get_node_or_null("Flag")  # Check for sibling flag first
-	if not flag:
-		flag = get_tree().get_first_node_in_group("flags")  # Fallback to any flag
+	if not _flag:
+		_flag = get_tree().get_first_node_in_group("flags")
+		if not _flag:
+			push_error("Enemy: No flag found in scene!")
+			return null
 	
-	if not flag:
-		push_error("Enemy: No flag found in scene!")
-		return null
-		
-	return flag
+	return _flag
 
 func _move_towards(target_pos: Vector2, delta: float):
 	var direction = (target_pos - position).normalized()
-	var proposed_position = position + direction * behavior.get_effective_speed() * delta
+	var move_speed = behavior.get_effective_speed() * delta
+	var proposed_position = position + direction * move_speed
 	
-	# Check if proposed position would be in a wall
-	var current_grid_pos = grid.world_to_grid(position)
-	var proposed_grid_pos = grid.world_to_grid(proposed_position)
+	# Check if we're moving towards the flag
+	var flag = _find_target()
+	if flag:
+		var dist_to_flag = position.distance_to(flag.position)
+		# If we're getting close to attack range, ignore collisions
+		if dist_to_flag <= ATTACK_RANGE * 1.5:  # Within 60 units
+			position = proposed_position
+			stuck_time = 0.0
+			last_position = position
+			return
 	
-	# Only move if we're not trying to enter a wall cell
-	if grid.get_cell_type(proposed_grid_pos) != grid.TILE_TYPE.WALL:
+	# Normal collision checks for non-flag movement
+	var wall_clearance = GameSettings.BASE_GRID_SIZE * 0.3
+	var check_positions = [
+		proposed_position,
+		proposed_position + direction.rotated(PI/4) * wall_clearance,
+		proposed_position + direction.rotated(-PI/4) * wall_clearance
+	]
+	
+	var can_move = true
+	for check_pos in check_positions:
+		var check_grid_pos = grid.world_to_grid(check_pos)
+		var cell_type = grid.get_cell_type(check_grid_pos)
+		if cell_type == grid.TILE_TYPE.WALL:
+			can_move = false
+			break
+	
+	if can_move:
 		position = proposed_position
-		# Reset stuck timer when we successfully move
 		stuck_time = 0.0
 		last_position = position
 	else:
-		# Force path recalculation
-		current_path.clear()
+		# Try sliding along the wall by removing the blocked component of movement
+		var slide_directions = [
+			Vector2(direction.x, 0).normalized(),
+			Vector2(0, direction.y).normalized()
+		]
+		
+		for slide_dir in slide_directions:
+			var slide_position = position + slide_dir * move_speed
+			var slide_grid_pos = grid.world_to_grid(slide_position)
+			if grid.get_cell_type(slide_grid_pos) != grid.TILE_TYPE.WALL:
+				position = slide_position
+				stuck_time = 0.0
+				last_position = position
+				return
+		
+		stuck_time += delta
 
 func _transition_to_attack(new_target: Node2D):
 	current_target = new_target
@@ -189,12 +265,27 @@ func _recalculate_path_if_needed():
 func _follow_path(delta: float):
 	if current_path.is_empty():
 		return
+	
+	# Check attack range before moving
+	var flag = _find_target()
+	if flag:
+		var dist = position.distance_to(flag.position)
+		if dist <= ATTACK_RANGE:
+			_transition_to_attack(flag)
+			return
 		
 	var next_point = grid.grid_to_world(current_path[0])
 	var dist_to_next = position.distance_to(next_point)
 	
+	# If this is the last waypoint and it's the flag, move directly to flag
+	if current_path.size() == 1 and flag:
+		var dist_to_flag = position.distance_to(flag.position)
+		if dist_to_flag <= ATTACK_RANGE * 1.5:  # Within approach range
+			_move_towards(flag.position, delta)
+			return
+	
 	# Check if we've reached the current waypoint
-	if dist_to_next < 10:
+	if dist_to_next < GameSettings.BASE_GRID_SIZE * 0.3:
 		current_path.pop_front()
 		if not current_path.is_empty():
 			next_point = grid.grid_to_world(current_path[0])
