@@ -57,6 +57,10 @@ const PATH_CHANGE_THRESHOLD: float = 1.5  # Time before forcing a new path if le
 # Add group behavior variables
 var spawn_index: int = -1  # Will be set when spawned
 
+# Add near the top with other constants
+const UPDATE_FREQUENCY = 0.1  # Update every 100ms
+var update_timer = 0.0
+
 func _ready():
 	add_to_group("enemies")
 	assert(behavior != null, "Enemy must have EnemyBehavior component")
@@ -92,21 +96,24 @@ func _process(delta):
 	if init_timer < INIT_DELAY:
 		init_timer += delta
 		return
+	
+	# Update timer for batched operations
+	update_timer += delta
+	var should_update = update_timer >= UPDATE_FREQUENCY
+	if should_update:
+		update_timer = 0.0
 		
 	match current_state:
 		AI_STATE.MOVING:
-			_process_movement(delta)
+			_process_movement(delta, should_update)
 		AI_STATE.ATTACKING:
 			_process_combat(delta)
 
-func _process_movement(delta):
+func _process_movement(delta, should_update: bool):
 	# Always check if we can attack flag from current position first
 	var flag = _find_target()
 	if flag:
 		var dist = position.distance_to(flag.position)
-		# Only log every half second
-		if int(Time.get_ticks_msec() / 500) != int((Time.get_ticks_msec() - delta * 1000) / 500):
-			print("Distance to flag: ", int(dist), ", ATTACK_RANGE: ", ATTACK_RANGE)
 		if dist <= ATTACK_RANGE:
 			_transition_to_attack(flag)
 			return
@@ -115,7 +122,7 @@ func _process_movement(delta):
 	if not current_path.is_empty():
 		if current_path.size() == last_path_length:
 			same_path_time += delta
-			if same_path_time >= PATH_CHANGE_THRESHOLD:
+			if same_path_time >= PATH_CHANGE_THRESHOLD and should_update:
 				# Force a new path if we haven't made progress
 				_recalculate_path_if_needed(true)  # Force recalculation
 				same_path_time = 0.0
@@ -125,16 +132,15 @@ func _process_movement(delta):
 	
 	# If we can't attack flag, handle movement
 	if current_path.is_empty() and target_position == Vector2.ZERO:
-		if flag:  # We already found flag above
+		if flag and should_update:  # Only update path on update tick
 			# Instead of pathing to flag position, path directly to flag
 			target_position = flag.position  # Path directly to flag
 			target_grid_pos = grid.world_to_grid(target_position)
-			print("Calculated target position: ", target_position)
 			_recalculate_path_if_needed()
 			return
 	
 	# Check for walls only if we're stuck or don't have a path
-	if current_path.is_empty() or is_stuck(grid.world_to_grid(position)):
+	if (current_path.is_empty() or is_stuck(grid.world_to_grid(position))) and should_update:
 		var wall_target = _find_wall_to_attack()
 		if wall_target:
 			_transition_to_attack(wall_target)

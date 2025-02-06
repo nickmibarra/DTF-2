@@ -1,0 +1,54 @@
+Godot Engine v4.2.1.stable.official.b09f793f5 - https://godotengine.org
+Vulkan API 1.3.292 - Forward+ - Using Vulkan Device #0: AMD - AMD Radeon RX 7800 XT
+ 
+USER WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1440)
+
+=== Performance Test Results ===
+Test 1 (10 enemies):
+- Average frame time: 26.49 ms
+- FPS: 37.7
+- Path calculations: 10
+- Cache hit rate: 0.0%
+- Spatial queries: 0
+
+
+=== Performance Test Results ===
+Test 2 (50 enemies):
+- Average frame time: 121.56 ms
+- FPS: 8.2
+- Path calculations: 50
+- Cache hit rate: 0.0%
+- Spatial queries: 0
+
+
+=== Performance Test Results ===
+Test 3 (100 enemies):
+- Average frame time: 64.34 ms
+- FPS: 15.5
+- Path calculations: 100
+- Cache hit rate: 0.0%
+- Spatial queries: 0
+
+
+=== Performance Test Results ===
+Test 4 (500 enemies):
+- Average frame time: 675.72 ms
+- FPS: 1.5
+- Path calculations: 500
+- Cache hit rate: 0.0%
+- Spatial queries: 0
+
+
+=== Performance Test Results ===
+Test 5 (1000 enemies):
+- Average frame time: 87.01 ms
+- FPS: 11.5
+- Path calculations: 1000
+- Cache hit rate: 0.0%
+- Spatial queries: 0
+
+
+=== All Performance Tests Completed ===
+

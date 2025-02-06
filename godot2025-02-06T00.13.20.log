@@ -1,0 +1,12 @@
+Godot Engine v4.2.1.stable.official.b09f793f5 - https://godotengine.org
+Vulkan API 1.3.292 - Forward+ - Using Vulkan Device #0: AMD - AMD Radeon RX 7800 XT
+ 
+USER WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1440)
+USER ERROR: Parent node is busy adding/removing children, `remove_child()` can't be called at this time. Consider using `remove_child.call_deferred(child)` instead.
+   at: remove_child (scene/main/node.cpp:1436)
+USER ERROR: Object <Object#30735860979> was freed or unreferenced while a signal is being emitted from it. Try connecting to the signal using 'CONNECT_DEFERRED' flag, or use queue_free() to free the object (if this object is a Node) to avoid this error and potential crashes.
+   at: ~Object (core/object/object.cpp:2005)
+USER ERROR: Condition "data.parent" is true.
+   at: ~Node (scene/main/node.cpp:3558)

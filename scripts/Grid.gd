@@ -48,7 +48,6 @@ signal attackable_added(object, position)
 signal attackable_removed(object, position)
 
 func _ready():
-	print("Grid: Ready called")
 	initialize_grid()
 	initialize_spawn_points()
 	setup_grid_transform()
