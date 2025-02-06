@@ -111,10 +111,17 @@ func attack(enemy: Node2D):
 		return
 		
 	var actual_damage = damage * RANK_BONUSES[rank]
-	enemy.take_damage(actual_damage)
+	
+	# Create projectile
+	var projectile = projectile_scene.instantiate()
+	get_parent().add_child(projectile)
+	projectile.init(position, enemy, actual_damage)
 	
 	if not enemy.is_connected("died", _on_enemy_killed):
 		enemy.died.connect(_on_enemy_killed)
+	
+	# Play attack animation
+	_play_attack_animation()
 
 func _spawn_projectile(enemy: Node2D, damage_amount: float):
 	var projectile = projectile_scene.instantiate()
