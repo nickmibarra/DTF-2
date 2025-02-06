@@ -35,6 +35,7 @@ var gold_value: int = 10
 var last_position: Vector2 = Vector2.ZERO
 var stuck_time: float = 0.0
 const STUCK_THRESHOLD: float = 0.5  # Time in seconds to consider stuck
+const MAJOR_STUCK_THRESHOLD: float = 2.0  # Time to consider seriously stuck
 
 var target_position: Vector2 = Vector2.ZERO
 var target_grid_pos: Vector2 = Vector2.ZERO
@@ -48,6 +49,14 @@ const INIT_DELAY: float = 0.1  # Short delay before starting pathfinding
 # Cache the flag reference
 var _flag: Node2D = null
 
+# Add path tracking
+var last_path_length: int = 0
+var same_path_time: float = 0.0
+const PATH_CHANGE_THRESHOLD: float = 1.5  # Time before forcing a new path if length hasn't changed
+
+# Add group behavior variables
+var spawn_index: int = -1  # Will be set when spawned
+
 func _ready():
 	add_to_group("enemies")
 	assert(behavior != null, "Enemy must have EnemyBehavior component")
@@ -55,6 +64,9 @@ func _ready():
 	_update_health_bar()
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	last_position = position
+	
+	# Set spawn index based on existing enemies
+	spawn_index = get_tree().get_nodes_in_group("enemies").size() - 1
 	
 	# Connect to grid signals
 	grid.obstacle_changed.connect(_on_obstacle_changed)
@@ -98,6 +110,18 @@ func _process_movement(delta):
 		if dist <= ATTACK_RANGE:
 			_transition_to_attack(flag)
 			return
+	
+	# Track if we're making progress on our path
+	if not current_path.is_empty():
+		if current_path.size() == last_path_length:
+			same_path_time += delta
+			if same_path_time >= PATH_CHANGE_THRESHOLD:
+				# Force a new path if we haven't made progress
+				_recalculate_path_if_needed(true)  # Force recalculation
+				same_path_time = 0.0
+		else:
+			same_path_time = 0.0
+			last_path_length = current_path.size()
 	
 	# If we can't attack flag, handle movement
 	if current_path.is_empty() and target_position == Vector2.ZERO:
@@ -206,43 +230,54 @@ func _move_towards(target_pos: Vector2, delta: float):
 			last_position = position
 			return
 	
-	# Normal collision checks for non-flag movement
-	var wall_clearance = GameSettings.BASE_GRID_SIZE * 0.3
-	var check_positions = [
-		proposed_position,
-		proposed_position + direction.rotated(PI/4) * wall_clearance,
-		proposed_position + direction.rotated(-PI/4) * wall_clearance
-	]
+	# Cache grid position check for multiple uses
+	var check_grid_pos = grid.world_to_grid(proposed_position)
+	var cell_type = grid.get_cell_type(check_grid_pos)
 	
-	var can_move = true
-	for check_pos in check_positions:
-		var check_grid_pos = grid.world_to_grid(check_pos)
-		var cell_type = grid.get_cell_type(check_grid_pos)
-		if cell_type == grid.TILE_TYPE.WALL:
-			can_move = false
-			break
-	
-	if can_move:
+	# Fast path: If proposed position is clear, take it
+	if cell_type != grid.TILE_TYPE.WALL:
 		position = proposed_position
 		stuck_time = 0.0
 		last_position = position
-	else:
-		# Try sliding along the wall by removing the blocked component of movement
-		var slide_directions = [
-			Vector2(direction.x, 0).normalized(),
-			Vector2(0, direction.y).normalized()
-		]
-		
-		for slide_dir in slide_directions:
-			var slide_position = position + slide_dir * move_speed
-			var slide_grid_pos = grid.world_to_grid(slide_position)
-			if grid.get_cell_type(slide_grid_pos) != grid.TILE_TYPE.WALL:
-				position = slide_position
-				stuck_time = 0.0
-				last_position = position
-				return
-		
-		stuck_time += delta
+		return
+	
+	# Only do detailed collision checks if we hit a wall
+	var wall_clearance = GameSettings.BASE_GRID_SIZE * 0.3
+	
+	# Try diagonal movements first
+	var diagonal_directions = [
+		direction.rotated(PI/4),
+		direction.rotated(-PI/4)
+	]
+	
+	for slide_dir in diagonal_directions:
+		var slide_position = position + slide_dir * move_speed
+		var slide_grid_pos = grid.world_to_grid(slide_position)
+		if grid.get_cell_type(slide_grid_pos) != grid.TILE_TYPE.WALL:
+			position = slide_position
+			stuck_time = 0.0
+			last_position = position
+			return
+	
+	# If diagonals failed, try cardinal directions
+	var cardinal_directions = [
+		Vector2(direction.x, 0).normalized(),
+		Vector2(0, direction.y).normalized()
+	]
+	
+	for slide_dir in cardinal_directions:
+		var slide_position = position + slide_dir * move_speed
+		var slide_grid_pos = grid.world_to_grid(slide_position)
+		if grid.get_cell_type(slide_grid_pos) != grid.TILE_TYPE.WALL:
+			position = slide_position
+			stuck_time = 0.0
+			last_position = position
+			return
+	
+	# If we get here, we're truly stuck
+	stuck_time += delta
+	if stuck_time >= STUCK_THRESHOLD:
+		_recalculate_path_if_needed()
 
 func _transition_to_attack(new_target: Node2D):
 	current_target = new_target
@@ -250,9 +285,41 @@ func _transition_to_attack(new_target: Node2D):
 	attack_timer = ATTACK_INTERVAL  # Reset timer to allow immediate first attack
 	current_path.clear()
 
-func _recalculate_path_if_needed():
+func _recalculate_path_if_needed(force: bool = false):
 	var current_grid_pos = grid.world_to_grid(position)
-	var path_result = grid.find_path(current_grid_pos, target_grid_pos)
+	
+	# If we're forced to recalc, try a simple offset pattern
+	var path_result
+	if force:
+		# Try a few simple offsets from the target
+		var offsets = [
+			Vector2.ZERO,  # Direct path first
+			Vector2(-1, 0),
+			Vector2(1, 0),
+			Vector2(0, -1),
+			Vector2(0, 1)
+		]
+		
+		var best_path = []
+		var best_score = INF
+		
+		for offset in offsets:
+			var try_target = target_grid_pos + offset
+			if grid.is_valid_cell(try_target) and grid.get_cell_type(try_target) == grid.TILE_TYPE.EMPTY:
+				var try_result = grid.find_path(current_grid_pos, try_target)
+				if not try_result.path.is_empty():
+					var score = _evaluate_path(try_result.path)
+					if score < best_score:
+						best_path = try_result.path
+						best_score = score
+						path_result = try_result
+		
+		if not best_path.is_empty():
+			current_path = best_path
+			return
+	
+	# Fall back to normal pathfinding if forced recalc failed or wasn't requested
+	path_result = grid.find_path(current_grid_pos, target_grid_pos)
 	
 	if path_result.is_wall_path:
 		var wall = grid.walls.get(str(path_result.wall_target))
@@ -261,6 +328,26 @@ func _recalculate_path_if_needed():
 			return
 	
 	current_path = path_result.path
+
+# Helper function to evaluate path quality
+func _evaluate_path(path: Array) -> float:
+	if path.is_empty():
+		return INF
+		
+	var score = path.size() * 1.0  # Base score is path length
+	
+	# Only penalize paths that run along walls
+	for i in range(1, path.size()):
+		var pos = path[i]
+		# Check adjacent cells for walls
+		var adjacent_walls = 0
+		for offset in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
+			var check_pos = pos + offset
+			if grid.is_valid_cell(check_pos) and grid.get_cell_type(check_pos) == grid.TILE_TYPE.WALL:
+				adjacent_walls += 1
+		score += adjacent_walls * 1.0  # Wall penalty
+	
+	return score
 
 func _follow_path(delta: float):
 	if current_path.is_empty():
@@ -407,7 +494,12 @@ func _update_health_bar():
 func is_stuck(current_grid_pos: Vector2) -> bool:
 	if position.distance_to(last_position) < 5.0:  # Increased threshold
 		stuck_time += get_process_delta_time()
-		if stuck_time > STUCK_THRESHOLD:
+		if stuck_time > MAJOR_STUCK_THRESHOLD:
+			# We're seriously stuck, force a complete new path
+			_recalculate_path_if_needed(true)
+			stuck_time = 0.0
+			return false
+		elif stuck_time > STUCK_THRESHOLD:
 			stuck_time = 0.0
 			return true
 	else:

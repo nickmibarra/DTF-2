@@ -18,8 +18,12 @@ const SPATIAL_CELL_SIZE = 128  # Size of spatial partitioning cells
 
 # Add path caching
 var path_cache = {}
-const PATH_CACHE_TIME = 1.0  # How long to keep cached paths (seconds)
-const MAX_CACHE_SIZE = 100   # Maximum number of cached paths
+const PATH_CACHE_TIME = 0.5  # Reduced to 0.5 seconds
+const MAX_CACHE_SIZE = 1000   # Keep this the same
+const CACHE_REGION_SIZE = 1   # Reduced to 1 for exact position matching
+
+# Add range check caching
+var _range_cache = {}
 
 enum TILE_TYPE {
 	EMPTY,
@@ -195,18 +199,16 @@ func find_path(start: Vector2, end: Vector2) -> PathResult:
 	if path_cache.has(cache_key):
 		var cache_entry = path_cache[cache_key]
 		if (Time.get_ticks_msec() / 1000.0) - cache_entry.time <= PATH_CACHE_TIME:
-			return cache_entry.result
-	
-	# If cache is too large, remove oldest entries
-	if path_cache.size() >= MAX_CACHE_SIZE:
-		var oldest_time = INF
-		var oldest_key = null
-		for key in path_cache:
-			if path_cache[key].time < oldest_time:
-				oldest_time = path_cache[key].time
-				oldest_key = key
-		if oldest_key:
-			path_cache.erase(oldest_key)
+			# Verify the path is still valid by checking the first few steps
+			var path = cache_entry.result.path
+			if not path.is_empty():
+				for i in range(min(3, path.size())):
+					if get_cell_type(path[i]) == TILE_TYPE.WALL:
+						# Path is blocked, calculate new one
+						path_cache.erase(cache_key)
+						break
+				if path_cache.has(cache_key):
+					return cache_entry.result
 	
 	# Calculate new path
 	var result = _calculate_path(start, end)
@@ -403,9 +405,12 @@ func get_random_spawn_point() -> Vector2:
 
 func _initialize_spatial_grid():
 	spatial_grid.clear()
-	for x in range(0, GRID_WIDTH * BASE_GRID_SIZE, SPATIAL_CELL_SIZE):
-		for y in range(0, GRID_HEIGHT * BASE_GRID_SIZE, SPATIAL_CELL_SIZE):
-			spatial_grid[_get_spatial_key(Vector2(x, y))] = []
+	# Pre-allocate grid cells
+	var cells_x = ceil(GRID_WIDTH * BASE_GRID_SIZE / float(SPATIAL_CELL_SIZE))
+	var cells_y = ceil(GRID_HEIGHT * BASE_GRID_SIZE / float(SPATIAL_CELL_SIZE))
+	for x in range(cells_x):
+		for y in range(cells_y):
+			spatial_grid["%d,%d" % [x, y]] = []
 
 func _get_spatial_key(pos: Vector2) -> String:
 	var cell_x = floor(pos.x / SPATIAL_CELL_SIZE)
@@ -438,9 +443,18 @@ func get_attackables_in_range(pos: Vector2, range: float) -> Array:
 	var center_key = _get_spatial_key(pos)
 	var cells_to_check = 1 + int(range / SPATIAL_CELL_SIZE)
 	
+	# Get cell coordinates
 	var cell_x = floor(pos.x / SPATIAL_CELL_SIZE)
 	var cell_y = floor(pos.y / SPATIAL_CELL_SIZE)
 	
+	# Cache nearby results for 0.5 seconds
+	var cache_key = "%d,%d-%d" % [cell_x, cell_y, int(range)]
+	if _range_cache.has(cache_key):
+		var cache = _range_cache[cache_key]
+		if Time.get_ticks_msec() - cache.time < 500:  # 0.5 second cache
+			return cache.results.filter(func(obj): return is_instance_valid(obj))
+	
+	# Check cells in range
 	for x in range(cell_x - cells_to_check, cell_x + cells_to_check + 1):
 		for y in range(cell_y - cells_to_check, cell_y + cells_to_check + 1):
 			var key = "%d,%d" % [x, y]
@@ -448,6 +462,12 @@ func get_attackables_in_range(pos: Vector2, range: float) -> Array:
 				for obj in spatial_grid[key]:
 					if is_instance_valid(obj) and obj.position.distance_to(pos) <= range:
 						result.append(obj)
+	
+	# Cache results
+	_range_cache[cache_key] = {
+		"time": Time.get_ticks_msec(),
+		"results": result.duplicate()
+	}
 	
 	return result
 
@@ -463,4 +483,15 @@ func _cleanup_path_cache():
 		path_cache.erase(key)
 
 func _get_path_cache_key(start: Vector2, end: Vector2) -> String:
+	# Use exact positions for more precise caching
 	return "%d,%d-%d,%d" % [start.x, start.y, end.x, end.y]
+
+func _physics_process(_delta):
+	# Clean old range cache entries every physics frame
+	var current_time = Time.get_ticks_msec()
+	var keys_to_remove = []
+	for key in _range_cache:
+		if current_time - _range_cache[key].time > 500:  # 0.5 second lifetime
+			keys_to_remove.append(key)
+	for key in keys_to_remove:
+		_range_cache.erase(key)
