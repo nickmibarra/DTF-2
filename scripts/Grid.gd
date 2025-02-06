@@ -29,6 +29,8 @@ class PathResult:
 		wall_target = wall
 		is_wall_path = is_wall
 
+signal obstacle_changed(position)  # Emitted when wall placed/destroyed
+
 func _ready():
 	print("Grid: Ready called")
 	initialize_grid()
@@ -117,6 +119,8 @@ func set_cell_type(pos: Vector2, type: int) -> bool:
 	if type != TILE_TYPE.EMPTY and (pos in spawn_points or pos == flag_position):
 		return false
 	
+	var old_type = grid[pos.x][pos.y]
+	
 	# Remove existing wall if any
 	if grid[pos.x][pos.y] == TILE_TYPE.WALL and walls.has(str(pos)):
 		walls[str(pos)].queue_free()
@@ -128,10 +132,13 @@ func set_cell_type(pos: Vector2, type: int) -> bool:
 	if type == TILE_TYPE.WALL:
 		var wall = wall_scene.instantiate()
 		var final_pos = grid_to_world(pos)
-		print("Placing wall at: ", final_pos)
 		wall.position = final_pos
 		add_child(wall)
 		walls[str(pos)] = wall
+	
+	# Notify if obstacle state changed
+	if (old_type == TILE_TYPE.WALL or type == TILE_TYPE.WALL):
+		obstacle_changed.emit(pos)
 	
 	queue_redraw()
 	return true
@@ -141,21 +148,17 @@ func world_to_grid(world_pos: Vector2) -> Vector2:
 	var grid_x = int(world_pos.x / BASE_GRID_SIZE)
 	var grid_y = int(world_pos.y / BASE_GRID_SIZE)
 	
-	var grid_pos = Vector2(
+	return Vector2(
 		clamp(grid_x, 0, GRID_WIDTH - 1),
 		clamp(grid_y, 0, GRID_HEIGHT - 1)
 	)
-	print("World ", world_pos, " -> Grid ", grid_pos)
-	return grid_pos
 
 func grid_to_world(grid_pos: Vector2) -> Vector2:
 	# Convert grid coordinates to world position (center of cell)
-	var world_pos = Vector2(
+	return Vector2(
 		grid_pos.x * BASE_GRID_SIZE + BASE_GRID_SIZE/2,
 		grid_pos.y * BASE_GRID_SIZE + BASE_GRID_SIZE/2
 	)
-	print("Grid ", grid_pos, " -> World ", world_pos)
-	return world_pos
 
 # A* pathfinding implementation
 func find_path(start: Vector2, end: Vector2) -> PathResult:
@@ -202,55 +205,48 @@ func find_path(start: Vector2, end: Vector2) -> PathResult:
 	return PathResult.new([])
 
 func find_wall_breakthrough_path(start: Vector2, end: Vector2, explored_cells: Dictionary) -> PathResult:
-	print("\nSearching for wall to break:")
-	print("- From: ", start)
-	print("- To: ", end)
-	print("- Explored cells: ", explored_cells.size())
-	
+	# Calculate direction to target
+	var dir = (end - start).normalized()
 	var best_wall_pos = null
 	var best_score = INF
 	var best_path = []
 	
-	# First, find all walls in our way
-	var walls_found = []
-	for x in range(GRID_WIDTH):
-		for y in range(GRID_HEIGHT):
-			var pos = Vector2(x, y)
-			if get_cell_type(pos) == TILE_TYPE.WALL:
-				walls_found.append(pos)
+	# Only check walls in the general direction of the target
+	var check_radius = 3  # Check 3 cells in each direction from the direct path
+	var step_count = int(start.distance_to(end))
+	var current = start
 	
-	print("- Found ", walls_found.size(), " walls in grid")
-	
-	# Check each wall
-	for wall_pos in walls_found:
-		# Calculate scores based on position relative to start and end
-		var dist_to_start = wall_pos.distance_to(start)
-		var dist_to_end = wall_pos.distance_to(end)
-		var score = dist_to_start + dist_to_end
+	for _i in range(step_count):
+		current += dir
+		var check_pos = Vector2(int(current.x), int(current.y))
 		
-		print("- Evaluating wall at ", wall_pos)
-		print("  Distance to start: ", dist_to_start)
-		print("  Distance to end: ", dist_to_end)
-		print("  Total score: ", score)
-		
-		if score < best_score:
-			# Find a path to a position adjacent to the wall
-			var adjacent_positions = get_adjacent_positions(wall_pos)
-			for adj_pos in adjacent_positions:
-				if is_valid_cell(adj_pos) and get_cell_type(adj_pos) != TILE_TYPE.WALL:
-					var path_to_wall = find_path_to_position(start, adj_pos)
-					if not path_to_wall.is_empty():
-						best_score = score
-						best_wall_pos = wall_pos
-						best_path = path_to_wall
-						print("  Found valid path to wall!")
-						break
+		# Check cells around the direct path
+		for x_offset in range(-check_radius, check_radius + 1):
+			for y_offset in range(-check_radius, check_radius + 1):
+				var wall_pos = check_pos + Vector2(x_offset, y_offset)
+				if not is_valid_cell(wall_pos):
+					continue
+					
+				if get_cell_type(wall_pos) == TILE_TYPE.WALL:
+					var dist_to_start = wall_pos.distance_to(start)
+					var dist_to_end = wall_pos.distance_to(end)
+					var score = dist_to_start + dist_to_end
+					
+					if score < best_score:
+						# Try to find path to a position adjacent to wall
+						var adjacent_positions = get_adjacent_positions(wall_pos)
+						for adj_pos in adjacent_positions:
+							if is_valid_cell(adj_pos) and get_cell_type(adj_pos) != TILE_TYPE.WALL:
+								var path_to_wall = find_path_to_position(start, adj_pos)
+								if not path_to_wall.is_empty():
+									best_score = score
+									best_wall_pos = wall_pos
+									best_path = path_to_wall
+									break
 	
 	if best_wall_pos != null:
-		print("Selected wall to break at: ", best_wall_pos)
 		return PathResult.new(best_path, best_wall_pos, true)
 	
-	print("No valid wall found to break")
 	return PathResult.new([])
 
 func get_adjacent_positions(pos: Vector2) -> Array:
@@ -347,6 +343,4 @@ func get_random_spawn_point() -> Vector2:
 	
 	var spawn_point = spawn_points[randi() % spawn_points.size()]
 	# Convert grid position to world position
-	var world_pos = grid_to_world(spawn_point)
-	print("Selected spawn point: grid=", spawn_point, " world=", world_pos)  # Debug log
-	return world_pos
+	return grid_to_world(spawn_point)

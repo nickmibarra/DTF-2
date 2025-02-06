@@ -1,0 +1,734 @@
+Godot Engine v4.2.1.stable.official.b09f793f5 - https://godotengine.org
+Vulkan API 1.3.292 - Forward+ - Using Vulkan Device #0: AMD - AMD Radeon RX 7800 XT
+ 
+Grid: Ready called
+Added spawn point at grid position: (0, 2)
+Added spawn point at grid position: (0, 3)
+Added spawn point at grid position: (0, 4)
+Added spawn point at grid position: (0, 5)
+Added spawn point at grid position: (0, 6)
+Added spawn point at grid position: (0, 7)
+Added spawn point at grid position: (0, 8)
+Added spawn point at grid position: (0, 9)
+Added spawn point at grid position: (0, 10)
+Added spawn point at grid position: (0, 11)
+Added spawn point at grid position: (0, 12)
+Added spawn point at grid position: (0, 13)
+Added spawn point at grid position: (0, 14)
+Added spawn point at grid position: (0, 15)
+Added spawn point at grid position: (0, 16)
+Added spawn point at grid position: (0, 17)
+Added spawn point at grid position: (0, 18)
+Added spawn point at grid position: (0, 19)
+Attackable: Ready called
+Flag: Initializing...
+Flag: Setting up Attackable component...
+Attackable: Initializing with health: 100
+Attackable: Initialization complete. Current health: 100
+Flag: Attackable component initialized with health: 100
+Flag: Health bar found and initialized
+Flag: Health changed - Current: 100 Maximum: 100
+USER WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1440)
+Flag: Health bar width updated to: 64
+Flag: Health bar updated - Size: (64, 8) Color: (0, 1, 0, 1)
+TestMap: Ready called
+TestMap: Connecting UI signals
+TestMap: Mouse button event - button_index: 1 pressed: true
+TestMap: Left click detected - attempting tower placement
+
+Tower Placement Debug:
+Viewport Mouse Position: (1028.5, 258.5)
+World Position: (1667.66, 470.4836)
+Selected Tower Type: 0
+Current Gold: 1000
+Tower Cost: 50
+Grid Position: (26, 7)
+Placing tower...
+Attackable: Ready called
+Attackable: Initializing with health: 200
+Attackable: Initialization complete. Current health: 200
+TestMap: Mouse button event - button_index: 1 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1004, 246.5)
+World Position: (1611.294, 442.8758)
+Grid Position: (25, 6)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1005.5, 270)
+World Position: (1614.745, 496.9412)
+Grid Position: (25, 7)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1008, 285)
+World Position: (1620.497, 531.451)
+Grid Position: (25, 8)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1010, 318)
+World Position: (1625.098, 607.3726)
+Grid Position: (25, 9)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1042, 323)
+World Position: (1698.719, 618.8758)
+Grid Position: (26, 9)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1062, 323)
+World Position: (1744.732, 618.8758)
+Grid Position: (27, 9)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1132.5, 326)
+World Position: (1906.928, 625.7778)
+Grid Position: (29, 9)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1106.5, 323)
+World Position: (1847.111, 618.8758)
+Grid Position: (28, 9)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1148, 320.5)
+World Position: (1942.588, 613.1242)
+Grid Position: (30, 9)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1183, 321.5)
+World Position: (2023.111, 615.4248)
+Grid Position: (31, 9)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1190.5, 289.5)
+World Position: (2040.366, 541.804)
+Grid Position: (31, 8)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1187, 252)
+World Position: (2032.314, 455.5294)
+Grid Position: (31, 7)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1173, 222.5)
+World Position: (2000.104, 387.6601)
+Grid Position: (31, 6)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1173, 199.5)
+World Position: (2000.104, 334.7451)
+Grid Position: (31, 5)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1145, 195.5)
+World Position: (1935.686, 325.5425)
+Grid Position: (30, 5)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1112.5, 194)
+World Position: (1860.915, 322.0915)
+Grid Position: (29, 5)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1075, 198.5)
+World Position: (1774.641, 332.4445)
+Grid Position: (27, 5)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1047, 204.5)
+World Position: (1710.222, 346.2484)
+Grid Position: (26, 5)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1010, 205.5)
+World Position: (1625.098, 348.549)
+Grid Position: (25, 5)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse button event - button_index: 2 pressed: true
+TestMap: Right click detected - attempting wall placement
+
+Wall Placement Debug:
+Viewport Mouse Position: (1093, 202)
+World Position: (1816.052, 340.4967)
+Grid Position: (28, 5)
+Placing wall...
+Attackable: Ready called
+Attackable: Initializing with health: 1000
+Attackable: Initialization complete. Current health: 1000
+Wall initialized with health: 1000
+TestMap: Mouse button event - button_index: 2 pressed: false
+TestMap: Mouse click on UI element, ignoring placement
+TestMap: Mouse click on UI element, ignoring placement
+TestMap: Start Wave button pressed
+TestMap: Starting wave...
+Grid: Found wall-breaking path to wall at (27, 9)
+Grid: Found wall-breaking path to wall at (27, 9)
+Grid: Found wall-breaking path to wall at (25, 8)
+Grid: Found wall-breaking path to wall at (26, 9)
+Grid: Found wall-breaking path to wall at (25, 7)
+Grid: Found wall-breaking path to wall at (25, 9)
+Grid: Found wall-breaking path to wall at (27, 9)
+Grid: Found wall-breaking path to wall at (25, 8)
+Grid: Found wall-breaking path to wall at (25, 8)
+Grid: Found wall-breaking path to wall at (27, 9)
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 1000
+Attackable: After damage - Health: 980/1000
+Wall health changed: 980/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 980
+Attackable: After damage - Health: 960/1000
+Wall health changed: 960/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 960
+Attackable: After damage - Health: 940/1000
+Wall health changed: 940/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 940
+Attackable: After damage - Health: 920/1000
+Wall health changed: 920/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 920
+Attackable: After damage - Health: 900/1000
+Wall health changed: 900/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 1000
+Attackable: After damage - Health: 980/1000
+Wall health changed: 980/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 900
+Attackable: After damage - Health: 880/1000
+Wall health changed: 880/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 980
+Attackable: After damage - Health: 960/1000
+Wall health changed: 960/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 880
+Attackable: After damage - Health: 860/1000
+Wall health changed: 860/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 1000
+Attackable: After damage - Health: 980/1000
+Wall health changed: 980/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 960
+Attackable: After damage - Health: 940/1000
+Wall health changed: 940/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 860
+Attackable: After damage - Health: 840/1000
+Wall health changed: 840/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 980
+Attackable: After damage - Health: 960/1000
+Wall health changed: 960/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 940
+Attackable: After damage - Health: 920/1000
+Wall health changed: 920/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 840
+Attackable: After damage - Health: 820/1000
+Wall health changed: 820/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 960
+Attackable: After damage - Health: 940/1000
+Wall health changed: 940/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 920
+Attackable: After damage - Health: 900/1000
+Wall health changed: 900/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 820
+Attackable: After damage - Health: 800/1000
+Wall health changed: 800/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 940
+Attackable: After damage - Health: 920/1000
+Wall health changed: 920/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 900
+Attackable: After damage - Health: 880/1000
+Wall health changed: 880/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 800
+Attackable: After damage - Health: 780/1000
+Wall health changed: 780/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 780
+Attackable: After damage - Health: 760/1000
+Wall health changed: 760/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 920
+Attackable: After damage - Health: 900/1000
+Wall health changed: 900/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 880
+Attackable: After damage - Health: 860/1000
+Wall health changed: 860/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 760
+Attackable: After damage - Health: 740/1000
+Wall health changed: 740/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 740
+Attackable: After damage - Health: 720/1000
+Wall health changed: 720/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 900
+Attackable: After damage - Health: 880/1000
+Wall health changed: 880/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 860
+Attackable: After damage - Health: 840/1000
+Wall health changed: 840/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 720
+Attackable: After damage - Health: 700/1000
+Wall health changed: 700/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 700
+Attackable: After damage - Health: 680/1000
+Wall health changed: 680/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 880
+Attackable: After damage - Health: 860/1000
+Wall health changed: 860/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 680
+Attackable: After damage - Health: 660/1000
+Wall health changed: 660/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 840
+Attackable: After damage - Health: 820/1000
+Wall health changed: 820/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 660
+Attackable: After damage - Health: 640/1000
+Wall health changed: 640/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 640
+Attackable: After damage - Health: 620/1000
+Wall health changed: 620/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 860
+Attackable: After damage - Health: 840/1000
+Wall health changed: 840/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 620
+Attackable: After damage - Health: 600/1000
+Wall health changed: 600/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 820
+Attackable: After damage - Health: 800/1000
+Wall health changed: 800/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 600
+Attackable: After damage - Health: 580/1000
+Wall health changed: 580/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 580
+Attackable: After damage - Health: 560/1000
+Wall health changed: 560/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 840
+Attackable: After damage - Health: 820/1000
+Wall health changed: 820/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 560
+Attackable: After damage - Health: 540/1000
+Wall health changed: 540/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 800
+Attackable: After damage - Health: 780/1000
+Wall health changed: 780/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 540
+Attackable: After damage - Health: 520/1000
+Wall health changed: 520/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 520
+Attackable: After damage - Health: 500/1000
+Wall health changed: 500/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 820
+Attackable: After damage - Health: 800/1000
+Wall health changed: 800/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 500
+Attackable: After damage - Health: 480/1000
+Wall health changed: 480/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 780
+Attackable: After damage - Health: 760/1000
+Wall health changed: 760/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 480
+Attackable: After damage - Health: 460/1000
+Wall health changed: 460/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 460
+Attackable: After damage - Health: 440/1000
+Wall health changed: 440/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 800
+Attackable: After damage - Health: 780/1000
+Wall health changed: 780/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 440
+Attackable: After damage - Health: 420/1000
+Wall health changed: 420/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 420
+Attackable: After damage - Health: 400/1000
+Wall health changed: 400/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 400
+Attackable: After damage - Health: 380/1000
+Wall health changed: 380/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 780
+Attackable: After damage - Health: 760/1000
+Wall health changed: 760/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 380
+Attackable: After damage - Health: 360/1000
+Wall health changed: 360/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 360
+Attackable: After damage - Health: 340/1000
+Wall health changed: 340/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 340
+Attackable: After damage - Health: 320/1000
+Wall health changed: 320/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 760
+Attackable: After damage - Health: 740/1000
+Wall health changed: 740/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 320
+Attackable: After damage - Health: 300/1000
+Wall health changed: 300/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 300
+Attackable: After damage - Health: 280/1000
+Wall health changed: 280/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 280
+Attackable: After damage - Health: 260/1000
+Wall health changed: 260/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 740
+Attackable: After damage - Health: 720/1000
+Wall health changed: 720/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 260
+Attackable: After damage - Health: 240/1000
+Wall health changed: 240/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 240
+Attackable: After damage - Health: 220/1000
+Wall health changed: 220/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 220
+Attackable: After damage - Health: 200/1000
+Wall health changed: 200/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 720
+Attackable: After damage - Health: 700/1000
+Wall health changed: 700/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 200
+Attackable: After damage - Health: 180/1000
+Wall health changed: 180/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 180
+Attackable: After damage - Health: 160/1000
+Wall health changed: 160/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 160
+Attackable: After damage - Health: 140/1000
+Wall health changed: 140/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 700
+Attackable: After damage - Health: 680/1000
+Wall health changed: 680/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 140
+Attackable: After damage - Health: 120/1000
+Wall health changed: 120/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 120
+Attackable: After damage - Health: 100/1000
+Wall health changed: 100/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 100
+Attackable: After damage - Health: 80/1000
+Wall health changed: 80/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 680
+Attackable: After damage - Health: 660/1000
+Wall health changed: 660/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 80
+Attackable: After damage - Health: 60/1000
+Wall health changed: 60/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 60
+Attackable: After damage - Health: 40/1000
+Wall health changed: 40/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 40
+Attackable: After damage - Health: 20/1000
+Wall health changed: 20/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 660
+Attackable: After damage - Health: 640/1000
+Wall health changed: 640/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 20
+Attackable: After damage - Health: 0/1000
+Wall health changed: 0/1000
+Attackable: Health depleted, handling destruction
+Attackable: Emitting destroyed signal
+Wall destroyed at position: (1632, 544)
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 640
+Attackable: After damage - Health: 620/1000
+Wall health changed: 620/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 620
+Attackable: After damage - Health: 600/1000
+Wall health changed: 600/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 600
+Attackable: After damage - Health: 580/1000
+Wall health changed: 580/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 580
+Attackable: After damage - Health: 560/1000
+Wall health changed: 560/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 560
+Attackable: After damage - Health: 540/1000
+Wall health changed: 540/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 540
+Attackable: After damage - Health: 520/1000
+Wall health changed: 520/1000
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 520
+Attackable: After damage - Health: 500/1000
+Wall health changed: 500/1000
+Flag: Taking damage: 20
+Flag: Forwarding damage to attackable component
+Attackable: Taking damage: 20 Current health: 100
+Attackable: After damage - Health: 80/100
+Flag: Damage taken - Amount: 20 Current Health: 80
+Flag: Health changed - Current: 80 Maximum: 100
+Flag: Health bar width updated to: 51.2
+Flag: Health bar updated - Size: (51.2, 8) Color: (0, 1, 0, 1)
+Flag: Actual damage taken: 20
+Flag: Taking damage: 20
+Flag: Forwarding damage to attackable component
+Attackable: Taking damage: 20 Current health: 80
+Attackable: After damage - Health: 60/100
+Flag: Damage taken - Amount: 20 Current Health: 60
+Flag: Health changed - Current: 60 Maximum: 100
+Flag: Health bar width updated to: 38.4
+Flag: Health bar updated - Size: (38.4, 8) Color: (1, 1, 0, 1)
+Flag: Actual damage taken: 20
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 500
+Attackable: After damage - Health: 480/1000
+Wall health changed: 480/1000
+Flag: Taking damage: 20
+Flag: Forwarding damage to attackable component
+Attackable: Taking damage: 20 Current health: 60
+Attackable: After damage - Health: 40/100
+Flag: Damage taken - Amount: 20 Current Health: 40
+Flag: Health changed - Current: 40 Maximum: 100
+Flag: Health bar width updated to: 25.6
+Flag: Health bar updated - Size: (25.6, 8) Color: (1, 1, 0, 1)
+Flag: Actual damage taken: 20
+Flag: Taking damage: 20
+Flag: Forwarding damage to attackable component
+Attackable: Taking damage: 20 Current health: 40
+Attackable: After damage - Health: 20/100
+Flag: Damage taken - Amount: 20 Current Health: 20
+Flag: Health changed - Current: 20 Maximum: 100
+Flag: Health bar width updated to: 12.8
+Flag: Health bar updated - Size: (12.8, 8) Color: (1, 0, 0, 1)
+Flag: Actual damage taken: 20
+Wall taking damage: 20
+Attackable: Taking damage: 20 Current health: 480
+Attackable: After damage - Health: 460/1000
+Wall health changed: 460/1000
+Flag: Taking damage: 20
+Flag: Forwarding damage to attackable component
+Attackable: Taking damage: 20 Current health: 20
+Attackable: After damage - Health: 0/100
+Flag: Damage taken - Amount: 20 Current Health: 0
+Flag: Health changed - Current: 0 Maximum: 100
+Flag: Health bar width updated to: 0
+Flag: Health bar updated - Size: (0, 8) Color: (1, 0, 0, 1)
+Attackable: Health depleted, handling destruction
+Attackable: Emitting destroyed signal
+Flag: Destroyed!
+Game Over screen shown
+Flag: Actual damage taken: 20

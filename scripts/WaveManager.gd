@@ -58,7 +58,6 @@ func start_wave():
 	spawn_timer = 0.0
 	set_process(true)
 	wave_started.emit(current_wave)
-	print("Wave ", current_wave, " started with ", enemies_remaining, " enemies")
 
 func start_endless_mode():
 	endless_mode = true
@@ -72,8 +71,13 @@ func spawn_enemy():
 		push_error("Enemy scene not set in WaveManager")
 		return
 	
+	var grid = get_parent().grid
+	if not grid:
+		push_error("Grid not found in parent")
+		return
+	
 	var enemy = enemy_scene.instantiate()
-	get_parent().add_child(enemy)
+	grid.add_child(enemy)  # Add to grid instead of parent
 	active_enemies.append(enemy)
 	
 	# Calculate scaled stats
@@ -85,18 +89,14 @@ func spawn_enemy():
 	enemy.set_stats(health, speed, gold, damage)
 	
 	# Get spawn position
-	var grid = get_parent().grid
 	var spawn_pos = grid.get_random_spawn_point()
 	enemy.position = spawn_pos
-	
-	# Enemy will automatically find and target the flag or walls through its AI
 	
 	# Connect signals
 	enemy.died.connect(_on_enemy_died.bind(enemy))
 	enemy.reached_flag.connect(_on_enemy_reached_flag)
 	
 	enemies_remaining -= 1
-	print("Spawned enemy at grid-aligned position: ", enemy.position)
 
 func _on_enemy_died(gold_value: int, enemy: Node2D):
 	active_enemies.erase(enemy)
@@ -112,8 +112,6 @@ func _on_wave_complete():
 	wave_in_progress = false
 	set_process(false)
 	wave_completed.emit()
-	print("Wave ", current_wave, " completed")
 	
 	if not endless_mode and current_wave >= GameSettings.CAMPAIGN_WAVES:
 		all_waves_completed.emit()
-		print("All waves completed!")

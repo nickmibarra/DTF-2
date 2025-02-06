@@ -38,23 +38,17 @@ func get_effective_speed() -> float:
 func should_attack_target(target_health: float, distance_to_target: float) -> bool:
     if not can_break_walls:
         return false
-        
-    print("\nEnemyBehavior: Evaluating attack decision")
-    print("- Target Health: ", target_health)
-    print("- Distance: ", distance_to_target)
     
     # Calculate time to destroy target
     var dps = get_dps()
     var time_to_destroy = target_health / dps
-    print("- DPS: ", dps)
-    print("- Time to Destroy: ", time_to_destroy)
     
     # Calculate time to move around (estimate)
     var time_to_move = distance_to_target * 2.0  # Simple distance-based estimate
-    print("- Time to Move: ", time_to_move)
+    
+    # Always attack if we're already close
+    if distance_to_target <= 45.0:  # Slightly more than ATTACK_RANGE
+        return true
     
     # Simple decision: attack if it's faster than moving
-    var should_attack = time_to_destroy < time_to_move
-    print("- Decision: ", "Attack" if should_attack else "Move Around")
-    
-    return should_attack 
+    return time_to_destroy < time_to_move 

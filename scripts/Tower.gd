@@ -22,6 +22,8 @@ const RANK_BONUSES = GameSettings.RANK_BONUSES
 
 @onready var sprite = $Sprite2D
 @onready var range_indicator = $RangeIndicator
+@onready var health_bar = $HealthBar
+@onready var attackable = $Attackable
 
 # Preload resources
 var tower_textures = {
@@ -42,12 +44,19 @@ func _ready():
 	
 	add_to_group("towers")
 	add_to_group("barriers")
+	add_to_group("attackable")
 	
 	# Add barrier component
 	barrier = Barrier.new()
 	barrier.name = "Barrier"  # Give it a consistent name
 	add_child(barrier)
 	barrier.setup(self, CollisionSystem.COLLISION_LAYER.TOWER)
+	
+	# Initialize attackable component
+	if attackable:
+		attackable.initialize(200.0)  # 200 base health for towers
+		attackable.health_changed.connect(_on_health_changed)
+		attackable.destroyed.connect(_on_tower_destroyed)
 	
 	_update_appearance()
 
@@ -152,3 +161,33 @@ func set_type(new_type: TOWER_TYPE):
 	if range_indicator:
 		range_indicator.scale = Vector2.ONE * (attack_range / 100.0)
 	_update_appearance()
+
+func _on_health_changed(current: float, maximum: float):
+	if not health_bar:
+		return
+		
+	health_bar.size.x = (current / maximum) * 32
+	
+	# Update color based on health percentage
+	var health_percent = current / maximum
+	if health_percent > 0.6:
+		health_bar.color = Color(0, 0.8, 0, 1)  # Green
+	elif health_percent > 0.3:
+		health_bar.color = Color(0.8, 0.8, 0, 1)  # Yellow
+	else:
+		health_bar.color = Color(0.8, 0, 0, 1)  # Red
+
+func _on_tower_destroyed(pos: Vector2):
+	print("Tower destroyed at position: ", pos)
+	# Tell the grid to remove this tower
+	var grid = get_parent()
+	if grid and grid.has_method("world_to_grid"):
+		var grid_pos = grid.world_to_grid(position)
+		grid.set_cell_type(grid_pos, grid.TILE_TYPE.EMPTY)
+
+# Forward take_damage to attackable component
+func take_damage(amount: float):
+	if attackable:
+		attackable.take_damage(amount)
+	else:
+		push_error("Tower: Cannot take damage, no Attackable component!")

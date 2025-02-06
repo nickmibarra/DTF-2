@@ -36,6 +36,11 @@ var last_position: Vector2 = Vector2.ZERO
 var stuck_time: float = 0.0
 const STUCK_THRESHOLD: float = 0.5  # Time in seconds to consider stuck
 
+var target_position: Vector2 = Vector2.ZERO
+var target_grid_pos: Vector2 = Vector2.ZERO
+var path_recalc_timer: float = 0.0
+const PATH_RECALC_INTERVAL: float = 1  # Recalculate path every 0.5 seconds if needed
+
 func _ready():
 	add_to_group("enemies")
 	assert(behavior != null, "Enemy must have EnemyBehavior component")
@@ -51,67 +56,69 @@ func _process(delta):
 			_process_combat(delta)
 
 func _process_movement(delta):
-	var target = _find_target()
-	if not target:
+	path_recalc_timer += delta
+	
+	# Check for nearby walls first
+	var wall_target = _find_wall_to_attack()
+	if wall_target:
+		_transition_to_attack(wall_target)
 		return
-		
-	var dist = position.distance_to(target.position)
-	if dist <= ATTACK_RANGE:
-		_transition_to_attack(target)
-		return
-		
-	# If we're already attacking a wall, keep at it unless conditions change
-	if current_state == AI_STATE.ATTACKING and current_target and current_target.is_in_group("walls"):
-		var attack_dist = position.distance_to(current_target.position)
-		if attack_dist <= ATTACK_RANGE * 1.5:
+	
+	# Only find target and recalculate path periodically
+	if path_recalc_timer >= PATH_RECALC_INTERVAL:
+		path_recalc_timer = 0.0
+		var target = _find_target()
+		if not target:
 			return
+			
+		var new_target_pos = target.position
+		if new_target_pos != target_position:
+			target_position = new_target_pos
+			target_grid_pos = grid.world_to_grid(target_position)
+			_recalculate_path_if_needed()
 	
-	# If we're not attacking, handle movement
-	var current_grid_pos = grid.world_to_grid(position)
-	var target_grid_pos = grid.world_to_grid(target.position)
+	# Check if we're close enough to attack flag
+	var dist = position.distance_to(target_position)
+	if dist <= ATTACK_RANGE:
+		var target = _find_target()  # Only find target when needed
+		if target:
+			_transition_to_attack(target)
+		return
 	
-	# Recalculate path if needed
-	var should_recalculate = current_path.is_empty() or \
-						   (current_path.size() > 0 and current_path[-1] != target_grid_pos) or \
-						   is_stuck(current_grid_pos)
-	
-	if should_recalculate:
-		print("Enemy: Recalculating path from ", current_grid_pos, " to ", target_grid_pos)
-		var path_result = grid.find_path(current_grid_pos, target_grid_pos)
-		
-		if path_result.is_wall_path:
-			print("Enemy: Found wall-breaking path, transitioning to attack wall at ", path_result.wall_target)
-			var wall = grid.walls.get(str(path_result.wall_target))
-			if wall:
-				_transition_to_attack(wall)
-				return
-		
-		current_path = path_result.path
-		if not current_path.is_empty():
-			print("Enemy: Found path with ", current_path.size(), " steps")
-	
+	# Follow current path
 	if not current_path.is_empty():
 		_follow_path(delta)
+	elif is_stuck(grid.world_to_grid(position)):
+		_recalculate_path_if_needed()
 
-func _find_target() -> Node2D:
-	# First check for nearby walls
-	var walls = get_tree().get_nodes_in_group("walls")
-	var closest_wall = null
+func _find_wall_to_attack() -> Node2D:
+	var attackables = get_tree().get_nodes_in_group("attackable")
+	var closest_target = null
 	var closest_dist = INF
 	
-	for wall in walls:
-		var dist = position.distance_to(wall.position)
-		if dist < closest_dist:
-			closest_wall = wall
-			closest_dist = dist
+	for potential_target in attackables:
+		if not is_instance_valid(potential_target):
+			continue
+			
+		# Skip if it's the enemy itself
+		if potential_target == self:
+			continue
+			
+		# Get the attackable component
+		var attackable_component = potential_target.get_node_or_null("Attackable")
+		if not attackable_component:
+			continue
+			
+		var dist = position.distance_to(potential_target.position)
+		if dist <= ATTACK_RANGE * 1.5:  # Only consider targets within attack range
+			if behavior.should_attack_target(attackable_component.current_health, dist):
+				if dist < closest_dist:
+					closest_target = potential_target
+					closest_dist = dist
 	
-	# If we found a wall within range and should attack it, target it
-	if closest_wall and closest_dist <= ATTACK_RANGE * 1.5:
-		var wall_attackable = closest_wall.get_node("Attackable")
-		if wall_attackable:
-			if behavior.should_attack_target(wall_attackable.current_health, closest_dist):
-				return closest_wall
-	
+	return closest_target
+
+func _find_target() -> Node2D:
 	# Find flag in our test case or parent
 	var parent = get_parent()
 	var flag = parent.get_node_or_null("Flag")  # Check for sibling flag first
@@ -143,57 +150,22 @@ func _move_towards(target_pos: Vector2, delta: float):
 		current_path.clear()
 
 func _transition_to_attack(new_target: Node2D):
-	print("Enemy: Transitioning to attack state, target: ", new_target.name)
-	print("Enemy: Distance to target: ", position.distance_to(new_target.position))
 	current_target = new_target
 	current_state = AI_STATE.ATTACKING
 	attack_timer = ATTACK_INTERVAL  # Reset timer to allow immediate first attack
 	current_path.clear()
 
-func _recalculate_path(target: Node2D):
-	print("Enemy: Recalculating path to target")
-	var start_pos = grid.world_to_grid(position)
-	var end_pos = grid.world_to_grid(target.position)
+func _recalculate_path_if_needed():
+	var current_grid_pos = grid.world_to_grid(position)
+	var path_result = grid.find_path(current_grid_pos, target_grid_pos)
 	
-	# Add small random offset to encourage unique paths
-	var random_offset = Vector2(
-		randf_range(-0.45, 0.45),
-		randf_range(-0.45, 0.45)
-	)
-	start_pos += random_offset
-	
-	# Ensure grid positions are valid integers
-	start_pos = Vector2(int(start_pos.x), int(start_pos.y))
-	end_pos = Vector2(int(end_pos.x), int(end_pos.y))
-	
-	print("Enemy: Grid positions - Start: ", start_pos, " End: ", end_pos)
-	
-	# Validate positions are within grid bounds
-	if not grid.is_valid_cell(start_pos) or not grid.is_valid_cell(end_pos):
-		print("Enemy: Invalid grid positions!")
-		return
-	
-	# Get multiple possible paths and choose one based on individual preference
-	var possible_paths = []
-	
-	# Try a few different slight variations
-	for _i in range(3):
-		var path = grid.find_path(start_pos, end_pos)
-		if not path.is_empty():
-			possible_paths.append(path)
-		start_pos += Vector2(randf_range(-0.45, 0.45), randf_range(-0.45, 0.45))
-		start_pos = Vector2(int(start_pos.x), int(start_pos.y))
-	
-	if possible_paths.is_empty():
-		print("Enemy: No path found, checking for walls to break")
-		var wall = _find_wall_to_break(target.position)
+	if path_result.is_wall_path:
+		var wall = grid.walls.get(str(path_result.wall_target))
 		if wall:
 			_transition_to_attack(wall)
-	else:
-		# Choose a random path from the valid ones
-		current_path = possible_paths[randi() % possible_paths.size()]
-		print("Enemy: Chose path with ", current_path.size(), " steps")
-		print("Enemy: Path: ", current_path)
+			return
+	
+	current_path = path_result.path
 
 func _follow_path(delta: float):
 	if current_path.is_empty():
@@ -201,8 +173,6 @@ func _follow_path(delta: float):
 		
 	var next_point = grid.grid_to_world(current_path[0])
 	var dist_to_next = position.distance_to(next_point)
-	
-	print("Enemy: Following path - Current pos: ", position, " Next point: ", next_point, " Distance: ", dist_to_next)
 	
 	# Check if we've reached the current waypoint
 	if dist_to_next < 10:
@@ -212,10 +182,6 @@ func _follow_path(delta: float):
 	
 	if not current_path.is_empty():
 		_move_towards(next_point, delta)
-		
-	# If we're stuck, clear path to force recalculation
-	if is_stuck(grid.world_to_grid(position)):
-		current_path.clear()
 
 func _find_wall_to_break(target_pos: Vector2) -> Node2D:
 	var start_grid = grid.world_to_grid(position)
@@ -243,24 +209,20 @@ func _find_wall_to_break(target_pos: Vector2) -> Node2D:
 				if wall_attackable:
 					var dist = position.distance_to(wall.position)
 					if dist <= ATTACK_RANGE * 1.5:
-						print("Enemy: Found wall at ", check_pos, ", evaluating attack...")
 						if behavior.should_attack_target(wall_attackable.current_health, dist):
-							print("Enemy: Decided to attack wall at distance: ", dist)
 							return wall
 						else:
-							print("Enemy: Decided not to attack wall, will try to path around")
+							return null
 	
 	return null
 
 func _process_combat(delta):
 	if not current_target or not is_instance_valid(current_target):
-		print("Enemy: Combat - Invalid target, returning to movement")
 		current_state = AI_STATE.MOVING
 		current_target = null
 		return
 		
 	var dist = position.distance_to(current_target.position)
-	print("Enemy: Combat - Distance to target: ", dist, ", Attack Range: ", ATTACK_RANGE)
 	
 	# If we're too far away, move closer
 	if dist > ATTACK_RANGE:
@@ -279,29 +241,30 @@ func _process_combat(delta):
 		
 		if can_move:
 			position = proposed_position
-			print("Enemy: Combat - Moving closer to target")
 	else:
 		# We're in range, perform attack
 		attack_timer += delta
 		if attack_timer >= ATTACK_INTERVAL:
 			attack_timer = 0.0
-			_perform_attack()
+			_attack_current_target()
 
-func _perform_attack():
+func _attack_current_target():
 	if not current_target or not is_instance_valid(current_target):
-		print("Enemy: Attack - Invalid target")
 		return
 		
-	print("Enemy: Performing attack on: ", current_target.name)
-	var damage = WALL_DAMAGE if current_target.is_in_group("walls") else FLAG_DAMAGE
-	
-	if current_target.has_method("take_damage"):
-		print("Enemy: Dealing ", damage, " damage to target")
-		current_target.take_damage(damage)
-		_play_attack_effects()
+	if not current_target.has_method("take_damage"):
+		return
 		
-		if current_target.is_in_group("flags"):
-			reached_flag.emit(damage)
+	var distance = position.distance_to(current_target.position)
+	if distance <= ATTACK_RANGE:
+		# Determine damage based on target type
+		var damage_amount = WALL_DAMAGE
+		if current_target.is_in_group("towers"):
+			damage_amount *= 0.8  # Towers take slightly less damage than walls
+		
+		current_target.take_damage(damage_amount)
+		_play_attack_effects()
+		attack_timer = 0.0
 
 func _play_attack_effects():
 	sprite.modulate = Color(1.2, 0.8, 0.2)
@@ -335,11 +298,22 @@ func is_stuck(current_grid_pos: Vector2) -> bool:
 	if position.distance_to(last_position) < 5.0:  # Increased threshold
 		stuck_time += get_process_delta_time()
 		if stuck_time > STUCK_THRESHOLD:
-			print("Enemy: Detected stuck at position ", current_grid_pos)
-			# Reset stuck timer to prevent rapid recalculation
 			stuck_time = 0.0
 			return true
 	else:
 		stuck_time = 0.0
 		last_position = position
 	return false
+
+func _attack_target():
+	if not current_target or not is_instance_valid(current_target):
+		return
+		
+	if not current_target.has_method("take_damage"):
+		return
+		
+	var distance = position.distance_to(current_target.position)
+	if distance <= ATTACK_RANGE:
+		current_target.take_damage(WALL_DAMAGE if current_target.is_in_group("walls") else FLAG_DAMAGE)
+		_play_attack_effects()
+		attack_timer = 0.0
