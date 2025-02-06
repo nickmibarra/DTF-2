@@ -19,6 +19,12 @@ var gold: int = GameSettings.STARTING_GOLD
 var selected_tower_type = 0
 var game_over: bool = false
 
+# Wall placement variables
+var is_placing_wall: bool = false
+var wall_start_pos: Vector2 = Vector2.ZERO
+var wall_preview_cells: Array = []
+var wall_preview_nodes: Array = []
+
 # Preload scenes
 var tower_scene = preload("res://scenes/Tower.tscn")
 
@@ -46,6 +52,11 @@ func _ready():
 	update_wave_display()
 	update_tower_buttons()
 
+	# Create preview container
+	var preview_container = Node2D.new()
+	preview_container.name = "WallPreview"
+	add_child(preview_container)
+
 func _input(event):
 	if game_over:
 		return
@@ -65,10 +76,25 @@ func _input(event):
 		if top_bar_rect.has_point(mouse_pos) or tower_panel_rect.has_point(mouse_pos):
 			return
 			
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			attempt_place_tower()
-		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			attempt_place_wall()
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				attempt_place_tower()
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			if event.pressed:
+				# Start wall placement
+				is_placing_wall = true
+				var world_pos = camera.get_screen_to_canvas(get_viewport().get_mouse_position())
+				wall_start_pos = grid.world_to_grid(world_pos)
+				update_wall_preview()
+			else:
+				# End wall placement and place walls
+				is_placing_wall = false
+				place_walls()
+				clear_wall_preview()
+	
+	# Update wall preview while dragging
+	elif event is InputEventMouseMotion and is_placing_wall:
+		update_wall_preview()
 
 func attempt_place_tower():
 	# Get mouse position relative to viewport
@@ -225,3 +251,45 @@ func _on_target_destroyed(pos: Vector2):
 	print("Target destroyed at position: ", pos)
 	# Additional game logic for destroyed targets can go here
 	# For example, updating score, spawning effects, etc.
+
+func update_wall_preview():
+	# Clear old preview
+	clear_wall_preview()
+	
+	# Get current mouse position in grid coordinates
+	var world_pos = camera.get_screen_to_canvas(get_viewport().get_mouse_position())
+	var current_pos = grid.world_to_grid(world_pos)
+	
+	# Calculate rectangle of cells between start and current
+	var min_x = min(wall_start_pos.x, current_pos.x)
+	var max_x = max(wall_start_pos.x, current_pos.x)
+	var min_y = min(wall_start_pos.y, current_pos.y)
+	var max_y = max(wall_start_pos.y, current_pos.y)
+	
+	# Create preview for each cell
+	for x in range(min_x, max_x + 1):
+		for y in range(min_y, max_y + 1):
+			var pos = Vector2(x, y)
+			if grid.is_valid_cell(pos) and grid.get_cell_type(pos) == grid.TILE_TYPE.EMPTY:
+				wall_preview_cells.append(pos)
+				var preview = ColorRect.new()
+				preview.color = Color(0.5, 0.5, 0.5, 0.5)  # Semi-transparent gray
+				preview.size = Vector2.ONE * GameSettings.BASE_GRID_SIZE
+				preview.position = grid.grid_to_world(pos) - preview.size / 2
+				$WallPreview.add_child(preview)
+				wall_preview_nodes.append(preview)
+
+func clear_wall_preview():
+	for preview in wall_preview_nodes:
+		preview.queue_free()
+	wall_preview_nodes.clear()
+	wall_preview_cells.clear()
+
+func place_walls():
+	var total_cost = wall_preview_cells.size() * GameSettings.WALL_COST
+	if gold >= total_cost:
+		for pos in wall_preview_cells:
+			if grid.set_cell_type(pos, grid.TILE_TYPE.WALL):
+				gold -= GameSettings.WALL_COST
+		update_gold_display()
+		update_tower_buttons()
