@@ -55,7 +55,6 @@ func initialize_spawn_points():
 	for y in range(2, GRID_HEIGHT - 2):  # Leave some margin at top/bottom
 		var spawn_point = Vector2(0, y)
 		spawn_points.append(spawn_point)
-		print("Added spawn point at grid position: ", spawn_point)  # Debug log
 
 func initialize_grid():
 	# Initialize the grid with empty cells
@@ -155,10 +154,11 @@ func world_to_grid(world_pos: Vector2) -> Vector2:
 
 func grid_to_world(grid_pos: Vector2) -> Vector2:
 	# Convert grid coordinates to world position (center of cell)
-	return Vector2(
+	var world_pos = Vector2(
 		grid_pos.x * BASE_GRID_SIZE + BASE_GRID_SIZE/2,
 		grid_pos.y * BASE_GRID_SIZE + BASE_GRID_SIZE/2
 	)
+	return world_pos
 
 # A* pathfinding implementation
 func find_path(start: Vector2, end: Vector2) -> PathResult:
@@ -342,5 +342,4 @@ func get_random_spawn_point() -> Vector2:
 		return Vector2.ZERO
 	
 	var spawn_point = spawn_points[randi() % spawn_points.size()]
-	# Convert grid position to world position
 	return grid_to_world(spawn_point)

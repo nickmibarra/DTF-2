@@ -15,10 +15,8 @@ func _ready():
 	attackable.initialize(1000.0)  # 100 health, no armor
 	attackable.health_changed.connect(_on_health_changed)
 	attackable.destroyed.connect(_on_wall_destroyed)
-	print("Wall initialized with health: ", attackable.current_health)
 
 func _on_health_changed(current: float, maximum: float):
-	print("Wall health changed: ", current, "/", maximum)
 	if not health_bar:
 		return
 		
@@ -34,7 +32,6 @@ func _on_health_changed(current: float, maximum: float):
 		health_bar.color = Color(0.8, 0, 0, 1)  # Red
 
 func _on_wall_destroyed(pos: Vector2):
-	print("Wall destroyed at position: ", pos)
 	# Tell the grid to remove this wall
 	var grid = get_parent()
 	if grid and grid.has_method("world_to_grid"):
@@ -43,7 +40,6 @@ func _on_wall_destroyed(pos: Vector2):
 
 # Forward take_damage to attackable component
 func take_damage(amount: float):
-	print("Wall taking damage: ", amount)
 	if attackable:
 		attackable.take_damage(amount)
 	else:

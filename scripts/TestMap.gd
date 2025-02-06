@@ -23,8 +23,6 @@ var game_over: bool = false
 var tower_scene = preload("res://scenes/Tower.tscn")
 
 func _ready():
-	print("TestMap: Ready called")
-	
 	# Ensure grid is in group for CombatManager
 	grid.add_to_group("grid")
 	
@@ -39,11 +37,7 @@ func _ready():
 	flag.flag_destroyed.connect(_on_flag_destroyed)
 	
 	# Connect UI signals
-	print("TestMap: Connecting UI signals")
-	start_wave_button.pressed.connect(func():
-		print("TestMap: Start Wave button pressed")
-		_on_start_wave_pressed()
-	)
+	start_wave_button.pressed.connect(_on_start_wave_pressed)
 	for type in tower_buttons:
 		tower_buttons[type].pressed.connect(func(): select_tower(type))
 	
@@ -69,15 +63,11 @@ func _input(event):
 		
 		# If clicking on actual UI elements, ignore placement
 		if top_bar_rect.has_point(mouse_pos) or tower_panel_rect.has_point(mouse_pos):
-			print("TestMap: Mouse click on UI element, ignoring placement")
 			return
 			
-		print("TestMap: Mouse button event - button_index: ", event.button_index, " pressed: ", event.pressed)
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			print("TestMap: Left click detected - attempting tower placement")
 			attempt_place_tower()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			print("TestMap: Right click detected - attempting wall placement")
 			attempt_place_wall()
 
 func attempt_place_tower():
@@ -87,31 +77,19 @@ func attempt_place_tower():
 	# Convert to world space considering camera
 	var world_pos = camera.get_screen_to_canvas(viewport_mouse_pos)
 	
-	print("\nTower Placement Debug:")
-	print("Viewport Mouse Position: ", viewport_mouse_pos)
-	print("World Position: ", world_pos)
-	print("Selected Tower Type: ", selected_tower_type)
-	print("Current Gold: ", gold)
-	print("Tower Cost: ", GameSettings.TOWER_COSTS[selected_tower_type])
-	
 	# Convert to grid coordinates
 	var grid_pos = grid.world_to_grid(world_pos)
-	print("Grid Position: ", grid_pos)
 	
 	if not grid.is_valid_cell(grid_pos):
-		print("Invalid grid position")
 		return
 	
 	if grid.get_cell_type(grid_pos) != grid.TILE_TYPE.EMPTY:
-		print("Cell not empty")
 		return
 	
 	var cost = GameSettings.TOWER_COSTS[selected_tower_type]
 	if gold < cost:
-		print("Not enough gold")
 		return
 	
-	print("Placing tower...")
 	# Place tower
 	var tower = tower_scene.instantiate()
 	tower.position = grid.grid_to_world(grid_pos)
@@ -132,34 +110,24 @@ func attempt_place_wall():
 	var camera = $GameCamera
 	var world_pos = camera.get_screen_to_canvas(viewport_mouse_pos)
 	
-	print("\nWall Placement Debug:")
-	print("Viewport Mouse Position: ", viewport_mouse_pos)
-	print("World Position: ", world_pos)
-	
 	# Convert to grid coordinates
 	var grid_pos = grid.world_to_grid(world_pos)
-	print("Grid Position: ", grid_pos)
 	
 	if not grid.is_valid_cell(grid_pos):
-		print("Invalid grid position")
 		return
 	
 	if grid.get_cell_type(grid_pos) != grid.TILE_TYPE.EMPTY:
-		print("Cell not empty")
 		return
 	
 	if gold < GameSettings.WALL_COST:
-		print("Not enough gold")
 		return
 	
-	print("Placing wall...")
 	if grid.set_cell_type(grid_pos, grid.TILE_TYPE.WALL):
 		gold -= GameSettings.WALL_COST
 		update_gold_display()
 		update_tower_buttons()
 
 func _on_start_wave_pressed():
-	print("TestMap: Starting wave...")
 	wave_manager.start_wave()
 	start_wave_button.disabled = true
 
@@ -242,19 +210,15 @@ func update_tower_buttons():
 		tower_buttons[type].disabled = gold < GameSettings.TOWER_COSTS[type]
 
 func select_tower(type: int):
-	print("TestMap: Selecting tower type: ", type)
 	selected_tower_type = type
 	
 	# Update button visuals
 	for t in tower_buttons:
 		var button = tower_buttons[t]
 		button.modulate = Color(1, 1, 1, 1) if t != type else Color(0.7, 1.0, 0.7)
-	print("TestMap: Tower type selected: ", selected_tower_type)
 
 func _on_attack_performed(attacker: Node2D, target: Node2D, damage: float):
-	if target.is_in_group("walls"):
-		print("Wall at ", target.position, " took ", damage, " damage from enemy")
-	elif target.is_in_group("flags"):
+	if target.is_in_group("flags"):
 		print("Flag took ", damage, " damage from enemy")
 
 func _on_target_destroyed(pos: Vector2):

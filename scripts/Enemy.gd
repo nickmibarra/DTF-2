@@ -39,7 +39,11 @@ const STUCK_THRESHOLD: float = 0.5  # Time in seconds to consider stuck
 var target_position: Vector2 = Vector2.ZERO
 var target_grid_pos: Vector2 = Vector2.ZERO
 var path_recalc_timer: float = 0.0
-const PATH_RECALC_INTERVAL: float = 1  # Recalculate path every 0.5 seconds if needed
+const PATH_RECALC_INTERVAL: float = 1.0  # Recalculate path every second if needed
+
+# Add initialization delay
+var init_timer: float = 0.0
+const INIT_DELAY: float = 0.1  # Short delay before starting pathfinding
 
 func _ready():
 	add_to_group("enemies")
@@ -47,8 +51,14 @@ func _ready():
 	assert(grid != null, "Enemy needs Grid node for pathfinding")
 	_update_health_bar()
 	process_mode = Node.PROCESS_MODE_PAUSABLE
+	last_position = position  # Set initial position for stuck detection
 
 func _process(delta):
+	# Wait for initialization delay
+	if init_timer < INIT_DELAY:
+		init_timer += delta
+		return
+		
 	match current_state:
 		AI_STATE.MOVING:
 			_process_movement(delta)
@@ -56,6 +66,15 @@ func _process(delta):
 			_process_combat(delta)
 
 func _process_movement(delta):
+	# First movement after spawn
+	if current_path.is_empty() and target_position == Vector2.ZERO:
+		var target = _find_target()
+		if target:
+			target_position = target.position
+			target_grid_pos = grid.world_to_grid(target_position)
+			_recalculate_path_if_needed()
+			return
+	
 	path_recalc_timer += delta
 	
 	# Check for nearby walls first
