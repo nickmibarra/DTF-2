@@ -1,0 +1,236 @@
+Godot Engine v4.2.1.stable.official.b09f793f5 - https://godotengine.org
+Vulkan API 1.3.292 - Forward+ - Using Vulkan Device #0: AMD - AMD Radeon RX 7800 XT
+ 
+
+Starting CombatComponent Tests
+
+Testing Initialization
+
+Setup starting...
+Attacker created at: (0, 0)
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to attacker
+Target created at: (50, 0)
+HealthComponent _ready called on: /root/CombatComponentTest/Target/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/CombatComponentTest/Target/HealthComponent
+Health component added to target at path: /root/CombatComponentTest/Target/HealthComponent
+HealthComponent _initialize called on: /root/CombatComponentTest/Target/HealthComponent
+Health initialized to: 100 on: /root/CombatComponentTest/Target/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/CombatComponentTest/Target/HealthComponent
+USER ERROR: CombatManager: No grid found in scene
+   at: push_error (core/variant/variant_utility.cpp:1091)
+First frame processed
+Physics frame processed
+Second frame processed
+
+Node tree after initialization:
+CombatComponentTest (Node)
+  Attacker (Node2D)
+    CombatComponent (Node)
+  Target (Node2D)
+    HealthComponent (Node)
+
+Looking for HealthComponent in target: Target
+Target path: /root/CombatComponentTest/Target
+Target children: [HealthComponent:<Node#28504491230>]
+Found health component: HealthComponent:<Node#28504491230>
+Health component state:
+- Initialized: true
+- Current health: 100
+- Max health: 100
+
+Testing Target Validation
+
+Setup starting...
+Attacker created at: (0, 0)
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to attacker
+Target created at: (50, 0)
+HealthComponent _ready called on: /root/CombatComponentTest/@Node2D@3/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/CombatComponentTest/@Node2D@3/HealthComponent
+Health component added to target at path: /root/CombatComponentTest/@Node2D@3/HealthComponent
+HealthComponent _initialize called on: /root/CombatComponentTest/@Node2D@3/HealthComponent
+Health initialized to: 100 on: /root/CombatComponentTest/@Node2D@3/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/CombatComponentTest/@Node2D@3/HealthComponent
+First frame processed
+Physics frame processed
+Second frame processed
+
+Node tree after initialization:
+CombatComponentTest (Node)
+  @Node2D@2 (Node2D)
+    CombatComponent (Node)
+  @Node2D@3 (Node2D)
+    HealthComponent (Node)
+
+Looking for HealthComponent in target: @Node2D@3
+Target path: /root/CombatComponentTest/@Node2D@3
+Target children: [HealthComponent:<Node#28856812778>]
+Found health component: HealthComponent:<Node#28856812778>
+Health component state:
+- Initialized: true
+- Current health: 100
+- Max health: 100
+Cannot attack: target has no HealthComponent
+Attack failed: Target invalid or out of range
+
+Testing Basic Attack
+
+Setup starting...
+Attacker created at: (0, 0)
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to attacker
+Target created at: (50, 0)
+HealthComponent _ready called on: /root/CombatComponentTest/Target/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/CombatComponentTest/Target/HealthComponent
+Health component added to target at path: /root/CombatComponentTest/Target/HealthComponent
+HealthComponent _initialize called on: /root/CombatComponentTest/Target/HealthComponent
+Health initialized to: 100 on: /root/CombatComponentTest/Target/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/CombatComponentTest/Target/HealthComponent
+First frame processed
+Physics frame processed
+Second frame processed
+
+Node tree after initialization:
+CombatComponentTest (Node)
+  Attacker (Node2D)
+    CombatComponent (Node)
+  Target (Node2D)
+    HealthComponent (Node)
+
+Looking for HealthComponent in target: Target
+Target path: /root/CombatComponentTest/Target
+Target children: [HealthComponent:<Node#29041362143>]
+Found health component: HealthComponent:<Node#29041362143>
+Health component state:
+- Initialized: true
+- Current health: 100
+- Max health: 100
+Target position: (50, 0)
+Attack range: 100
+Distance to target: 50
+Is attacking: true
+Current target: Target:<Node2D#29024584916>
+Can attack target: true
+
+Testing Attack Range
+
+Setup starting...
+Attacker created at: (0, 0)
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to attacker
+Target created at: (50, 0)
+HealthComponent _ready called on: /root/CombatComponentTest/@Node2D@6/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/CombatComponentTest/@Node2D@6/HealthComponent
+Health component added to target at path: /root/CombatComponentTest/@Node2D@6/HealthComponent
+HealthComponent _initialize called on: /root/CombatComponentTest/@Node2D@6/HealthComponent
+Health initialized to: 100 on: /root/CombatComponentTest/@Node2D@6/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/CombatComponentTest/@Node2D@6/HealthComponent
+First frame processed
+Physics frame processed
+Second frame processed
+
+Node tree after initialization:
+CombatComponentTest (Node)
+  @Node2D@5 (Node2D)
+    CombatComponent (Node)
+  @Node2D@6 (Node2D)
+    HealthComponent (Node)
+
+Looking for HealthComponent in target: @Node2D@6
+Target path: /root/CombatComponentTest/@Node2D@6
+Target children: [HealthComponent:<Node#29209134301>]
+Found health component: HealthComponent:<Node#29209134301>
+Health component state:
+- Initialized: true
+- Current health: 100
+- Max health: 100
+Cannot attack: target out of range (distance: 110, range: 100)
+Attack failed: Target invalid or out of range
+
+Testing Attack Speed
+
+Setup starting...
+Attacker created at: (0, 0)
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to attacker
+Target created at: (50, 0)
+HealthComponent _ready called on: /root/CombatComponentTest/Target/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/CombatComponentTest/Target/HealthComponent
+Health component added to target at path: /root/CombatComponentTest/Target/HealthComponent
+HealthComponent _initialize called on: /root/CombatComponentTest/Target/HealthComponent
+Health initialized to: 100 on: /root/CombatComponentTest/Target/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/CombatComponentTest/Target/HealthComponent
+First frame processed
+Physics frame processed
+Second frame processed
+
+Node tree after initialization:
+CombatComponentTest (Node)
+  Attacker (Node2D)
+    CombatComponent (Node)
+  Target (Node2D)
+    HealthComponent (Node)
+
+Looking for HealthComponent in target: Target
+Target path: /root/CombatComponentTest/Target
+Target children: [HealthComponent:<Node#29376906474>]
+Found health component: HealthComponent:<Node#29376906474>
+Health component state:
+- Initialized: true
+- Current health: 100
+- Max health: 100
+
+Testing Combat State
+
+Setup starting...
+Attacker created at: (0, 0)
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to attacker
+Target created at: (50, 0)
+HealthComponent _ready called on: /root/CombatComponentTest/@Node2D@8/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/CombatComponentTest/@Node2D@8/HealthComponent
+Health component added to target at path: /root/CombatComponentTest/@Node2D@8/HealthComponent
+HealthComponent _initialize called on: /root/CombatComponentTest/@Node2D@8/HealthComponent
+Health initialized to: 100 on: /root/CombatComponentTest/@Node2D@8/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/CombatComponentTest/@Node2D@8/HealthComponent
+First frame processed
+Physics frame processed
+Second frame processed
+
+Node tree after initialization:
+CombatComponentTest (Node)
+  @Node2D@7 (Node2D)
+    CombatComponent (Node)
+  @Node2D@8 (Node2D)
+    HealthComponent (Node)
+
+Looking for HealthComponent in target: @Node2D@8
+Target path: /root/CombatComponentTest/@Node2D@8
+Target children: [HealthComponent:<Node#29561455839>]
+Found health component: HealthComponent:<Node#29561455839>
+Health component state:
+- Initialized: true
+- Current health: 100
+- Max health: 100
+Cannot attack: can_attack is false
+Attack failed: Target invalid or out of range
+CombatComponent Tests Complete
