@@ -10,6 +10,7 @@ var spawn_points = []  # List of possible enemy spawn points
 var flag_position = Vector2(GRID_WIDTH - 3, GRID_HEIGHT / 2)
 var wall_scene = preload("res://scenes/Wall.tscn")
 var walls = {}  # Dictionary to store wall instances
+var towers = {}  # Dictionary to store tower instances
 
 # Cache for attackable objects
 var attackable_objects = {}  # Dictionary of attackable objects by position
@@ -25,6 +26,22 @@ const CACHE_REGION_SIZE = 1   # Reduced to 1 for exact position matching
 # Add range check caching
 var _range_cache = {}
 
+# Add near other cache variables
+var _breakthrough_cache = {}
+const BREAKTHROUGH_CACHE_TIME = 1.0  # 1 second cache for breakthrough paths
+
+# Add cache cleanup timer
+var _range_cleanup_timer: float = 0.0
+const RANGE_CLEANUP_INTERVAL: float = 0.5  # Clean every 0.5 seconds
+
+# Add near other cache variables
+var _flag_access_cache = {
+	"is_blocked": false,
+	"blocking_walls": [],
+	"time": 0.0
+}
+const FLAG_ACCESS_CACHE_TIME = 0.2  # 200ms, shorter than other caches since it's critical
+
 enum TILE_TYPE {
 	EMPTY,
 	WALL,
@@ -35,17 +52,18 @@ enum TILE_TYPE {
 
 class PathResult:
 	var path: Array
-	var wall_target: Vector2
-	var is_wall_path: bool
+	var obstacle_target: Vector2  # Renamed from wall_target
+	var blocked_by_obstacle: bool  # Renamed from is_wall_path
 	
-	func _init(p: Array, wall: Vector2 = Vector2.ZERO, is_wall: bool = false):
+	func _init(p: Array, obstacle: Vector2 = Vector2.ZERO, is_blocked: bool = false):
 		path = p
-		wall_target = wall
-		is_wall_path = is_wall
+		obstacle_target = obstacle
+		blocked_by_obstacle = is_blocked
 
 signal obstacle_changed(position)  # Emitted when wall placed/destroyed
 signal attackable_added(object, position)
 signal attackable_removed(object, position)
+signal tower_placed(tower, position)
 
 func _ready():
 	initialize_grid()
@@ -59,12 +77,18 @@ func _ready():
 	# Connect to existing attackable objects
 	call_deferred("_cache_existing_attackables")
 	
-	# Start cache cleanup timer
-	var timer = Timer.new()
-	timer.wait_time = PATH_CACHE_TIME
-	timer.timeout.connect(_cleanup_path_cache)
-	add_child(timer)
-	timer.start()
+	# Start cache cleanup timers
+	var path_timer = Timer.new()
+	path_timer.wait_time = PATH_CACHE_TIME
+	path_timer.timeout.connect(_cleanup_path_cache)
+	add_child(path_timer)
+	path_timer.start()
+	
+	var breakthrough_timer = Timer.new()
+	breakthrough_timer.wait_time = BREAKTHROUGH_CACHE_TIME
+	breakthrough_timer.timeout.connect(_cleanup_breakthrough_cache)
+	add_child(breakthrough_timer)
+	breakthrough_timer.start()
 
 func setup_grid_transform():
 	# Grid should be at origin with no transform
@@ -148,12 +172,17 @@ func set_cell_type(pos: Vector2, type: int) -> bool:
 	
 	var old_type = grid[pos.x][pos.y]
 	
-	# Remove existing wall if any
+	# Remove existing wall/tower if any
 	if grid[pos.x][pos.y] == TILE_TYPE.WALL and walls.has(str(pos)):
 		var wall = walls[str(pos)]
 		_remove_from_spatial_cache(wall)
 		wall.queue_free()
 		walls.erase(str(pos))
+	elif grid[pos.x][pos.y] == TILE_TYPE.TOWER and towers.has(str(pos)):
+		var tower = towers[str(pos)]
+		_remove_from_spatial_cache(tower)
+		tower.queue_free()
+		towers.erase(str(pos))
 	
 	grid[pos.x][pos.y] = type
 	
@@ -167,7 +196,11 @@ func set_cell_type(pos: Vector2, type: int) -> bool:
 		_add_to_spatial_cache(wall)
 	
 	# Notify if obstacle state changed
-	if (old_type == TILE_TYPE.WALL or type == TILE_TYPE.WALL):
+	if (old_type == TILE_TYPE.WALL or old_type == TILE_TYPE.TOWER or 
+		type == TILE_TYPE.WALL or type == TILE_TYPE.TOWER):
+		# Invalidate flag access cache if change is near flag
+		if pos.distance_to(flag_position) <= 2:
+			_flag_access_cache.time = 0.0  # Invalidate cache
 		obstacle_changed.emit(pos)
 	
 	queue_redraw()
@@ -191,23 +224,56 @@ func grid_to_world(grid_pos: Vector2) -> Vector2:
 	)
 	return world_pos
 
-# A* pathfinding implementation
+# Add helper function near the top
+func is_blocking_obstacle(cell_type: int) -> bool:
+	return cell_type == TILE_TYPE.WALL or cell_type == TILE_TYPE.TOWER
+
+# Modify get_neighbors to use the helper
+func get_neighbors(pos: Vector2) -> Array:
+	var neighbors = []
+	var directions = [
+		Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1),  # Cardinals
+		Vector2(1, 1), Vector2(-1, 1), Vector2(1, -1), Vector2(-1, -1)  # Diagonals
+	]
+	
+	for dir in directions:
+		var neighbor = pos + dir
+		if is_valid_cell(neighbor):
+			# Check if we can move to this cell
+			var cell_type = grid[neighbor.x][neighbor.y]
+			if not is_blocking_obstacle(cell_type):
+				# Add movement cost for diagonal
+				var cost = 1.0 if dir.x == 0 or dir.y == 0 else 1.414
+				neighbors.append({"pos": neighbor, "cost": cost})
+	
+	return neighbors
+
+# Modify find_path_to_position to use the helper
+func find_path_to_position(start: Vector2, end: Vector2) -> Array:
+	# Simple direct path check instead of full pathfinding
+	var cells = get_cells_in_line(start, end)
+	
+	# Check if direct path is clear
+	for cell in cells:
+		if not is_valid_cell(cell):
+			return []
+		if is_blocking_obstacle(get_cell_type(cell)):
+			return []
+	
+	return cells
+
+# Update find_path cache verification
 func find_path(start: Vector2, end: Vector2) -> PathResult:
 	# Check cache first
 	var cache_key = _get_path_cache_key(start, end)
 	if path_cache.has(cache_key):
 		var cache_entry = path_cache[cache_key]
 		if (Time.get_ticks_msec() / 1000.0) - cache_entry.time <= PATH_CACHE_TIME:
-			# Verify the path is still valid by checking the first few steps
-			var path = cache_entry.result.path
-			if not path.is_empty():
-				for i in range(min(3, path.size())):
-					if get_cell_type(path[i]) == TILE_TYPE.WALL:
-						# Path is blocked, calculate new one
-						path_cache.erase(cache_key)
-						break
-				if path_cache.has(cache_key):
+			# Only verify the next step, not multiple steps
+			if not cache_entry.result.path.is_empty():
+				if not is_blocking_obstacle(get_cell_type(cache_entry.result.path[0])):
 					return cache_entry.result
+			path_cache.erase(cache_key)
 	
 	# Calculate new path
 	var result = _calculate_path(start, end)
@@ -220,7 +286,63 @@ func find_path(start: Vector2, end: Vector2) -> PathResult:
 	
 	return result
 
+# Update is_flag_accessible to use the helper
+func is_flag_accessible(from_pos: Vector2) -> Dictionary:
+	var current_time = Time.get_ticks_msec() / 1000.0
+	
+	# Check if cache is valid
+	if current_time - _flag_access_cache.time <= FLAG_ACCESS_CACHE_TIME:
+		return _flag_access_cache
+	
+	# Calculate new flag accessibility
+	var path_result = _calculate_path(from_pos, flag_position)
+	var blocking_walls = []
+	
+	if path_result.path.is_empty():
+		# Flag is blocked, find all walls and towers around flag
+		for offset in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
+			var check_pos = flag_position + offset
+			if is_valid_cell(check_pos):
+				var cell_type = get_cell_type(check_pos)
+				if is_blocking_obstacle(cell_type):
+					blocking_walls.append(check_pos)
+	
+	_flag_access_cache = {
+		"is_blocked": path_result.path.is_empty(),
+		"blocking_walls": blocking_walls,
+		"time": current_time
+	}
+	
+	return _flag_access_cache
+
+# A* pathfinding implementation
 func _calculate_path(start: Vector2, end: Vector2) -> PathResult:
+	# Check if we're trying to path to flag and it's blocked
+	if end == flag_position:
+		var flag_state = is_flag_accessible(start)
+		if flag_state.is_blocked and not flag_state.blocking_walls.is_empty():
+			# Return path to closest blocking obstacle
+			var closest_obstacle = null
+			var closest_dist = INF
+			var best_path = []
+			
+			for obstacle_pos in flag_state.blocking_walls:
+				var dist = start.distance_to(obstacle_pos)
+				if dist < closest_dist:
+					# Try to find path to adjacent position
+					for adj_pos in get_adjacent_positions(obstacle_pos):
+						if is_valid_cell(adj_pos) and not is_blocking_obstacle(get_cell_type(adj_pos)):
+							var path = get_cells_in_line(start, adj_pos)
+							if not path.is_empty():
+								closest_obstacle = obstacle_pos
+								closest_dist = dist
+								best_path = path
+								break
+			
+			if closest_obstacle != null:
+				return PathResult.new(best_path, closest_obstacle, true)
+	
+	# Regular A* pathfinding
 	var open_set = []
 	var closed_set = {}
 	var came_from = {}
@@ -229,6 +351,9 @@ func _calculate_path(start: Vector2, end: Vector2) -> PathResult:
 	var f_score = {str(start): heuristic(start, end)}
 	
 	open_set.append(start)
+	var found_obstacle = null
+	var obstacle_adjacent = null
+	var best_obstacle_dist = INF
 	
 	while open_set.size() > 0:
 		var current = get_lowest_f_score_node(open_set, f_score)
@@ -238,6 +363,22 @@ func _calculate_path(start: Vector2, end: Vector2) -> PathResult:
 		open_set.erase(current)
 		closed_set[str(current)] = true
 		
+		# Check for obstacles during normal pathfinding
+		for neighbor in get_adjacent_positions(current):
+			if is_valid_cell(neighbor):
+				var cell_type = get_cell_type(neighbor)
+				if is_blocking_obstacle(cell_type):
+					var dist = start.distance_to(neighbor)
+					if dist < best_obstacle_dist:
+						found_obstacle = neighbor
+						best_obstacle_dist = dist
+						# Find best adjacent position
+						for adj in get_adjacent_positions(neighbor):
+							if is_valid_cell(adj) and not closed_set.has(str(adj)):
+								if not is_blocking_obstacle(get_cell_type(adj)):
+									obstacle_adjacent = adj
+									break
+		
 		for neighbor_data in get_neighbors(current):
 			var neighbor = neighbor_data.pos
 			var move_cost = neighbor_data.cost
@@ -256,56 +397,84 @@ func _calculate_path(start: Vector2, end: Vector2) -> PathResult:
 			g_score[str(neighbor)] = tentative_g_score
 			f_score[str(neighbor)] = g_score[str(neighbor)] + heuristic(neighbor, end)
 	
-	# If no path found, find wall to break
-	var wall_result = find_wall_breakthrough_path(start, end, closed_set)
-	if not wall_result.path.is_empty():
-		return wall_result
+	# If we found an obstacle during pathfinding, use it
+	if found_obstacle != null and obstacle_adjacent != null:
+		var path_to_obstacle = get_cells_in_line(start, obstacle_adjacent)
+		if not path_to_obstacle.is_empty():
+			return PathResult.new(path_to_obstacle, found_obstacle, true)
+	
 	return PathResult.new([])
 
 func find_wall_breakthrough_path(start: Vector2, end: Vector2, explored_cells: Dictionary) -> PathResult:
-	# Calculate direction to target
-	var dir = (end - start).normalized()
-	var best_wall_pos = null
-	var best_score = INF
-	var best_path = []
+	# Check cache first
+	var cache_key = "%d,%d-%d,%d" % [start.x, start.y, end.x, end.y]
+	if _breakthrough_cache.has(cache_key):
+		var cache_entry = _breakthrough_cache[cache_key]
+		if (Time.get_ticks_msec() / 1000.0) - cache_entry.time <= BREAKTHROUGH_CACHE_TIME:
+			return cache_entry.result
 	
-	# Only check walls in the general direction of the target
-	var check_radius = 3  # Check 3 cells in each direction from the direct path
-	var step_count = int(start.distance_to(end))
-	var current = start
+	# Get direct line to target first
+	var direct_cells = get_cells_in_line(start, end)
+	var first_obstacle_pos = null
 	
-	for _i in range(step_count):
-		current += dir
-		var check_pos = Vector2(int(current.x), int(current.y))
+	# Find first wall/tower in direct path
+	for cell in direct_cells:
+		if not is_valid_cell(cell):
+			continue
+		var cell_type = get_cell_type(cell)
+		if is_blocking_obstacle(cell_type):
+			first_obstacle_pos = cell
+			break
+	
+	# If we found an obstacle in direct path, find closest clear position
+	if first_obstacle_pos != null:
+		var adjacent_positions = get_adjacent_positions(first_obstacle_pos)
+		var best_pos = null
+		var best_dist = INF
 		
-		# Check cells around the direct path
-		for x_offset in range(-check_radius, check_radius + 1):
-			for y_offset in range(-check_radius, check_radius + 1):
-				var wall_pos = check_pos + Vector2(x_offset, y_offset)
-				if not is_valid_cell(wall_pos):
-					continue
-					
-				if get_cell_type(wall_pos) == TILE_TYPE.WALL:
-					var dist_to_start = wall_pos.distance_to(start)
-					var dist_to_end = wall_pos.distance_to(end)
-					var score = dist_to_start + dist_to_end
-					
-					if score < best_score:
-						# Try to find path to a position adjacent to wall
-						var adjacent_positions = get_adjacent_positions(wall_pos)
-						for adj_pos in adjacent_positions:
-							if is_valid_cell(adj_pos) and get_cell_type(adj_pos) != TILE_TYPE.WALL:
-								var path_to_wall = find_path_to_position(start, adj_pos)
-								if not path_to_wall.is_empty():
-									best_score = score
-									best_wall_pos = wall_pos
-									best_path = path_to_wall
-									break
-	
-	if best_wall_pos != null:
-		return PathResult.new(best_path, best_wall_pos, true)
+		for adj_pos in adjacent_positions:
+			if is_valid_cell(adj_pos) and not is_blocking_obstacle(get_cell_type(adj_pos)):
+				var dist = start.distance_to(adj_pos)
+				if dist < best_dist:
+					best_dist = dist
+					best_pos = adj_pos
+		
+		if best_pos != null:
+			var path = get_cells_in_line(start, best_pos)
+			if not path.is_empty():
+				var result = PathResult.new(path, first_obstacle_pos, true)
+				_breakthrough_cache[cache_key] = {
+					"result": result,
+					"time": Time.get_ticks_msec() / 1000.0
+				}
+				return result
 	
 	return PathResult.new([])
+
+# Helper function to get cells in a line
+func get_cells_in_line(start: Vector2, end: Vector2) -> Array:
+	var cells = []
+	var dx = abs(end.x - start.x)
+	var dy = abs(end.y - start.y)
+	var x = int(start.x)
+	var y = int(start.y)
+	var n = 1 + dx + dy
+	var x_inc = 1 if end.x > start.x else -1
+	var y_inc = 1 if end.y > start.y else -1
+	var error = dx - dy
+	dx *= 2
+	dy *= 2
+	
+	for _i in range(n):
+		cells.append(Vector2(x, y))
+		if error > 0:
+			x += x_inc
+			error -= dy
+		else:
+			y += y_inc
+			error += dx
+	
+	return cells
 
 func get_adjacent_positions(pos: Vector2) -> Array:
 	return [
@@ -314,44 +483,6 @@ func get_adjacent_positions(pos: Vector2) -> Array:
 		pos + Vector2(0, 1),
 		pos + Vector2(0, -1)
 	]
-
-func find_path_to_position(start: Vector2, end: Vector2) -> Array:
-	var open_set = []
-	var closed_set = {}
-	var came_from = {}
-	
-	var g_score = {str(start): 0.0}
-	var f_score = {str(start): heuristic(start, end)}
-	
-	open_set.append(start)
-	
-	while open_set.size() > 0:
-		var current = get_lowest_f_score_node(open_set, f_score)
-		if current == end:
-			return reconstruct_path(came_from, current)
-		
-		open_set.erase(current)
-		closed_set[str(current)] = true
-		
-		for neighbor_data in get_neighbors(current):
-			var neighbor = neighbor_data.pos
-			var move_cost = neighbor_data.cost
-			
-			if closed_set.has(str(neighbor)):
-				continue
-			
-			var tentative_g_score = g_score[str(current)] + move_cost
-			
-			if not open_set.has(neighbor):
-				open_set.append(neighbor)
-			elif tentative_g_score >= g_score[str(neighbor)]:
-				continue
-			
-			came_from[str(neighbor)] = current
-			g_score[str(neighbor)] = tentative_g_score
-			f_score[str(neighbor)] = g_score[str(neighbor)] + heuristic(neighbor, end)
-	
-	return []
 
 func heuristic(start: Vector2, end: Vector2) -> float:
 	# Use Euclidean distance for more natural diagonal paths
@@ -368,24 +499,6 @@ func get_lowest_f_score_node(nodes: Array, f_score: Dictionary) -> Vector2:
 			lowest_score = score
 	
 	return lowest_node
-
-func get_neighbors(pos: Vector2) -> Array:
-	var neighbors = []
-	var directions = [
-		Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1),  # Cardinals
-		Vector2(1, 1), Vector2(-1, 1), Vector2(1, -1), Vector2(-1, -1)  # Diagonals
-	]
-	
-	for dir in directions:
-		var neighbor = pos + dir
-		if is_valid_cell(neighbor):
-			# Check if we can move to this cell
-			if grid[neighbor.x][neighbor.y] != TILE_TYPE.WALL and grid[neighbor.x][neighbor.y] != TILE_TYPE.TOWER:
-				# Add movement cost for diagonal
-				var cost = 1.0 if dir.x == 0 or dir.y == 0 else 1.414
-				neighbors.append({"pos": neighbor, "cost": cost})
-	
-	return neighbors
 
 func reconstruct_path(came_from: Dictionary, current: Vector2) -> Array:
 	var path = [current]
@@ -453,14 +566,20 @@ func get_attackables_in_range(pos: Vector2, range: float) -> Array:
 		if Time.get_ticks_msec() - cache.time < 500:  # 0.5 second cache
 			return cache.results.filter(func(obj): return is_instance_valid(obj))
 	
+	# Use squared distance for faster checks
+	var range_squared = range * range
+	
 	# Check cells in range
 	for x in range(cell_x - cells_to_check, cell_x + cells_to_check + 1):
 		for y in range(cell_y - cells_to_check, cell_y + cells_to_check + 1):
 			var key = "%d,%d" % [x, y]
 			if spatial_grid.has(key):
 				for obj in spatial_grid[key]:
-					if is_instance_valid(obj) and obj.position.distance_to(pos) <= range:
-						result.append(obj)
+					if is_instance_valid(obj):
+						var dx = obj.position.x - pos.x
+						var dy = obj.position.y - pos.y
+						if dx * dx + dy * dy <= range_squared:
+							result.append(obj)
 	
 	# Cache results
 	_range_cache[cache_key] = {
@@ -482,15 +601,41 @@ func _cleanup_path_cache():
 		path_cache.erase(key)
 
 func _get_path_cache_key(start: Vector2, end: Vector2) -> String:
-	# Use exact positions for more precise caching
-	return "%d,%d-%d,%d" % [start.x, start.y, end.x, end.y]
+	# Faster hash-based key
+	return str(int(start.x + start.y * GRID_WIDTH) + int(end.x + end.y * GRID_WIDTH) * GRID_WIDTH * GRID_HEIGHT)
 
-func _physics_process(_delta):
-	# Clean old range cache entries every physics frame
-	var current_time = Time.get_ticks_msec()
+func _cleanup_breakthrough_cache():
+	var current_time = Time.get_ticks_msec() / 1000.0
 	var keys_to_remove = []
-	for key in _range_cache:
-		if current_time - _range_cache[key].time > 500:  # 0.5 second lifetime
+	
+	for key in _breakthrough_cache:
+		if current_time - _breakthrough_cache[key].time > BREAKTHROUGH_CACHE_TIME:
 			keys_to_remove.append(key)
+	
 	for key in keys_to_remove:
-		_range_cache.erase(key)
+		_breakthrough_cache.erase(key)
+
+# Remove _physics_process cache cleanup
+func _physics_process(_delta):
+	pass
+
+# Add helper function to get any blocking object at position
+func get_blocking_object_at(pos: Vector2) -> Node2D:
+	var pos_str = str(pos)
+	if walls.has(pos_str):
+		return walls[pos_str]
+	if towers.has(pos_str):
+		return towers[pos_str]
+	return null
+
+# Add new function to register tower
+func register_tower(tower: Node2D) -> void:
+	var pos = world_to_grid(tower.position)
+	if is_valid_cell(pos):
+		grid[pos.x][pos.y] = TILE_TYPE.TOWER
+		towers[str(pos)] = tower
+		_add_to_spatial_cache(tower)
+		tower_placed.emit(tower, pos)
+		# Invalidate flag access cache if near flag
+		if pos.distance_to(flag_position) <= 2:
+			_flag_access_cache.time = 0.0

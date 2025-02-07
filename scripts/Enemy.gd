@@ -12,7 +12,8 @@ enum AI_STATE {
 # Combat configuration
 const ATTACK_RANGE = 40.0  # Reduced to a more reasonable range
 const ATTACK_INTERVAL = 0.5
-const WALL_DAMAGE = 20
+const OBSTACLE_DAMAGE = 20  # Base damage for walls/towers
+const TOWER_DAMAGE_MULT = 0.8  # Towers take 80% damage
 const FLAG_DAMAGE = 1
 
 # Movement and state
@@ -60,6 +61,10 @@ var spawn_index: int = -1  # Will be set when spawned
 # Add near the top with other constants
 const UPDATE_FREQUENCY = 0.1  # Update every 100ms
 var update_timer = 0.0
+
+# Add near other variables
+var last_obstacle_check_time: float = 0.0
+const OBSTACLE_CHECK_INTERVAL: float = 0.2  # Check obstacles every 200ms
 
 func _ready():
 	add_to_group("enemies")
@@ -123,7 +128,6 @@ func _process_movement(delta, should_update: bool):
 		if current_path.size() == last_path_length:
 			same_path_time += delta
 			if same_path_time >= PATH_CHANGE_THRESHOLD and should_update:
-				# Force a new path if we haven't made progress
 				_recalculate_path_if_needed(true)  # Force recalculation
 				same_path_time = 0.0
 		else:
@@ -133,17 +137,16 @@ func _process_movement(delta, should_update: bool):
 	# If we can't attack flag, handle movement
 	if current_path.is_empty() and target_position == Vector2.ZERO:
 		if flag and should_update:  # Only update path on update tick
-			# Instead of pathing to flag position, path directly to flag
 			target_position = flag.position  # Path directly to flag
 			target_grid_pos = grid.world_to_grid(target_position)
 			_recalculate_path_if_needed()
 			return
 	
-	# Check for walls only if we're stuck or don't have a path
+	# Check for obstacles if we're stuck or don't have a path
 	if (current_path.is_empty() or is_stuck(grid.world_to_grid(position))) and should_update:
-		var wall_target = _find_wall_to_attack()
-		if wall_target:
-			_transition_to_attack(wall_target)
+		var obstacle_target = _find_obstacle_to_attack()
+		if obstacle_target:
+			_transition_to_attack(obstacle_target)
 			return
 		_recalculate_path_if_needed()
 	
@@ -151,20 +154,40 @@ func _process_movement(delta, should_update: bool):
 	if not current_path.is_empty():
 		_follow_path(delta)
 
-func _find_wall_to_attack() -> Node2D:
+func _find_obstacle_to_attack() -> Node2D:
 	var flag = _find_target()
 	if not flag:
 		return null
+	
+	# Rate limit obstacle checking
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if current_time - last_obstacle_check_time < OBSTACLE_CHECK_INTERVAL:
+		return null
+	last_obstacle_check_time = current_time
 	
 	# First check if we have a clear path to flag
 	var current_grid_pos = grid.world_to_grid(position)
 	var flag_grid_pos = grid.world_to_grid(flag.position)
 	var path_to_flag = grid.find_path(current_grid_pos, flag_grid_pos)
 	
-	# If we have a valid path that doesn't require wall breaking, don't attack walls
-	if not path_to_flag.path.is_empty() and not path_to_flag.is_wall_path:
+	# If we have a valid path that doesn't require breaking through, don't attack obstacles
+	if not path_to_flag.path.is_empty() and not path_to_flag.blocked_by_obstacle:
 		return null
 	
+	# If we got an obstacle target from pathfinding, use that
+	if path_to_flag.blocked_by_obstacle and path_to_flag.obstacle_target:
+		var obstacle = grid.get_blocking_object_at(path_to_flag.obstacle_target)
+		if obstacle and obstacle.has_node("Attackable"):
+			var dist = position.distance_to(obstacle.position)
+			if dist <= ATTACK_RANGE * 1.5 and behavior.should_attack_target(obstacle.get_node("Attackable").current_health, dist):
+				return obstacle
+	
+	# Only check nearby if we're close to flag
+	var dist_to_flag = position.distance_to(flag.position)
+	if dist_to_flag > ATTACK_RANGE * 3:
+		return null
+	
+	# Only if the pathfinding didn't give us a good target, check nearby
 	var nearby_attackables = grid.get_attackables_in_range(position, ATTACK_RANGE * 1.5)
 	var best_target = null
 	var best_score = INF
@@ -172,42 +195,42 @@ func _find_wall_to_attack() -> Node2D:
 	var to_flag_dir = (flag.position - position).normalized()
 	
 	for potential_target in nearby_attackables:
-		# Skip if it's the enemy itself or not a wall
-		if potential_target == self or not potential_target.is_in_group("walls"):
+		# Skip if it's the enemy itself
+		if potential_target == self:
+			continue
+			
+		# Only consider obstacles (walls and towers)
+		if not grid.is_blocking_obstacle(grid.get_cell_type(grid.world_to_grid(potential_target.position))):
 			continue
 			
 		var attackable_component = potential_target.get_node_or_null("Attackable")
 		if not attackable_component:
 			continue
 			
-		var wall_pos = potential_target.position
-		var dist = position.distance_to(wall_pos)
+		var target_pos = potential_target.position
+		var dist = position.distance_to(target_pos)
 		
-		# Check if wall is in the general direction of the flag
-		var to_wall_dir = (wall_pos - position).normalized()
-		var dot_product = to_flag_dir.dot(to_wall_dir)
+		# Skip if too far
+		if dist > ATTACK_RANGE * 1.5:
+			continue
 		
-		# Calculate a score based on multiple factors
-		if dot_product > 0.0:  # Wall is roughly in the direction we want to go
-			var wall_grid_pos = grid.world_to_grid(wall_pos)
-			
-			# Check if there's a path around this wall
-			var temp_grid_state = grid.get_cell_type(wall_grid_pos)
-			grid.set_cell_type(wall_grid_pos, grid.TILE_TYPE.EMPTY)  # Temporarily remove wall
-			var alternate_path = grid.find_path(current_grid_pos, flag_grid_pos)
-			grid.set_cell_type(wall_grid_pos, temp_grid_state)  # Restore wall
-			
-			# If there's a good path around, skip this wall
-			if not alternate_path.path.is_empty() and alternate_path.path.size() < path_to_flag.path.size() + 5:
-				continue
-			
+		# Check if obstacle is in the general direction of the flag
+		var to_target_dir = (target_pos - position).normalized()
+		var dot_product = to_flag_dir.dot(to_target_dir)
+		
+		# Only consider obstacles in the direction of the flag
+		if dot_product > 0.0:
 			# Score based on distance and direction
-			var score = dist * (2.0 - dot_product)  # Lower score is better
+			var base_score = dist * (2.0 - dot_product)  # Lower score is better
+			
+			# Towers get a slightly higher priority
+			if potential_target.is_in_group("towers"):
+				base_score *= 0.9  # 10% priority boost for towers
 			
 			if behavior.should_attack_target(attackable_component.current_health, dist):
-				if score < best_score:
+				if base_score < best_score:
 					best_target = potential_target
-					best_score = score
+					best_score = base_score
 	
 	return best_target
 
@@ -240,14 +263,14 @@ func _move_towards(target_pos: Vector2, delta: float):
 	var check_grid_pos = grid.world_to_grid(proposed_position)
 	var cell_type = grid.get_cell_type(check_grid_pos)
 	
-	# Fast path: If proposed position is clear, take it
-	if cell_type != grid.TILE_TYPE.WALL:
+	# Fast path: If proposed position is clear
+	if not grid.is_blocking_obstacle(cell_type):
 		position = proposed_position
 		stuck_time = 0.0
 		last_position = position
 		return
 	
-	# Only do detailed collision checks if we hit a wall
+	# Only do detailed collision checks if we hit an obstacle
 	var wall_clearance = GameSettings.BASE_GRID_SIZE * 0.3
 	
 	# Try diagonal movements first
@@ -259,7 +282,7 @@ func _move_towards(target_pos: Vector2, delta: float):
 	for slide_dir in diagonal_directions:
 		var slide_position = position + slide_dir * move_speed
 		var slide_grid_pos = grid.world_to_grid(slide_position)
-		if grid.get_cell_type(slide_grid_pos) != grid.TILE_TYPE.WALL:
+		if not grid.is_blocking_obstacle(grid.get_cell_type(slide_grid_pos)):
 			position = slide_position
 			stuck_time = 0.0
 			last_position = position
@@ -274,7 +297,7 @@ func _move_towards(target_pos: Vector2, delta: float):
 	for slide_dir in cardinal_directions:
 		var slide_position = position + slide_dir * move_speed
 		var slide_grid_pos = grid.world_to_grid(slide_position)
-		if grid.get_cell_type(slide_grid_pos) != grid.TILE_TYPE.WALL:
+		if not grid.is_blocking_obstacle(grid.get_cell_type(slide_grid_pos)):
 			position = slide_position
 			stuck_time = 0.0
 			last_position = position
@@ -294,66 +317,63 @@ func _transition_to_attack(new_target: Node2D):
 func _recalculate_path_if_needed(force: bool = false):
 	var current_grid_pos = grid.world_to_grid(position)
 	
-	# If we're forced to recalc, try a simple offset pattern
-	var path_result
+	# If we're forced to recalc, try direct path first
 	if force:
-		# Try a few simple offsets from the target
-		var offsets = [
-			Vector2.ZERO,  # Direct path first
-			Vector2(-1, 0),
-			Vector2(1, 0),
-			Vector2(0, -1),
-			Vector2(0, 1)
-		]
+		var direct_result = grid.find_path(current_grid_pos, target_grid_pos)
+		if not direct_result.path.is_empty():
+			current_path = direct_result.path
+			return
 		
-		var best_path = []
-		var best_score = INF
+		# If direct path failed, try ONE offset
+		var offset = Vector2(-1 if randf() < 0.5 else 1, 0)
+		if randf() < 0.5:
+			offset = Vector2(0, -1 if randf() < 0.5 else 1)
 		
-		for offset in offsets:
-			var try_target = target_grid_pos + offset
-			if grid.is_valid_cell(try_target) and grid.get_cell_type(try_target) == grid.TILE_TYPE.EMPTY:
-				var try_result = grid.find_path(current_grid_pos, try_target)
-				if not try_result.path.is_empty():
-					var score = _evaluate_path(try_result.path)
-					if score < best_score:
-						best_path = try_result.path
-						best_score = score
-						path_result = try_result
-		
-		if not best_path.is_empty():
-			current_path = best_path
+		var try_target = target_grid_pos + offset
+		if grid.is_valid_cell(try_target) and grid.get_cell_type(try_target) == grid.TILE_TYPE.EMPTY:
+			var try_result = grid.find_path(current_grid_pos, try_target)
+			if not try_result.path.is_empty():
+				current_path = try_result.path
+				return
+	
+	# Fall back to normal pathfinding
+	var path_result = grid.find_path(current_grid_pos, target_grid_pos)
+	
+	if path_result.blocked_by_obstacle:
+		var obstacle = grid.get_blocking_object_at(path_result.obstacle_target)
+		if obstacle:
+			_transition_to_attack(obstacle)
 			return
 	
-	# Fall back to normal pathfinding if forced recalc failed or wasn't requested
-	path_result = grid.find_path(current_grid_pos, target_grid_pos)
-	
-	if path_result.is_wall_path:
-		var wall = grid.walls.get(str(path_result.wall_target))
-		if wall:
-			_transition_to_attack(wall)
+	# If we got an empty path and no obstacle to attack, try to find any nearby obstacle
+	if path_result.path.is_empty():
+		var obstacle_target = _find_obstacle_to_attack()
+		if obstacle_target:
+			_transition_to_attack(obstacle_target)
 			return
+		else:
+			# If still no path and no obstacle, try moving towards flag while avoiding obstacles
+			var flag = _find_target()
+			if flag:
+				var direction_to_flag = (flag.position - position).normalized()
+				# Try a few angles to find a clear direction
+				var angles = [-PI/4, 0, PI/4]  # Try 45 degrees left, straight, and 45 degrees right
+				for angle in angles:
+					var try_dir = direction_to_flag.rotated(angle)
+					var try_pos = grid.world_to_grid(position + try_dir * GameSettings.BASE_GRID_SIZE * 2)
+					if grid.is_valid_cell(try_pos) and not grid.is_blocking_obstacle(grid.get_cell_type(try_pos)):
+						path_result = grid.find_path(current_grid_pos, try_pos)
+						if not path_result.path.is_empty():
+							current_path = path_result.path
+							return
 	
 	current_path = path_result.path
 
-# Helper function to evaluate path quality
+# Simplify _evaluate_path since it's only used for direct path checks
 func _evaluate_path(path: Array) -> float:
 	if path.is_empty():
 		return INF
-		
-	var score = path.size() * 1.0  # Base score is path length
-	
-	# Only penalize paths that run along walls
-	for i in range(1, path.size()):
-		var pos = path[i]
-		# Check adjacent cells for walls
-		var adjacent_walls = 0
-		for offset in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
-			var check_pos = pos + offset
-			if grid.is_valid_cell(check_pos) and grid.get_cell_type(check_pos) == grid.TILE_TYPE.WALL:
-				adjacent_walls += 1
-		score += adjacent_walls * 1.0  # Wall penalty
-	
-	return score
+	return path.size() * 1.0  # Just use path length as score
 
 func _follow_path(delta: float):
 	if current_path.is_empty():
@@ -386,39 +406,6 @@ func _follow_path(delta: float):
 	if not current_path.is_empty():
 		_move_towards(next_point, delta)
 
-func _find_wall_to_break(target_pos: Vector2) -> Node2D:
-	var start_grid = grid.world_to_grid(position)
-	var end_grid = grid.world_to_grid(target_pos)
-	
-	# Get direction to target
-	var dx = end_grid.x - start_grid.x
-	var dy = end_grid.y - start_grid.y
-	var direction = Vector2(
-		1 if dx > 0 else -1 if dx < 0 else 0,
-		1 if dy > 0 else -1 if dy < 0 else 0
-	)
-	
-	# Check cells in direction of target
-	var check_pos = start_grid
-	for _i in range(3):  # Check up to 3 cells ahead
-		check_pos += direction
-		if not grid.is_valid_cell(check_pos):
-			break
-			
-		if grid.get_cell_type(check_pos) == grid.TILE_TYPE.WALL:
-			var wall = grid.walls.get(str(check_pos))
-			if wall:
-				var wall_attackable = wall.get_node("Attackable")
-				if wall_attackable:
-					var dist = position.distance_to(wall.position)
-					if dist <= ATTACK_RANGE * 1.5:
-						if behavior.should_attack_target(wall_attackable.current_health, dist):
-							return wall
-						else:
-							return null
-	
-	return null
-
 func _process_combat(delta):
 	if not current_target or not is_instance_valid(current_target):
 		current_state = AI_STATE.MOVING
@@ -432,14 +419,14 @@ func _process_combat(delta):
 		var direction = (current_target.position - position).normalized()
 		var proposed_position = position + direction * behavior.get_effective_speed() * delta
 		
-		# Check if proposed position would be in a wall (that's not our target)
+		# Check if proposed position would be in a wall/tower (that's not our target)
 		var proposed_grid_pos = grid.world_to_grid(proposed_position)
 		var cell_type = grid.get_cell_type(proposed_grid_pos)
 		var can_move = true
 		
-		if cell_type == grid.TILE_TYPE.WALL:
-			var wall = grid.walls.get(str(proposed_grid_pos))
-			if wall != current_target:
+		if grid.is_blocking_obstacle(cell_type):
+			var obstacle = grid.get_blocking_object_at(proposed_grid_pos)
+			if obstacle != current_target:
 				can_move = false
 		
 		if can_move:
@@ -461,9 +448,11 @@ func _attack_current_target():
 	var distance = position.distance_to(current_target.position)
 	if distance <= ATTACK_RANGE:
 		# Determine damage based on target type
-		var damage_amount = WALL_DAMAGE
-		if current_target.is_in_group("towers"):
-			damage_amount *= 0.8  # Towers take slightly less damage than walls
+		var damage_amount = OBSTACLE_DAMAGE
+		if current_target.is_in_group("flags"):
+			damage_amount = FLAG_DAMAGE
+		elif current_target.is_in_group("towers"):
+			damage_amount *= TOWER_DAMAGE_MULT
 		
 		current_target.take_damage(damage_amount)
 		_play_attack_effects()
@@ -512,16 +501,3 @@ func is_stuck(current_grid_pos: Vector2) -> bool:
 		stuck_time = 0.0
 		last_position = position
 	return false
-
-func _attack_target():
-	if not current_target or not is_instance_valid(current_target):
-		return
-		
-	if not current_target.has_method("take_damage"):
-		return
-		
-	var distance = position.distance_to(current_target.position)
-	if distance <= ATTACK_RANGE:
-		current_target.take_damage(WALL_DAMAGE if current_target.is_in_group("walls") else FLAG_DAMAGE)
-		_play_attack_effects()
-		attack_timer = 0.0

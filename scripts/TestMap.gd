@@ -122,8 +122,10 @@ func attempt_place_tower():
 	tower.set_type(selected_tower_type)
 	grid.add_child(tower)
 	
-	# Update grid and gold
-	grid.set_cell_type(grid_pos, grid.TILE_TYPE.TOWER)
+	# Register tower with grid
+	grid.register_tower(tower)
+	
+	# Update gold
 	gold -= cost
 	update_gold_display()
 	update_tower_buttons()
@@ -133,7 +135,6 @@ func attempt_place_wall():
 	var viewport_mouse_pos = get_viewport().get_mouse_position()
 	
 	# Convert to world space considering camera
-	var camera = $GameCamera
 	var world_pos = camera.get_screen_to_canvas(viewport_mouse_pos)
 	
 	# Convert to grid coordinates

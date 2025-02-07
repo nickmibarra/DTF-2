@@ -9,4 +9,7 @@ Restart button pressed
 USER WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
 If you want to set size, change the anchors or consider using set_deferred().
    at: _set_size (scene/gui/control.cpp:1440)
+Tower destroyed at position: (1760, 608)
+Tower destroyed at position: (1760, 416)
+Tower destroyed at position: (1760, 544)
 Game Over screen shown
