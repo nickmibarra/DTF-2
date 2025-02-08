@@ -4,8 +4,6 @@ Vulkan API 1.3.292 - Forward+ - Using Vulkan Device #0: AMD - AMD Radeon RX 7800
 
 Starting Entity System Test
 
-Starting test sequence...
-
 Testing Initialization
 
 Setting up test...
@@ -213,12 +211,12 @@ Second frame processed
 
 Verifying entity initialization:
 Test entity components:
-- Health: HealthComponent:<Node#30299653358> initialized: true
-- Combat: CombatComponent:<Node#30333207792>
+- Health: HealthComponent:<Node#30215767278> initialized: true
+- Combat: CombatComponent:<Node#30249321712>
 - State: idle
 
 Target entity components:
-- Health: HealthComponent:<Node#30517757145> initialized: true
+- Health: HealthComponent:<Node#30433871065> initialized: true
 - Position: (50, 0)
 
 Final component state:
@@ -316,12 +314,12 @@ Second frame processed
 
 Verifying entity initialization:
 Test entity components:
-- Health: HealthComponent:<Node#31004296450> initialized: true
-- Combat: CombatComponent:<Node#31037850842>
+- Health: HealthComponent:<Node#30802969817> initialized: true
+- Combat: CombatComponent:<Node#30836524254>
 - State: idle
 
 Target entity components:
-- Health: HealthComponent:<Node#31222400238> initialized: true
+- Health: HealthComponent:<Node#31021073647> initialized: true
 - Position: (50, 0)
 
 Final component state:
@@ -342,224 +340,11 @@ Called move_to with target: (50, 0)
 Position changed: (10, 0)
 Processed frame 1, Current state: moving
 Position changed: (20, 0)
-Position changed: (21.66667, 0)
 Processed frame 2, Current state: moving
+Position changed: (30, 0)
 Position changed: (31.66667, 0)
 Processed frame 3, Current state: moving
 Final state: moving
-
-Testing Status System
-
-Setting up test...
-Entity _ready called for: TestEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TestEntity/HealthComponent
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health component added to TestEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Movement component added to TestEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Combat component added to TestEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Status component added to TestEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TestEntity
-StateManager ready for: TestEntity
-Entering idle state
-State manager added to TestEntity
-Created test entity
-Entity _ready called for: TargetEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Movement component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Combat component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Status component added to TargetEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TargetEntity
-StateManager ready for: TargetEntity
-Entering idle state
-State manager added to TargetEntity
-Created target entity
-HealthComponent _initialize called on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-CombatComponent initialized for: TestEntity
-HealthComponent _initialize called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-CombatComponent initialized for: TargetEntity
-First frame processed for TestEntity
-Entity: Connecting component signals for TestEntity
-Entity: Health signals connected
-Entity: Movement signals connected
-Entity: Combat signals connected
-Entity: Status signals connected
-Component signals connected for TestEntity
-Entity setup complete for: TestEntity
-First frame processed for TargetEntity
-Entity: Connecting component signals for TargetEntity
-Entity: Health signals connected
-Entity: Movement signals connected
-Entity: Combat signals connected
-Entity: Status signals connected
-Component signals connected for TargetEntity
-Entity setup complete for: TargetEntity
-First frame processed
-Second frame processed
-
-Verifying entity initialization:
-Test entity components:
-- Health: HealthComponent:<Node#31859934447> initialized: true
-- Combat: CombatComponent:<Node#31893488881>
-- State: idle
-
-Target entity components:
-- Health: HealthComponent:<Node#32078038234> initialized: true
-- Position: (50, 0)
-
-Final component state:
-Test entity health initialized: true
-Target entity health initialized: true
-Signals connected
-Setup complete
-Effect applied: speed_boost for 5 seconds
-
-Testing State System
-
-Setting up test...
-Entity _ready called for: TestEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TestEntity/HealthComponent
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health component added to TestEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Movement component added to TestEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Combat component added to TestEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Status component added to TestEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TestEntity
-StateManager ready for: TestEntity
-Entering idle state
-State manager added to TestEntity
-Created test entity
-Entity _ready called for: TargetEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Movement component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Combat component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Status component added to TargetEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TargetEntity
-StateManager ready for: TargetEntity
-Entering idle state
-State manager added to TargetEntity
-Created target entity
-HealthComponent _initialize called on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-CombatComponent initialized for: TestEntity
-HealthComponent _initialize called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-CombatComponent initialized for: TargetEntity
-First frame processed for TestEntity
-Entity: Connecting component signals for TestEntity
-Entity: Health signals connected
-Entity: Movement signals connected
-Entity: Combat signals connected
-Entity: Status signals connected
-Component signals connected for TestEntity
-Entity setup complete for: TestEntity
-First frame processed for TargetEntity
-Entity: Connecting component signals for TargetEntity
-Entity: Health signals connected
-Entity: Movement signals connected
-Entity: Combat signals connected
-Entity: Status signals connected
-Component signals connected for TargetEntity
-Entity setup complete for: TargetEntity
-First frame processed
-Second frame processed
-
-Verifying entity initialization:
-Test entity components:
-- Health: HealthComponent:<Node#32631686360> initialized: true
-- Combat: CombatComponent:<Node#32665240807>
-- State: idle
-
-Target entity components:
-- Health: HealthComponent:<Node#32849790194> initialized: true
-- Position: (50, 0)
-
-Final component state:
-Test entity health initialized: true
-Target entity health initialized: true
-Signals connected
-Setup complete
-
-Attempting state transition for TestEntity
-From: idle To: moving
-Transition valid, executing...
-Exiting idle state
-Entering moving state
-State transition complete: idle -> moving
-State changed: idle -> moving
 
 Testing Combat System
 
@@ -649,12 +434,12 @@ Second frame processed
 
 Verifying entity initialization:
 Test entity components:
-- Health: HealthComponent:<Node#33353106693> initialized: true
-- Combat: CombatComponent:<Node#33386661108>
+- Health: HealthComponent:<Node#31440504047> initialized: true
+- Combat: CombatComponent:<Node#31474058481>
 - State: idle
 
 Target entity components:
-- Health: HealthComponent:<Node#33571210460> initialized: true
+- Health: HealthComponent:<Node#31658607834> initialized: true
 - Position: (50, 0)
 
 Final component state:
@@ -672,26 +457,47 @@ Target entity setup:
 Target entity exists: true
 Target position: (50, 0)
 Distance to target: 50
-Target health component: HealthComponent:<Node#33571210460>
+Target health component: HealthComponent:<Node#31658607834>
 Target health: 100/100
 Target health initialized: true
 Target health node path: /root/EntitySystemTest/TargetEntity/HealthComponent
 
 Starting combat test:
 Initial state: idle
-Attack timer reset to: 1
 
 Attempting to set target...
 Setting target: TargetEntity
-Target health component search result: HealthComponent:<Node#33571210460>
+Target health component search result: HealthComponent:<Node#31658607834>
 Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
 Can attack target - all checks passed
 Target set successfully
-Transitioning to attack state on target set
+Target set, checking attack conditions:
+Target health component search result: HealthComponent:<Node#31658607834>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
+Can attack target - all checks passed
+- Can attack: true
+- Current target: TargetEntity
+- Attack timer: 1
 
-Handling event: attack in state: idle
-Event triggers transition to: attacking
+Processing frame 1
+Attack timer: 1.3 / 1
+Attack cooldown complete, checking target...
+Target health component search result: HealthComponent:<Node#31658607834>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
+Can attack target - all checks passed
+Target valid, performing attack
+
+Performing attack...
+Target health component search result: HealthComponent:<Node#31658607834>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
+Can attack target - all checks passed
+Starting attack on target: TargetEntity
+Entity: Attack started on TargetEntity
+Entity: Transitioning to attacking state
 
 Attempting state transition for TestEntity
 From: idle To: attacking
@@ -700,60 +506,6 @@ Exiting idle state
 Entering attacking state
 State transition complete: idle -> attacking
 State changed: idle -> attacking
-Target set, checking attack conditions:
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-- Can attack: true
-- Current target: TargetEntity
-- Attack timer: 1
-Attack timer: 1.01666666666667 / 1
-Attack cooldown complete, checking target...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Target valid, performing attack
-
-Performing attack...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Starting attack on target: TargetEntity
-Entity: Attack started on TargetEntity
-Entity: Transitioning to attacking state
-
-Attempting state transition for TestEntity
-From: attacking To: attacking
-Already in state: attacking
-Attack started on: TargetEntity
-
-After target set:
-- Current state: attacking
-
-Processing combat...
-Attack timer: 1.11666666666667 / 1
-Attack cooldown complete, checking target...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Target valid, performing attack
-
-Performing attack...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Starting attack on target: TargetEntity
-Entity: Attack started on TargetEntity
-Entity: Transitioning to attacking state
-
-Attempting state transition for TestEntity
-From: attacking To: attacking
-Already in state: attacking
 Attack started on: TargetEntity
 Dealing 10 damage to target
 Attack completed, emitting signal
@@ -771,36 +523,102 @@ Entering idle state
 State transition complete: attacking -> idle
 State changed: attacking -> idle
 Attack completed on: TargetEntity
+- Attack timer: 0/1
+- Current target: TargetEntity
+Target health component search result: HealthComponent:<Node#31658607834>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
+Can attack target - all checks passed
+- Can attack: true
+- Target health: 90
+
+Processing frame 2
+Attack timer: 0.3 / 1
+- Attack timer: 0.3/1
+- Current target: TargetEntity
+Target health component search result: HealthComponent:<Node#31658607834>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
+Can attack target - all checks passed
+- Can attack: true
+- Target health: 90
+
+Processing frame 3
+Attack timer: 0.6 / 1
+Attack timer: 0.61666666666667 / 1
+- Attack timer: 0.61666666666667/1
+- Current target: TargetEntity
+Target health component search result: HealthComponent:<Node#31658607834>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
+Can attack target - all checks passed
+- Can attack: true
+- Target health: 90
+
+Processing frame 4
+Attack timer: 0.91666666666667 / 1
+- Attack timer: 0.91666666666667/1
+- Current target: TargetEntity
+Target health component search result: HealthComponent:<Node#31658607834>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
+Can attack target - all checks passed
+- Can attack: true
+- Target health: 90
+
+Processing frame 5
+Attack timer: 1.21666666666667 / 1
+Attack cooldown complete, checking target...
+Target health component search result: HealthComponent:<Node#31658607834>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
+Can attack target - all checks passed
+Target valid, performing attack
+
+Performing attack...
+Target health component search result: HealthComponent:<Node#31658607834>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
+Can attack target - all checks passed
+Starting attack on target: TargetEntity
+Entity: Attack started on TargetEntity
+Entity: Transitioning to attacking state
+
+Attempting state transition for TestEntity
+From: idle To: attacking
+Transition valid, executing...
+Exiting idle state
+Entering attacking state
+State transition complete: idle -> attacking
+State changed: idle -> attacking
+Attack started on: TargetEntity
 Dealing 10 damage to target
 Attack completed, emitting signal
 Entity: Attack completed on TargetEntity
 Entity: Handling attack_completed event
 
-Handling event: attack_completed in state: idle
-No transition defined for event: attack_completed in state: idle
-Attack completed on: TargetEntity
-After first process:
-- Attack timer: 0
-- Current state: idle
+Handling event: attack_completed in state: attacking
+Event triggers transition to: idle
 
-Processing frame 1
-Attack timer: 0.3 / 1
-- Attack timer: 0.3/1
+Attempting state transition for TestEntity
+From: attacking To: idle
+Transition valid, executing...
+Exiting attacking state
+Entering idle state
+State transition complete: attacking -> idle
+State changed: attacking -> idle
+Attack completed on: TargetEntity
+Attack timer: 0.01666666666667 / 1
+- Attack timer: 0.01666666666667/1
 - Current target: TargetEntity
-- Current state: idle
-Target health component search result: HealthComponent:<Node#33571210460>
+Target health component search result: HealthComponent:<Node#31658607834>
 Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
+Target children: [HealthComponent:<Node#31658607834>, MovementComponent:<Node#31675385054>, CombatComponent:<Node#31692162264>, StatusEffectComponent:<Node#31708939484>, VisualManager:<Node#31725716711>, StateManager:<Node#31826380033>]
 Can attack target - all checks passed
 - Can attack: true
 - Target health: 80
-- Attack signals: 2
-Attack completed, breaking loop
 
 Final test state:
 Attack signals received: 2
 Current state: idle
 Target health: 80
-Attack timer: 0.31666666666667 / 1
-
-Entity System Tests Complete

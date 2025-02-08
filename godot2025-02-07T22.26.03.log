@@ -213,12 +213,12 @@ Second frame processed
 
 Verifying entity initialization:
 Test entity components:
-- Health: HealthComponent:<Node#30299653358> initialized: true
-- Combat: CombatComponent:<Node#30333207792>
+- Health: HealthComponent:<Node#30215767278> initialized: true
+- Combat: CombatComponent:<Node#30249321712>
 - State: idle
 
 Target entity components:
-- Health: HealthComponent:<Node#30517757145> initialized: true
+- Health: HealthComponent:<Node#30433871065> initialized: true
 - Position: (50, 0)
 
 Final component state:
@@ -316,12 +316,12 @@ Second frame processed
 
 Verifying entity initialization:
 Test entity components:
-- Health: HealthComponent:<Node#31004296450> initialized: true
-- Combat: CombatComponent:<Node#31037850842>
+- Health: HealthComponent:<Node#30802969817> initialized: true
+- Combat: CombatComponent:<Node#30836524254>
 - State: idle
 
 Target entity components:
-- Health: HealthComponent:<Node#31222400238> initialized: true
+- Health: HealthComponent:<Node#31021073647> initialized: true
 - Position: (50, 0)
 
 Final component state:
@@ -436,12 +436,12 @@ Second frame processed
 
 Verifying entity initialization:
 Test entity components:
-- Health: HealthComponent:<Node#31859934447> initialized: true
-- Combat: CombatComponent:<Node#31893488881>
+- Health: HealthComponent:<Node#31457281263> initialized: true
+- Combat: CombatComponent:<Node#31490835697>
 - State: idle
 
 Target entity components:
-- Health: HealthComponent:<Node#32078038234> initialized: true
+- Health: HealthComponent:<Node#31675385050> initialized: true
 - Position: (50, 0)
 
 Final component state:
@@ -539,12 +539,12 @@ Second frame processed
 
 Verifying entity initialization:
 Test entity components:
-- Health: HealthComponent:<Node#32631686360> initialized: true
-- Combat: CombatComponent:<Node#32665240807>
+- Health: HealthComponent:<Node#32061261018> initialized: true
+- Combat: CombatComponent:<Node#32094815448>
 - State: idle
 
 Target entity components:
-- Health: HealthComponent:<Node#32849790194> initialized: true
+- Health: HealthComponent:<Node#32279364848> initialized: true
 - Position: (50, 0)
 
 Final component state:
@@ -649,12 +649,12 @@ Second frame processed
 
 Verifying entity initialization:
 Test entity components:
-- Health: HealthComponent:<Node#33353106693> initialized: true
-- Combat: CombatComponent:<Node#33386661108>
+- Health: HealthComponent:<Node#32665240816> initialized: true
+- Combat: CombatComponent:<Node#32698795250>
 - State: idle
 
 Target entity components:
-- Health: HealthComponent:<Node#33571210460> initialized: true
+- Health: HealthComponent:<Node#32883344606> initialized: true
 - Position: (50, 0)
 
 Final component state:
@@ -672,7 +672,7 @@ Target entity setup:
 Target entity exists: true
 Target position: (50, 0)
 Distance to target: 50
-Target health component: HealthComponent:<Node#33571210460>
+Target health component: HealthComponent:<Node#32883344606>
 Target health: 100/100
 Target health initialized: true
 Target health node path: /root/EntitySystemTest/TargetEntity/HealthComponent
@@ -683,15 +683,40 @@ Attack timer reset to: 1
 
 Attempting to set target...
 Setting target: TargetEntity
-Target health component search result: HealthComponent:<Node#33571210460>
+Target health component search result: HealthComponent:<Node#32883344606>
 Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
+Target children: [HealthComponent:<Node#32883344606>, MovementComponent:<Node#32900121816>, CombatComponent:<Node#32916899036>, StatusEffectComponent:<Node#32933676263>, VisualManager:<Node#32950453480>, StateManager:<Node#33051116794>]
 Can attack target - all checks passed
 Target set successfully
-Transitioning to attack state on target set
+Target set, checking attack conditions:
+Target health component search result: HealthComponent:<Node#32883344606>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#32883344606>, MovementComponent:<Node#32900121816>, CombatComponent:<Node#32916899036>, StatusEffectComponent:<Node#32933676263>, VisualManager:<Node#32950453480>, StateManager:<Node#33051116794>]
+Can attack target - all checks passed
+- Can attack: true
+- Current target: TargetEntity
+- Attack timer: 1
 
-Handling event: attack in state: idle
-Event triggers transition to: attacking
+After target set:
+- Current state: idle
+
+Processing combat...
+Attack timer: 1.1 / 1
+Attack cooldown complete, checking target...
+Target health component search result: HealthComponent:<Node#32883344606>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#32883344606>, MovementComponent:<Node#32900121816>, CombatComponent:<Node#32916899036>, StatusEffectComponent:<Node#32933676263>, VisualManager:<Node#32950453480>, StateManager:<Node#33051116794>]
+Can attack target - all checks passed
+Target valid, performing attack
+
+Performing attack...
+Target health component search result: HealthComponent:<Node#32883344606>
+Target node path: /root/EntitySystemTest/TargetEntity
+Target children: [HealthComponent:<Node#32883344606>, MovementComponent:<Node#32900121816>, CombatComponent:<Node#32916899036>, StatusEffectComponent:<Node#32933676263>, VisualManager:<Node#32950453480>, StateManager:<Node#33051116794>]
+Can attack target - all checks passed
+Starting attack on target: TargetEntity
+Entity: Attack started on TargetEntity
+Entity: Transitioning to attacking state
 
 Attempting state transition for TestEntity
 From: idle To: attacking
@@ -700,52 +725,19 @@ Exiting idle state
 Entering attacking state
 State transition complete: idle -> attacking
 State changed: idle -> attacking
-Target set, checking attack conditions:
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-- Can attack: true
-- Current target: TargetEntity
-- Attack timer: 1
-Attack timer: 1.01666666666667 / 1
-Attack cooldown complete, checking target...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Target valid, performing attack
-
-Performing attack...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Starting attack on target: TargetEntity
-Entity: Attack started on TargetEntity
-Entity: Transitioning to attacking state
-
-Attempting state transition for TestEntity
-From: attacking To: attacking
-Already in state: attacking
 Attack started on: TargetEntity
-
-After target set:
-- Current state: attacking
-
-Processing combat...
 Attack timer: 1.11666666666667 / 1
 Attack cooldown complete, checking target...
-Target health component search result: HealthComponent:<Node#33571210460>
+Target health component search result: HealthComponent:<Node#32883344606>
 Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
+Target children: [HealthComponent:<Node#32883344606>, MovementComponent:<Node#32900121816>, CombatComponent:<Node#32916899036>, StatusEffectComponent:<Node#32933676263>, VisualManager:<Node#32950453480>, StateManager:<Node#33051116794>]
 Can attack target - all checks passed
 Target valid, performing attack
 
 Performing attack...
-Target health component search result: HealthComponent:<Node#33571210460>
+Target health component search result: HealthComponent:<Node#32883344606>
 Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
+Target children: [HealthComponent:<Node#32883344606>, MovementComponent:<Node#32900121816>, CombatComponent:<Node#32916899036>, StatusEffectComponent:<Node#32933676263>, VisualManager:<Node#32950453480>, StateManager:<Node#33051116794>]
 Can attack target - all checks passed
 Starting attack on target: TargetEntity
 Entity: Attack started on TargetEntity
@@ -771,26 +763,52 @@ Entering idle state
 State transition complete: attacking -> idle
 State changed: attacking -> idle
 Attack completed on: TargetEntity
+Forcing state back to attacking
+
+Attempting state transition for TestEntity
+From: idle To: attacking
+Transition valid, executing...
+Exiting idle state
+Entering attacking state
+State transition complete: idle -> attacking
+State changed: idle -> attacking
+After first process:
+- Attack timer: 0
+- Current state: attacking
+
+Processing frame 1
+Attack timer: 0.3 / 1
 Dealing 10 damage to target
 Attack completed, emitting signal
 Entity: Attack completed on TargetEntity
 Entity: Handling attack_completed event
 
-Handling event: attack_completed in state: idle
-No transition defined for event: attack_completed in state: idle
-Attack completed on: TargetEntity
-After first process:
-- Attack timer: 0
-- Current state: idle
+Handling event: attack_completed in state: attacking
+Event triggers transition to: idle
 
-Processing frame 1
-Attack timer: 0.3 / 1
-- Attack timer: 0.3/1
+Attempting state transition for TestEntity
+From: attacking To: idle
+Transition valid, executing...
+Exiting attacking state
+Entering idle state
+State transition complete: attacking -> idle
+State changed: attacking -> idle
+Attack completed on: TargetEntity
+Forcing state back to attacking
+
+Attempting state transition for TestEntity
+From: idle To: attacking
+Transition valid, executing...
+Exiting idle state
+Entering attacking state
+State transition complete: idle -> attacking
+State changed: idle -> attacking
+- Attack timer: 0/1
 - Current target: TargetEntity
-- Current state: idle
-Target health component search result: HealthComponent:<Node#33571210460>
+- Current state: attacking
+Target health component search result: HealthComponent:<Node#32883344606>
 Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
+Target children: [HealthComponent:<Node#32883344606>, MovementComponent:<Node#32900121816>, CombatComponent:<Node#32916899036>, StatusEffectComponent:<Node#32933676263>, VisualManager:<Node#32950453480>, StateManager:<Node#33051116794>]
 Can attack target - all checks passed
 - Can attack: true
 - Target health: 80
@@ -799,8 +817,8 @@ Attack completed, breaking loop
 
 Final test state:
 Attack signals received: 2
-Current state: idle
+Current state: attacking
 Target health: 80
-Attack timer: 0.31666666666667 / 1
+Attack timer: 0.01666666666667 / 1
 
 Entity System Tests Complete

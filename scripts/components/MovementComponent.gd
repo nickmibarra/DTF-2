@@ -39,6 +39,10 @@ func process(delta: float) -> void:
 			is_moving = false
 			_velocity = Vector2.ZERO
 			emit_signal("path_completed")
+			
+			# Notify entity to change state back to idle
+			if entity and entity.state_manager:
+				entity.state_manager.transition_to("idle")
 
 func move_to(target: Vector2) -> void:
 	target_position = target
@@ -46,6 +50,10 @@ func move_to(target: Vector2) -> void:
 	current_path = [target]  # Direct movement
 	_velocity = Vector2.ZERO  # Reset velocity on new movement
 	
+	# Notify entity to change state
+	if entity and entity.state_manager:
+		entity.state_manager.transition_to("moving")
+
 func follow_path(path: Array) -> void:
 	if path.is_empty():
 		return
@@ -60,11 +68,19 @@ func follow_path(path: Array) -> void:
 		target_position = current_path[-1]
 		is_moving = true
 		_velocity = Vector2.ZERO  # Reset velocity on new path
+		
+		# Notify entity to change state
+		if entity and entity.state_manager:
+			entity.state_manager.transition_to("moving")
 
 func stop() -> void:
 	is_moving = false
 	current_path.clear()
 	_velocity = Vector2.ZERO
+	
+	# Notify entity to change state back to idle
+	if entity and entity.state_manager:
+		entity.state_manager.transition_to("idle")
 
 func get_velocity() -> Vector2:
 	return _velocity
