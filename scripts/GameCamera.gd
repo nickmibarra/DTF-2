@@ -19,8 +19,12 @@ func _ready():
 	zoom_factor = min(zoom_x, zoom_y)
 	zoom = Vector2.ONE * zoom_factor
 	
-	# Center the camera on the grid
-	position = grid_size / 2
+	# Center the camera on the grid, slightly offset to show flag
+	position = Vector2(1280, 540)  # Position to show both spawn area and flag
+	print("\nCamera initialized:")
+	print("- Position: ", position)
+	print("- Zoom: ", zoom)
+	print("- Viewport size: ", viewport_size)
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
@@ -44,9 +48,14 @@ func _unhandled_input(event):
 # Let Godot handle coordinate transformations natively 
 
 func get_screen_to_canvas(screen_pos: Vector2) -> Vector2:
-	# Convert screen position to world position considering camera position and zoom
-	var canvas_pos = screen_pos
-	canvas_pos -= get_viewport_rect().size / 2  # Center of screen
-	canvas_pos /= zoom.x  # Account for zoom
-	canvas_pos += position  # Add camera position
-	return canvas_pos 
+	# Convert screen position to world position using the camera's transform
+	var viewport_size = get_viewport_rect().size
+	var viewport_center = viewport_size / 2
+	var offset = (screen_pos - viewport_center) / zoom.x
+	var world_pos = position + offset
+	print("\nCoordinate conversion:")
+	print("- Screen pos: ", screen_pos)
+	print("- Viewport center: ", viewport_center)
+	print("- Offset: ", offset)
+	print("- World pos: ", world_pos)
+	return world_pos

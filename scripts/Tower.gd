@@ -1,4 +1,4 @@
-extends Node2D
+extends Entity
 
 enum TOWER_TYPE {
 	BALLISTA,
@@ -7,14 +7,13 @@ enum TOWER_TYPE {
 }
 
 var type: TOWER_TYPE = TOWER_TYPE.BALLISTA
+var rank: int = 1
 var damage: float = 20.0
 var attack_range: float = 200.0
 var attack_speed: float = 1.0  # Attacks per second
 var attack_timer: float = 0.0
 var target: Node2D = null
 var kills: int = 0
-var rank: int = 1
-var barrier: Barrier
 
 # Veteran system
 const RANK_THRESHOLDS = GameSettings.RANK_THRESHOLDS
@@ -53,17 +52,20 @@ var _effect_tween: Tween = null
 var attack_offset: float = 0.0
 
 func _ready():
-	attack_interval = 1.0 / attack_speed  # Initialize interval based on default attack speed
+	super._ready()
+	add_to_group("towers")
+	
+	# Connect to combat signals
+	if combat_component:
+		combat_component.attack_completed.connect(_on_attack_completed)
+	
+	# Initialize range indicator
 	if range_indicator:
-		range_indicator.scale = Vector2.ONE * (attack_range / 100.0)
+		range_indicator.scale = Vector2.ONE * (combat_component.attack_range / 100.0)
 		range_indicator.visible = false
 	
-	add_to_group("towers")
-	add_to_group("barriers")
-	add_to_group("attackable")
-	
 	# Add barrier component
-	barrier = Barrier.new()
+	var barrier = Barrier.new()
 	barrier.name = "Barrier"  # Give it a consistent name
 	add_child(barrier)
 	barrier.setup(self, CollisionSystem.COLLISION_LAYER.TOWER)
@@ -190,26 +192,36 @@ func check_rank_up():
 			_update_appearance()
 			break
 
-func set_type(new_type: TOWER_TYPE):
+func set_type(new_type: int):
+	print("\nTower: Setting type to ", new_type)
 	type = new_type
-	match type:
-		TOWER_TYPE.BALLISTA:
-			damage = 20.0
-			attack_range = 200.0
-			attack_speed = 1.0
-		TOWER_TYPE.FLAMETHROWER:
-			damage = 10.0
-			attack_range = 150.0
-			attack_speed = 2.0
-		TOWER_TYPE.ARCANE:
-			damage = 15.0
-			attack_range = 180.0
-			attack_speed = 1.5
 	
-	attack_interval = 1.0 / attack_speed  # Update interval based on attacks per second
+	# Update sprite
+	if sprite and tower_textures.has(type):
+		sprite.texture = tower_textures[type]
+		var intensity = 0.5 + (rank * 0.1)
+		sprite.modulate.a = intensity
+	
+	# Update combat stats based on type
+	if combat_component:
+		match type:
+			TOWER_TYPE.BALLISTA:
+				combat_component.damage = 20.0
+				combat_component.attack_range = 200.0
+				combat_component.attack_speed = 1.0
+			TOWER_TYPE.FLAMETHROWER:
+				combat_component.damage = 10.0
+				combat_component.attack_range = 150.0
+				combat_component.attack_speed = 2.0
+			TOWER_TYPE.ARCANE:
+				combat_component.damage = 15.0
+				combat_component.attack_range = 180.0
+				combat_component.attack_speed = 1.5
+	
+	# Update range indicator
 	if range_indicator:
-		range_indicator.scale = Vector2.ONE * (attack_range / 100.0)
-	_update_appearance()
+		range_indicator.scale = Vector2.ONE * (combat_component.attack_range / 100.0)
+	print("Tower: Type set successfully")
 
 func _on_health_changed(current: float, maximum: float):
 	if not health_bar:
@@ -256,3 +268,13 @@ func _setup_effect_tween():
 	# Chain the return to normal
 	_effect_tween.chain().tween_property(sprite, "modulate", Color.WHITE, 0.1)
 	_effect_tween.chain().tween_property(sprite, "scale", Vector2.ONE, 0.1)
+
+func _on_attack_completed(target: Node2D):
+	# Play appropriate effect
+	match type:
+		TOWER_TYPE.BALLISTA:
+			_spawn_projectile(target, combat_component.damage * RANK_BONUSES[rank])
+		TOWER_TYPE.FLAMETHROWER:
+			_spawn_flame_effect(target, combat_component.damage * RANK_BONUSES[rank])
+		TOWER_TYPE.ARCANE:
+			_spawn_arcane_effect(target, combat_component.damage * RANK_BONUSES[rank])

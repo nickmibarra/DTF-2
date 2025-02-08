@@ -31,8 +31,10 @@ var damage_scale: float = 1.1
 var active_enemies: Array = []
 
 func _ready():
+	print("\nWaveManager: Initializing...")
 	set_process(false)
 	randomize()  # Initialize random number generator
+	print("WaveManager: Initialization complete")
 
 func _process(delta):
 	if wave_in_progress and enemies_remaining > 0:
@@ -49,7 +51,9 @@ func _process(delta):
 		_on_wave_complete()
 
 func start_wave():
+	print("\nStarting wave...")
 	if wave_in_progress:
+		print("Wave already in progress")
 		return
 	
 	current_wave += 1
@@ -58,8 +62,10 @@ func start_wave():
 	spawn_timer = 0.0
 	set_process(true)
 	wave_started.emit(current_wave)
+	print("Wave ", current_wave, " started with ", enemies_remaining, " enemies")
 
 func start_endless_mode():
+	print("\nStarting endless mode...")
 	endless_mode = true
 	start_wave()
 
@@ -76,6 +82,7 @@ func spawn_enemy():
 		push_error("Grid not found in parent")
 		return
 	
+	print("Spawning enemy...")
 	var enemy = enemy_scene.instantiate()
 	grid.add_child(enemy)  # Add to grid instead of parent
 	active_enemies.append(enemy)
@@ -86,11 +93,18 @@ func spawn_enemy():
 	var gold = int(base_gold * pow(gold_scale, current_wave - 1))
 	var damage = int(base_damage * pow(damage_scale, current_wave - 1))
 	
+	print("Enemy stats:")
+	print("- Health: ", health)
+	print("- Speed: ", speed)
+	print("- Gold: ", gold)
+	print("- Damage: ", damage)
+	
 	enemy.set_stats(health, speed, gold, damage)
 	
 	# Get spawn position
 	var spawn_pos = grid.get_random_spawn_point()
 	enemy.position = spawn_pos
+	print("Enemy spawned at: ", spawn_pos)
 	
 	# Connect signals
 	enemy.died.connect(_on_enemy_died.bind(enemy))
@@ -106,7 +120,11 @@ func _on_enemy_died(gold_value: int, enemy: Node2D):
 		_on_wave_complete()
 
 func _on_enemy_reached_flag(damage: int):
-	get_parent().flag.take_damage(damage)
+	var flag = get_parent().flag
+	if flag and flag.health_component:
+		flag.health_component.take_damage(damage)
+	else:
+		push_error("Flag or its health component not found!")
 
 func _on_wave_complete():
 	wave_in_progress = false

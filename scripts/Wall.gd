@@ -1,10 +1,11 @@
-extends Node2D
+extends Entity
 
 @onready var sprite = $Sprite2D
 @onready var health_bar = $HealthBar
 @onready var attackable = $Attackable
 
 func _ready():
+	super._ready()
 	add_to_group("walls")
 	
 	# Initialize attackable component
@@ -12,7 +13,7 @@ func _ready():
 		push_error("Wall: Attackable component not found!")
 		return
 		
-	attackable.initialize(5000.0)  # 100 health, no armor
+	attackable.initialize(5000.0)  # Walls are tough!
 	attackable.health_changed.connect(_on_health_changed)
 	attackable.destroyed.connect(_on_wall_destroyed)
 
@@ -44,3 +45,10 @@ func take_damage(amount: float):
 		attackable.take_damage(amount)
 	else:
 		push_error("Wall: Cannot take damage, no Attackable component!")
+
+func _on_died():
+	# Tell the grid to remove this wall
+	var grid = get_parent()
+	if grid and grid.has_method("world_to_grid"):
+		var grid_pos = grid.world_to_grid(position)
+		grid.set_cell_type(grid_pos, grid.TILE_TYPE.EMPTY)

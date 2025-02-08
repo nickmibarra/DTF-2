@@ -24,54 +24,60 @@ func _ready() -> void:
 	_initialize_components()
 
 func _initialize_components() -> void:
-	# Initialize components based on configuration
-	if use_health:
+	# Get existing components first
+	health_component = get_node_or_null("HealthComponent")
+	movement_component = get_node_or_null("MovementComponent")
+	combat_component = get_node_or_null("CombatComponent")
+	status_component = get_node_or_null("StatusEffectComponent")
+	visual_manager = get_node_or_null("VisualManager")
+	state_manager = get_node_or_null("StateManager")
+	
+	# Only add components if they don't exist and are enabled
+	if use_health and not health_component:
 		health_component = HealthComponent.new()
-		health_component.name = "HealthComponent"  # Set consistent name
+		health_component.name = "HealthComponent"
 		add_child(health_component)
 		print("Health component added to ", name)
-		
-	if use_movement:
+	
+	if use_movement and not movement_component:
 		movement_component = MovementComponent.new()
 		movement_component.name = "MovementComponent"
 		add_child(movement_component)
 		print("Movement component added to ", name)
-		
-	if use_combat:
+	
+	if use_combat and not combat_component:
 		combat_component = CombatComponent.new()
 		combat_component.name = "CombatComponent"
 		add_child(combat_component)
 		print("Combat component added to ", name)
-		
-	if use_status:
+	
+	if use_status and not status_component:
 		status_component = StatusEffectComponent.new()
 		status_component.name = "StatusEffectComponent"
 		add_child(status_component)
 		print("Status component added to ", name)
 	
-	# Initialize managers
-	visual_manager = VisualManager.new()
-	visual_manager.name = "VisualManager"
-	add_child(visual_manager)
-	print("Visual manager added to ", name)
+	if not visual_manager:
+		visual_manager = VisualManager.new()
+		visual_manager.name = "VisualManager"
+		add_child(visual_manager)
+		print("Visual manager added to ", name)
 	
-	state_manager = StateManager.new()
-	state_manager.name = "StateManager"
-	add_child(state_manager)
-	print("State manager added to ", name)
+	if not state_manager:
+		state_manager = StateManager.new()
+		state_manager.name = "StateManager"
+		add_child(state_manager)
+		print("State manager added to ", name)
 	
 	# Wait for components to initialize
 	await get_tree().process_frame
-	print("First frame processed for ", name)
 	
 	# Connect component signals
 	_connect_component_signals()
-	print("Component signals connected for ", name)
 	
 	# Setup complete
 	_initialized = true
 	_on_setup_complete()
-	print("Entity setup complete for: ", name)
 
 func _physics_process(delta: float) -> void:
 	if not _initialized:

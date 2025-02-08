@@ -74,8 +74,12 @@ func _ready():
 	# Initialize spatial grid
 	_initialize_spatial_grid()
 	
-	# Connect to existing attackable objects
-	call_deferred("_cache_existing_attackables")
+	# Clear any existing entities
+	for child in get_children():
+		if child is Timer:  # Keep timers
+			continue
+		if child.is_in_group("attackable"):
+			child.queue_free()
 	
 	# Start cache cleanup timers
 	var path_timer = Timer.new()
@@ -89,6 +93,9 @@ func _ready():
 	breakthrough_timer.timeout.connect(_cleanup_breakthrough_cache)
 	add_child(breakthrough_timer)
 	breakthrough_timer.start()
+	
+	# Initialize caches after cleanup
+	call_deferred("_cache_existing_attackables")
 
 func setup_grid_transform():
 	# Grid should be at origin with no transform
@@ -206,10 +213,62 @@ func set_cell_type(pos: Vector2, type: int) -> bool:
 	queue_redraw()
 	return true
 
+# Add new function to place tower
+func place_tower(pos: Vector2, tower_type: int) -> bool:
+	print("\nGrid: Attempting to place tower...")
+	print("Grid position: ", pos)
+	
+	if not is_valid_cell(pos):
+		print("Grid: Failed - Invalid grid position")
+		return false
+		
+	if grid[pos.x][pos.y] != TILE_TYPE.EMPTY:
+		print("Grid: Failed - Cell not empty")
+		return false
+		
+	var tower_scene = preload("res://scenes/Tower.tscn")
+	if not tower_scene:
+		push_error("Grid: Failed - Could not load tower scene!")
+		return false
+	
+	print("Grid: Creating tower instance...")
+	var tower = tower_scene.instantiate()
+	if not tower:
+		push_error("Grid: Failed - Could not instantiate tower!")
+		return false
+	
+	var final_pos = grid_to_world(pos)
+	print("Grid: Setting tower position to: ", final_pos)
+	tower.position = final_pos
+	
+	print("Grid: Setting tower type to: ", tower_type)
+	if not tower.has_method("set_type"):
+		push_error("Grid: Failed - Tower does not have set_type method!")
+		return false
+	
+	tower.set_type(tower_type)
+	
+	print("Grid: Adding tower to scene...")
+	add_child(tower)
+	
+	print("Grid: Updating grid and registering tower...")
+	grid[pos.x][pos.y] = TILE_TYPE.TOWER
+	towers[str(pos)] = tower
+	_add_to_spatial_cache(tower)
+	
+	if pos.distance_to(flag_position) <= 2:
+		_flag_access_cache.time = 0.0
+	obstacle_changed.emit(pos)
+	tower_placed.emit(tower, pos)
+	
+	queue_redraw()
+	print("Grid: Tower placed successfully")
+	return true
+
 func world_to_grid(world_pos: Vector2) -> Vector2:
-	# Direct conversion from world position to grid coordinates
-	var grid_x = int(world_pos.x / BASE_GRID_SIZE)
-	var grid_y = int(world_pos.y / BASE_GRID_SIZE)
+	# Convert world position to grid coordinates with proper rounding
+	var grid_x = int(round(world_pos.x / BASE_GRID_SIZE))
+	var grid_y = int(round(world_pos.y / BASE_GRID_SIZE))
 	
 	return Vector2(
 		clamp(grid_x, 0, GRID_WIDTH - 1),
@@ -218,11 +277,10 @@ func world_to_grid(world_pos: Vector2) -> Vector2:
 
 func grid_to_world(grid_pos: Vector2) -> Vector2:
 	# Convert grid coordinates to world position (center of cell)
-	var world_pos = Vector2(
+	return Vector2(
 		grid_pos.x * BASE_GRID_SIZE + BASE_GRID_SIZE/2,
 		grid_pos.y * BASE_GRID_SIZE + BASE_GRID_SIZE/2
 	)
-	return world_pos
 
 # Add helper function near the top
 func is_blocking_obstacle(cell_type: int) -> bool:
@@ -531,7 +589,7 @@ func _get_spatial_key(pos: Vector2) -> String:
 
 func _cache_existing_attackables():
 	for obj in get_tree().get_nodes_in_group("attackable"):
-		if obj is Node2D:
+		if obj is Node2D and obj.get_parent() == self:  # Only cache objects that are children of grid
 			_add_to_spatial_cache(obj)
 
 func _add_to_spatial_cache(obj: Node2D):

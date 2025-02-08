@@ -1,806 +1,3032 @@
 Godot Engine v4.2.1.stable.official.b09f793f5 - https://godotengine.org
 Vulkan API 1.3.292 - Forward+ - Using Vulkan Device #0: AMD - AMD Radeon RX 7800 XT
  
-
-Starting Entity System Test
-
-Starting test sequence...
-
-Testing Initialization
-
-Setting up test...
-Entity _ready called for: TestEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TestEntity/HealthComponent
+HealthComponent _ready called on: /root/TestMap/Flag/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health component added to TestEntity
+HealthComponent _ready completed on: /root/TestMap/Flag/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Movement component added to TestEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Combat component added to TestEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Status component added to TestEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "Attackable" (relative to "/root/TestMap/Flag").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+Entity _ready called for: Flag
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Flag/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Flag/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Flag/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TestEntity
-StateManager ready for: TestEntity
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Flag/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to Flag
+StateManager ready for: Flag
 Entering idle state
-State manager added to TestEntity
-Created test entity
-Entity _ready called for: TargetEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Movement component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Combat component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Status component added to TargetEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TargetEntity
-StateManager ready for: TargetEntity
-Entering idle state
-State manager added to TargetEntity
-Created target entity
-HealthComponent _initialize called on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-CombatComponent initialized for: TestEntity
-HealthComponent _initialize called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-CombatComponent initialized for: TargetEntity
-USER ERROR: CombatManager: No grid found in scene
+State manager added to Flag
+USER ERROR: Flag: Attackable component not found!
    at: push_error (core/variant/variant_utility.cpp:1091)
-First frame processed for TestEntity
-Entity: Connecting component signals for TestEntity
+
+WaveManager: Initializing...
+WaveManager: Initialization complete
+
+Camera initialized:
+- Position: (1280, 540)
+- Zoom: (0.434659, 0.434659)
+- Viewport size: (1720, 720)
+
+TestMap: Initializing...
+Checking scenes...
+- Tower scene loaded: true
+USER WARNING: Node './HealthBar' was modified from inside an instance, but it has vanished.
+   at: instantiate (scene/resources/packed_scene.cpp:231)
+- Tower instantiation test: Success
+TestMap: Initialization complete
+TestMap: Starting gold: 1000
+TestMap: Input actions configured:
+- place_tower (Left Click): true
+- place_wall (Right Click): true
+TestMap: Tower scene loaded: true
+HealthComponent _initialize called on: /root/TestMap/Flag/HealthComponent
+Health initialized to: 1000 on: /root/TestMap/Flag/HealthComponent
+HealthComponent _initialize completed with health: 1000 on: /root/TestMap/Flag/HealthComponent
+CombatComponent initialized for: Flag
+Entity: Connecting component signals for Flag
 Entity: Health signals connected
 Entity: Movement signals connected
 Entity: Combat signals connected
 Entity: Status signals connected
-Component signals connected for TestEntity
-Entity setup complete for: TestEntity
-First frame processed for TargetEntity
-Entity: Connecting component signals for TargetEntity
-Entity: Health signals connected
-Entity: Movement signals connected
-Entity: Combat signals connected
-Entity: Status signals connected
-Component signals connected for TargetEntity
-Entity setup complete for: TargetEntity
-First frame processed
-Second frame processed
 
-Verifying entity initialization:
-Test entity components:
-- Health: HealthComponent:<Node#29427238109> initialized: true
-- Combat: CombatComponent:<Node#29460792538>
-- State: idle
+Right click detected at: (859, 370)
 
-Target entity components:
-- Health: HealthComponent:<Node#29645341934> initialized: true
-- Position: (50, 0)
+Coordinate conversion:
+- Screen pos: (858.5, 370)
+- Viewport center: (860, 360)
+- Offset: (-3.45098, 23.00654)
+- World pos: (1276.549, 563.0065)
 
-Final component state:
-Test entity health initialized: true
-Target entity health initialized: true
-Signals connected
-Setup complete
-
-Verifying components:
-Health component - exists: true
-Current health: 100/100
-Movement component - exists: true
-Movement speed: 100
-Combat component - exists: true
-Attack range: 100
-Status component - exists: true
-Active effects: {  }
-
-Verifying managers:
-Visual manager - exists: true
-State manager - exists: true
-Current state: idle
-
-Testing Health System
-
-Setting up test...
-Entity _ready called for: TestEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TestEntity/HealthComponent
+Attempting wall placement:
+- Screen pos: (858.5, 370)
+- World pos: (1276.549, 563.0065)
+- Grid pos: (20, 9)
+- Current gold: 1000
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: Wall
+HealthComponent _ready called on: /root/TestMap/Grid/Wall/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health component added to TestEntity
+HealthComponent _ready completed on: /root/TestMap/Grid/Wall/HealthComponent
+Health component added to Wall
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Movement component added to TestEntity
+Movement component added to Wall
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Combat component added to TestEntity
+Combat component added to Wall
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Status component added to TestEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+Status component added to Wall
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/Wall/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/Wall/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/Wall/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/Wall/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TestEntity
-StateManager ready for: TestEntity
+Visual manager added to Wall
+StateManager ready for: Wall
 Entering idle state
-State manager added to TestEntity
-Created test entity
-Entity _ready called for: TargetEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TargetEntity/HealthComponent
+State manager added to Wall
+Wall placed successfully
+Entity: Connecting component signals for Wall
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+HealthComponent _initialize called on: /root/TestMap/Grid/Wall/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/Wall/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/Wall/HealthComponent
+CombatComponent initialized for: Wall
+
+Left click detected at: (796, 362.5)
+
+Coordinate conversion:
+- Screen pos: (796, 362.5)
+- Viewport center: (860, 360)
+- Offset: (-147.2418, 5.751634)
+- World pos: (1132.758, 545.7516)
+
+Attempting tower placement:
+- Screen pos: (796, 362.5)
+- World pos: (1132.758, 545.7516)
+- Grid pos: (18, 9)
+- Selected tower type: 0
+- Current gold: 980
+- Tower cost: 50
+Placing tower...
+
+Grid: Attempting to place tower...
+Grid position: (18, 9)
+Grid: Creating tower instance...
+USER WARNING: Node './HealthBar' was modified from inside an instance, but it has vanished.
+   at: instantiate (scene/resources/packed_scene.cpp:231)
+Grid: Setting tower position to: (1184, 608)
+Grid: Setting tower type to: 0
+
+Tower: Setting type to 0
+Tower: Type set successfully
+Grid: Adding tower to scene...
+HealthComponent _ready called on: /root/TestMap/Grid/Tower/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health component added to TargetEntity
+HealthComponent _ready completed on: /root/TestMap/Grid/Tower/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Movement component added to TargetEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Combat component added to TargetEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Status component added to TargetEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/Tower").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+Entity _ready called for: Tower
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/Tower/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/Tower/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/Tower/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TargetEntity
-StateManager ready for: TargetEntity
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/Tower/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to Tower
+StateManager ready for: Tower
 Entering idle state
-State manager added to TargetEntity
-Created target entity
-HealthComponent _initialize called on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-CombatComponent initialized for: TestEntity
-HealthComponent _initialize called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-CombatComponent initialized for: TargetEntity
-First frame processed for TestEntity
-Entity: Connecting component signals for TestEntity
+State manager added to Tower
+Grid: Updating grid and registering tower...
+Grid: Tower placed successfully
+Tower placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/Tower/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/Tower/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/Tower/HealthComponent
+CombatComponent initialized for: Tower
+Entity: Connecting component signals for Tower
 Entity: Health signals connected
 Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Tower.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
 Entity: Combat signals connected
 Entity: Status signals connected
-Component signals connected for TestEntity
-Entity setup complete for: TestEntity
-First frame processed for TargetEntity
-Entity: Connecting component signals for TargetEntity
-Entity: Health signals connected
-Entity: Movement signals connected
-Entity: Combat signals connected
-Entity: Status signals connected
-Component signals connected for TargetEntity
-Entity setup complete for: TargetEntity
-First frame processed
-Second frame processed
 
-Verifying entity initialization:
-Test entity components:
-- Health: HealthComponent:<Node#30299653358> initialized: true
-- Combat: CombatComponent:<Node#30333207792>
-- State: idle
+Left click detected at: (802.5, 324.5)
 
-Target entity components:
-- Health: HealthComponent:<Node#30517757145> initialized: true
-- Position: (50, 0)
+Coordinate conversion:
+- Screen pos: (802.5, 324.5)
+- Viewport center: (860, 360)
+- Offset: (-132.2876, -81.6732)
+- World pos: (1147.712, 458.3268)
 
-Final component state:
-Test entity health initialized: true
-Target entity health initialized: true
-Signals connected
-Setup complete
-Health changed: 80/100
+Attempting tower placement:
+- Screen pos: (802.5, 324.5)
+- World pos: (1147.712, 458.3268)
+- Grid pos: (18, 7)
+- Selected tower type: 0
+- Current gold: 930
+- Tower cost: 50
+Placing tower...
 
-Testing Movement System
+Grid: Attempting to place tower...
+Grid position: (18, 7)
+Grid: Creating tower instance...
+USER WARNING: Node './HealthBar' was modified from inside an instance, but it has vanished.
+   at: instantiate (scene/resources/packed_scene.cpp:231)
+Grid: Setting tower position to: (1184, 480)
+Grid: Setting tower type to: 0
 
-Setting up test...
-Entity _ready called for: TestEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TestEntity/HealthComponent
+Tower: Setting type to 0
+Tower: Type set successfully
+Grid: Adding tower to scene...
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@4/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health component added to TestEntity
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@4/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Movement component added to TestEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Combat component added to TestEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Status component added to TestEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@4").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+Entity _ready called for: @Node2D@4
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@4/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@4/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@4/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TestEntity
-StateManager ready for: TestEntity
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@4/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@4
+StateManager ready for: @Node2D@4
 Entering idle state
-State manager added to TestEntity
-Created test entity
-Entity _ready called for: TargetEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TargetEntity/HealthComponent
+State manager added to @Node2D@4
+Grid: Updating grid and registering tower...
+Grid: Tower placed successfully
+Tower placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@4/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@4/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@4/HealthComponent
+CombatComponent initialized for: @Node2D@4
+Entity: Connecting component signals for @Node2D@4
+Entity: Health signals connected
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Tower.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Left click detected at: (1601.5, 37)
+
+Coordinate conversion:
+- Screen pos: (1601.5, 37)
+- Viewport center: (860, 360)
+- Offset: (1705.935, -743.1111)
+- World pos: (2985.935, -203.1111)
+
+Attempting tower placement:
+- Screen pos: (1601.5, 37)
+- World pos: (2985.935, -203.1111)
+- Grid pos: (39, 0)
+- Selected tower type: 0
+- Current gold: 880
+- Tower cost: 50
+Placing tower...
+
+Grid: Attempting to place tower...
+Grid position: (39, 0)
+Grid: Creating tower instance...
+USER WARNING: Node './HealthBar' was modified from inside an instance, but it has vanished.
+   at: instantiate (scene/resources/packed_scene.cpp:231)
+Grid: Setting tower position to: (2528, 32)
+Grid: Setting tower type to: 0
+
+Tower: Setting type to 0
+Tower: Type set successfully
+Grid: Adding tower to scene...
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@5/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health component added to TargetEntity
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@5/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Movement component added to TargetEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Combat component added to TargetEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Status component added to TargetEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@5").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+Entity _ready called for: @Node2D@5
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@5/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@5/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@5/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TargetEntity
-StateManager ready for: TargetEntity
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@5/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@5
+StateManager ready for: @Node2D@5
 Entering idle state
-State manager added to TargetEntity
-Created target entity
-HealthComponent _initialize called on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-CombatComponent initialized for: TestEntity
-HealthComponent _initialize called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-CombatComponent initialized for: TargetEntity
-First frame processed for TestEntity
-Entity: Connecting component signals for TestEntity
+State manager added to @Node2D@5
+Grid: Updating grid and registering tower...
+Grid: Tower placed successfully
+Tower placed successfully
+Entity: Connecting component signals for @Node2D@5
 Entity: Health signals connected
 Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Tower.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
 Entity: Combat signals connected
 Entity: Status signals connected
-Component signals connected for TestEntity
-Entity setup complete for: TestEntity
-First frame processed for TargetEntity
-Entity: Connecting component signals for TargetEntity
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@5/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@5/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@5/HealthComponent
+CombatComponent initialized for: @Node2D@5
+
+Attempting to start wave...
+Wave manager exists: true
+Current wave: 0
+Wave in progress: false
+
+Starting wave...
+Wave 1 started with 10 enemies
+Wave started successfully
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: Enemy
+HealthComponent _ready called on: /root/TestMap/Grid/Enemy/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/Enemy/HealthComponent
+Health component added to Enemy
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to Enemy
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to Enemy
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to Enemy
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/Enemy/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/Enemy/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/Enemy/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/Enemy/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to Enemy
+StateManager ready for: Enemy
+Entering idle state
+State manager added to Enemy
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 224)
+HealthComponent _initialize called on: /root/TestMap/Grid/Enemy/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/Enemy/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/Enemy/HealthComponent
+CombatComponent initialized for: Enemy
+Entity: Connecting component signals for Enemy
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
 Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
 Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
 Entity: Combat signals connected
 Entity: Status signals connected
-Component signals connected for TargetEntity
-Entity setup complete for: TargetEntity
-First frame processed
-Second frame processed
 
-Verifying entity initialization:
-Test entity components:
-- Health: HealthComponent:<Node#31004296450> initialized: true
-- Combat: CombatComponent:<Node#31037850842>
-- State: idle
-
-Target entity components:
-- Health: HealthComponent:<Node#31222400238> initialized: true
-- Position: (50, 0)
-
-Final component state:
-Test entity health initialized: true
-Target entity health initialized: true
-Signals connected
-Setup complete
-Initial state: idle
-
-Attempting state transition for TestEntity
+Attempting state transition for Enemy
 From: idle To: moving
 Transition valid, executing...
 Exiting idle state
 Entering moving state
 State transition complete: idle -> moving
-State changed: idle -> moving
-Called move_to with target: (50, 0)
-Position changed: (10, 0)
-Processed frame 1, Current state: moving
-Position changed: (20, 0)
-Position changed: (21.66667, 0)
-Processed frame 2, Current state: moving
-Position changed: (31.66667, 0)
-Processed frame 3, Current state: moving
-Final state: moving
 
-Testing Status System
+Left click detected at: (1025, 275.5)
 
-Setting up test...
-Entity _ready called for: TestEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TestEntity/HealthComponent
+Coordinate conversion:
+- Screen pos: (1025, 275.5)
+- Viewport center: (860, 360)
+- Offset: (379.6078, -194.4052)
+- World pos: (1659.608, 345.5948)
+
+Attempting tower placement:
+- Screen pos: (1025, 275.5)
+- World pos: (1659.608, 345.5948)
+- Grid pos: (26, 5)
+- Selected tower type: 0
+- Current gold: 830
+- Tower cost: 50
+Placing tower...
+
+Grid: Attempting to place tower...
+Grid position: (26, 5)
+Grid: Creating tower instance...
+USER WARNING: Node './HealthBar' was modified from inside an instance, but it has vanished.
+   at: instantiate (scene/resources/packed_scene.cpp:231)
+Grid: Setting tower position to: (1696, 352)
+Grid: Setting tower type to: 0
+
+Tower: Setting type to 0
+Tower: Type set successfully
+Grid: Adding tower to scene...
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@6/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health component added to TestEntity
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@6/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Movement component added to TestEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Combat component added to TestEntity
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Status component added to TestEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@6").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+Entity _ready called for: @Node2D@6
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@6/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@6/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@6/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TestEntity
-StateManager ready for: TestEntity
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@6/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@6
+StateManager ready for: @Node2D@6
 Entering idle state
-State manager added to TestEntity
-Created test entity
-Entity _ready called for: TargetEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Movement component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Combat component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Status component added to TargetEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TargetEntity
-StateManager ready for: TargetEntity
-Entering idle state
-State manager added to TargetEntity
-Created target entity
-HealthComponent _initialize called on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-CombatComponent initialized for: TestEntity
-HealthComponent _initialize called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-CombatComponent initialized for: TargetEntity
-First frame processed for TestEntity
-Entity: Connecting component signals for TestEntity
+State manager added to @Node2D@6
+Grid: Updating grid and registering tower...
+Grid: Tower placed successfully
+Tower placed successfully
+Entity: Connecting component signals for @Node2D@6
 Entity: Health signals connected
 Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Tower.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
 Entity: Combat signals connected
 Entity: Status signals connected
-Component signals connected for TestEntity
-Entity setup complete for: TestEntity
-First frame processed for TargetEntity
-Entity: Connecting component signals for TargetEntity
-Entity: Health signals connected
-Entity: Movement signals connected
-Entity: Combat signals connected
-Entity: Status signals connected
-Component signals connected for TargetEntity
-Entity setup complete for: TargetEntity
-First frame processed
-Second frame processed
-
-Verifying entity initialization:
-Test entity components:
-- Health: HealthComponent:<Node#31859934447> initialized: true
-- Combat: CombatComponent:<Node#31893488881>
-- State: idle
-
-Target entity components:
-- Health: HealthComponent:<Node#32078038234> initialized: true
-- Position: (50, 0)
-
-Final component state:
-Test entity health initialized: true
-Target entity health initialized: true
-Signals connected
-Setup complete
-Effect applied: speed_boost for 5 seconds
-
-Testing State System
-
-Setting up test...
-Entity _ready called for: TestEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TestEntity/HealthComponent
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@6/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@6/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@6/HealthComponent
+CombatComponent initialized for: @Node2D@6
+Spawning enemy...
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health component added to TestEntity
+Entity _ready called for: @Node2D@7
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@7/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Movement component added to TestEntity
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@7/HealthComponent
+Health component added to @Node2D@7
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Combat component added to TestEntity
+Movement component added to @Node2D@7
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Status component added to TestEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+Combat component added to @Node2D@7
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@7
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@7/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@7/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@7/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@7/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TestEntity
-StateManager ready for: TestEntity
+Visual manager added to @Node2D@7
+StateManager ready for: @Node2D@7
 Entering idle state
-State manager added to TestEntity
-Created test entity
-Entity _ready called for: TargetEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Movement component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Combat component added to TargetEntity
-EntityComponent _ready called for Node
-EntityComponent _ready completed for Node
-Status component added to TargetEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
-   at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TargetEntity
-StateManager ready for: TargetEntity
-Entering idle state
-State manager added to TargetEntity
-Created target entity
-HealthComponent _initialize called on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-CombatComponent initialized for: TestEntity
-HealthComponent _initialize called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-CombatComponent initialized for: TargetEntity
-First frame processed for TestEntity
-Entity: Connecting component signals for TestEntity
+State manager added to @Node2D@7
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 224)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@7/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@7/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@7/HealthComponent
+CombatComponent initialized for: @Node2D@7
+Entity: Connecting component signals for @Node2D@7
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
 Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
 Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
 Entity: Combat signals connected
 Entity: Status signals connected
-Component signals connected for TestEntity
-Entity setup complete for: TestEntity
-First frame processed for TargetEntity
-Entity: Connecting component signals for TargetEntity
-Entity: Health signals connected
-Entity: Movement signals connected
-Entity: Combat signals connected
-Entity: Status signals connected
-Component signals connected for TargetEntity
-Entity setup complete for: TargetEntity
-First frame processed
-Second frame processed
 
-Verifying entity initialization:
-Test entity components:
-- Health: HealthComponent:<Node#32631686360> initialized: true
-- Combat: CombatComponent:<Node#32665240807>
-- State: idle
-
-Target entity components:
-- Health: HealthComponent:<Node#32849790194> initialized: true
-- Position: (50, 0)
-
-Final component state:
-Test entity health initialized: true
-Target entity health initialized: true
-Signals connected
-Setup complete
-
-Attempting state transition for TestEntity
+Attempting state transition for @Node2D@7
 From: idle To: moving
 Transition valid, executing...
 Exiting idle state
 Entering moving state
 State transition complete: idle -> moving
-State changed: idle -> moving
-
-Testing Combat System
-
-Setting up test...
-Entity _ready called for: TestEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TestEntity/HealthComponent
+Spawning enemy...
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health component added to TestEntity
+Entity _ready called for: @Node2D@8
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@8/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Movement component added to TestEntity
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@8/HealthComponent
+Health component added to @Node2D@8
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Combat component added to TestEntity
+Movement component added to @Node2D@8
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Status component added to TestEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+Combat component added to @Node2D@8
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@8
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@8/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@8/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@8/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TestEntity/VisualManager").
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@8/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TestEntity
-StateManager ready for: TestEntity
+Visual manager added to @Node2D@8
+StateManager ready for: @Node2D@8
 Entering idle state
-State manager added to TestEntity
-Created test entity
-Entity _ready called for: TargetEntity
-HealthComponent _ready called on: /root/EntitySystemTest/TargetEntity/HealthComponent
+State manager added to @Node2D@8
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 864)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@8/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@8/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@8/HealthComponent
+CombatComponent initialized for: @Node2D@8
+Entity: Connecting component signals for @Node2D@8
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@8
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-HealthComponent _ready completed on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health component added to TargetEntity
+Entity _ready called for: @Node2D@9
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@9/HealthComponent
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Movement component added to TargetEntity
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@9/HealthComponent
+Health component added to @Node2D@9
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Combat component added to TargetEntity
+Movement component added to @Node2D@9
 EntityComponent _ready called for Node
 EntityComponent _ready completed for Node
-Status component added to TargetEntity
-USER ERROR: Node not found: "Sprite" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+Combat component added to @Node2D@9
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@9
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@9/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@9/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "HealthBar" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@9/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-USER ERROR: Node not found: "EffectContainer" (relative to "/root/EntitySystemTest/TargetEntity/VisualManager").
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@9/VisualManager").
    at: get_node (scene/main/node.cpp:1638)
-Visual manager added to TargetEntity
-StateManager ready for: TargetEntity
+Visual manager added to @Node2D@9
+StateManager ready for: @Node2D@9
 Entering idle state
-State manager added to TargetEntity
-Created target entity
-HealthComponent _initialize called on: /root/EntitySystemTest/TestEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TestEntity/HealthComponent
-CombatComponent initialized for: TestEntity
-HealthComponent _initialize called on: /root/EntitySystemTest/TargetEntity/HealthComponent
-Health initialized to: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-HealthComponent _initialize completed with health: 100 on: /root/EntitySystemTest/TargetEntity/HealthComponent
-CombatComponent initialized for: TargetEntity
-First frame processed for TestEntity
-Entity: Connecting component signals for TestEntity
+State manager added to @Node2D@9
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 160)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@9/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@9/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@9/HealthComponent
+CombatComponent initialized for: @Node2D@9
+Entity: Connecting component signals for @Node2D@9
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@9
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@10
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+Health component added to @Node2D@10
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@10
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@10
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@10
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@10/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@10/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@10/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@10/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@10
+StateManager ready for: @Node2D@10
+Entering idle state
+State manager added to @Node2D@10
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 864)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+CombatComponent initialized for: @Node2D@10
+Entity: Connecting component signals for @Node2D@10
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@10
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@11
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+Health component added to @Node2D@11
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@11
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@11
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@11
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@11/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@11/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@11/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@11/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@11
+StateManager ready for: @Node2D@11
+Entering idle state
+State manager added to @Node2D@11
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 1056)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+CombatComponent initialized for: @Node2D@11
+Entity: Connecting component signals for @Node2D@11
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@11
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@12
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+Health component added to @Node2D@12
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@12
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@12
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@12
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@12/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@12/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@12/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@12/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@12
+StateManager ready for: @Node2D@12
+Entering idle state
+State manager added to @Node2D@12
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 1184)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+CombatComponent initialized for: @Node2D@12
+Entity: Connecting component signals for @Node2D@12
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@12
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@13
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+Health component added to @Node2D@13
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@13
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@13
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@13
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@13/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@13/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@13/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@13/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@13
+StateManager ready for: @Node2D@13
+Entering idle state
+State manager added to @Node2D@13
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 480)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+CombatComponent initialized for: @Node2D@13
+Entity: Connecting component signals for @Node2D@13
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@13
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@14
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+Health component added to @Node2D@14
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@14
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@14
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@14
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@14/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@14/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@14/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@14/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@14
+StateManager ready for: @Node2D@14
+Entering idle state
+State manager added to @Node2D@14
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 1184)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+CombatComponent initialized for: @Node2D@14
+Entity: Connecting component signals for @Node2D@14
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@14
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@15
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@15/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@15/HealthComponent
+Health component added to @Node2D@15
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@15
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@15
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@15
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@15/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@15/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@15/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@15/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@15
+StateManager ready for: @Node2D@15
+Entering idle state
+State manager added to @Node2D@15
+Enemy stats:
+- Health: 100
+- Speed: 100
+- Gold: 10
+- Damage: 1
+Enemy spawned at: (32, 1056)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@15/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@15/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@15/HealthComponent
+CombatComponent initialized for: @Node2D@15
+Entity: Connecting component signals for @Node2D@15
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@15
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+
+Left click detected at: (1048.5, 340)
+
+Coordinate conversion:
+- Screen pos: (1048.5, 340)
+- Viewport center: (860, 360)
+- Offset: (433.6732, -46.01307)
+- World pos: (1713.673, 493.9869)
+
+Attempting tower placement:
+- Screen pos: (1048.5, 340)
+- World pos: (1713.673, 493.9869)
+- Grid pos: (27, 8)
+- Selected tower type: 0
+- Current gold: 790
+- Tower cost: 50
+Placing tower...
+
+Grid: Attempting to place tower...
+Grid position: (27, 8)
+Grid: Creating tower instance...
+USER WARNING: Node './HealthBar' was modified from inside an instance, but it has vanished.
+   at: instantiate (scene/resources/packed_scene.cpp:231)
+Grid: Setting tower position to: (1760, 544)
+Grid: Setting tower type to: 0
+
+Tower: Setting type to 0
+Tower: Type set successfully
+Grid: Adding tower to scene...
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@19/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@19/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@19").
+   at: get_node (scene/main/node.cpp:1638)
+Entity _ready called for: @Node2D@19
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@19/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@19/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@19/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@19/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@19
+StateManager ready for: @Node2D@19
+Entering idle state
+State manager added to @Node2D@19
+Grid: Updating grid and registering tower...
+Grid: Tower placed successfully
+Tower placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@19/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@19/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@19/HealthComponent
+CombatComponent initialized for: @Node2D@19
+Entity: Connecting component signals for @Node2D@19
+Entity: Health signals connected
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Tower.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Left click detected at: (1040.5, 328)
+
+Coordinate conversion:
+- Screen pos: (1040.5, 328)
+- Viewport center: (860, 360)
+- Offset: (415.268, -73.62092)
+- World pos: (1695.268, 466.3791)
+
+Attempting tower placement:
+- Screen pos: (1040.5, 328)
+- World pos: (1695.268, 466.3791)
+- Grid pos: (26, 7)
+- Selected tower type: 0
+- Current gold: 740
+- Tower cost: 50
+Placing tower...
+
+Grid: Attempting to place tower...
+Grid position: (26, 7)
+Grid: Creating tower instance...
+USER WARNING: Node './HealthBar' was modified from inside an instance, but it has vanished.
+   at: instantiate (scene/resources/packed_scene.cpp:231)
+Grid: Setting tower position to: (1696, 480)
+Grid: Setting tower type to: 0
+
+Tower: Setting type to 0
+Tower: Type set successfully
+Grid: Adding tower to scene...
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@21/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@21/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@21").
+   at: get_node (scene/main/node.cpp:1638)
+Entity _ready called for: @Node2D@21
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@21/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@21/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@21/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@21/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@21
+StateManager ready for: @Node2D@21
+Entering idle state
+State manager added to @Node2D@21
+Grid: Updating grid and registering tower...
+Grid: Tower placed successfully
+Tower placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@21/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@21/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@21/HealthComponent
+CombatComponent initialized for: @Node2D@21
+Entity: Connecting component signals for @Node2D@21
+Entity: Health signals connected
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Tower.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Left click detected at: (1035.5, 392.5)
+
+Coordinate conversion:
+- Screen pos: (1035.5, 392.5)
+- Viewport center: (860, 360)
+- Offset: (403.7647, 74.77124)
+- World pos: (1683.765, 614.7712)
+
+Attempting tower placement:
+- Screen pos: (1035.5, 392.5)
+- World pos: (1683.765, 614.7712)
+- Grid pos: (26, 10)
+- Selected tower type: 0
+- Current gold: 700
+- Tower cost: 50
+Placing tower...
+
+Grid: Attempting to place tower...
+Grid position: (26, 10)
+Grid: Creating tower instance...
+USER WARNING: Node './HealthBar' was modified from inside an instance, but it has vanished.
+   at: instantiate (scene/resources/packed_scene.cpp:231)
+Grid: Setting tower position to: (1696, 672)
+Grid: Setting tower type to: 0
+
+Tower: Setting type to 0
+Tower: Type set successfully
+Grid: Adding tower to scene...
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@25/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@25/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@25").
+   at: get_node (scene/main/node.cpp:1638)
+Entity _ready called for: @Node2D@25
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@25/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@25/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@25/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@25/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@25
+StateManager ready for: @Node2D@25
+Entering idle state
+State manager added to @Node2D@25
+Grid: Updating grid and registering tower...
+Grid: Tower placed successfully
+Tower placed successfully
+Entity: Connecting component signals for @Node2D@25
+Entity: Health signals connected
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Tower.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@25/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@25/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@25/HealthComponent
+CombatComponent initialized for: @Node2D@25
+
+Right click detected at: (1118.5, 411)
+
+Coordinate conversion:
+- Screen pos: (1118.5, 411)
+- Viewport center: (860, 360)
+- Offset: (594.7189, 117.3333)
+- World pos: (1874.719, 657.3333)
+
+Attempting wall placement:
+- Screen pos: (1118.5, 411)
+- World pos: (1874.719, 657.3333)
+- Grid pos: (29, 10)
+- Current gold: 690
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@38
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@38/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@38/HealthComponent
+Health component added to @Node2D@38
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@38
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@38
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@38
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@38/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@38/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@38/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@38/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@38
+StateManager ready for: @Node2D@38
+Entering idle state
+State manager added to @Node2D@38
+Wall placed successfully
+Entity: Connecting component signals for @Node2D@38
 Entity: Health signals connected
 Entity: Movement signals connected
 Entity: Combat signals connected
 Entity: Status signals connected
-Component signals connected for TestEntity
-Entity setup complete for: TestEntity
-First frame processed for TargetEntity
-Entity: Connecting component signals for TargetEntity
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@38/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@38/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@38/HealthComponent
+CombatComponent initialized for: @Node2D@38
+
+Right click detected at: (1103, 387)
+
+Coordinate conversion:
+- Screen pos: (1103, 387)
+- Viewport center: (860, 360)
+- Offset: (559.0588, 62.11765)
+- World pos: (1839.059, 602.1177)
+
+Attempting wall placement:
+- Screen pos: (1103, 387)
+- World pos: (1839.059, 602.1177)
+- Grid pos: (29, 9)
+- Current gold: 680
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@39
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@39/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@39/HealthComponent
+Health component added to @Node2D@39
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@39
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@39
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@39
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@39/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@39/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@39/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@39/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@39
+StateManager ready for: @Node2D@39
+Entering idle state
+State manager added to @Node2D@39
+Wall placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@39/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@39/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@39/HealthComponent
+CombatComponent initialized for: @Node2D@39
+Entity: Connecting component signals for @Node2D@39
 Entity: Health signals connected
 Entity: Movement signals connected
 Entity: Combat signals connected
 Entity: Status signals connected
-Component signals connected for TargetEntity
-Entity setup complete for: TargetEntity
-First frame processed
-Second frame processed
 
-Verifying entity initialization:
-Test entity components:
-- Health: HealthComponent:<Node#33353106693> initialized: true
-- Combat: CombatComponent:<Node#33386661108>
-- State: idle
+Right click detected at: (1097.5, 367)
 
-Target entity components:
-- Health: HealthComponent:<Node#33571210460> initialized: true
-- Position: (50, 0)
+Coordinate conversion:
+- Screen pos: (1097.5, 367)
+- Viewport center: (860, 360)
+- Offset: (546.4052, 16.10457)
+- World pos: (1826.405, 556.1046)
 
-Final component state:
-Test entity health initialized: true
-Target entity health initialized: true
-Signals connected
-Setup complete
-
-Combat test setup:
-Combat component exists: true
-Combat component attack range: 100
-Attack cooldown: 1
-
-Target entity setup:
-Target entity exists: true
-Target position: (50, 0)
-Distance to target: 50
-Target health component: HealthComponent:<Node#33571210460>
-Target health: 100/100
-Target health initialized: true
-Target health node path: /root/EntitySystemTest/TargetEntity/HealthComponent
-
-Starting combat test:
-Initial state: idle
-Attack timer reset to: 1
-
-Attempting to set target...
-Setting target: TargetEntity
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
+Attempting wall placement:
+- Screen pos: (1097.5, 367)
+- World pos: (1826.405, 556.1046)
+- Grid pos: (29, 9)
+- Current gold: 660
+- Wall cost: 20
+Failed: Cell not empty
+Setting target: Flag
+Target health component search result: HealthComponent:<Node#36842767575>
+Target node path: /root/TestMap/Flag
+Target children: [FlagShape:<ColorRect#36976985361>, Sprite2D:<Sprite2D#36825990367>, HealthComponent:<Node#36842767575>, HealthBarBG:<ColorRect#37010539803>, MovementComponent:<Node#36859544800>, CombatComponent:<Node#36876322005>, StatusEffectComponent:<Node#36893099238>, HealthBarBG:<ColorRect#36909876504>, VisualManager:<Node#37681628475>, StateManager:<Node#37782291777>]
 Can attack target - all checks passed
 Target set successfully
 Transitioning to attack state on target set
 
-Handling event: attack in state: idle
+Handling event: attack in state: moving
 Event triggers transition to: attacking
 
-Attempting state transition for TestEntity
-From: idle To: attacking
+Attempting state transition for @Node2D@15
+From: moving To: attacking
+Transition valid, executing...
+Exiting moving state
+Entering attacking state
+State transition complete: moving -> attacking
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+
+Left click detected at: (1623, 40)
+
+Coordinate conversion:
+- Screen pos: (1623, 40)
+- Viewport center: (860, 360)
+- Offset: (1755.399, -736.2092)
+- World pos: (3035.399, -196.2092)
+
+Attempting tower placement:
+- Screen pos: (1623, 40)
+- World pos: (3035.399, -196.2092)
+- Grid pos: (39, 0)
+- Selected tower type: 0
+- Current gold: 690
+- Tower cost: 50
+Failed: Cell not empty
+
+Attempting to start wave...
+Wave manager exists: true
+Current wave: 1
+Wave in progress: false
+
+Starting wave...
+Wave 2 started with 15 enemies
+Wave started successfully
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: Enemy
+HealthComponent _ready called on: /root/TestMap/Grid/Enemy/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/Enemy/HealthComponent
+Health component added to Enemy
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to Enemy
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to Enemy
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to Enemy
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/Enemy/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/Enemy/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/Enemy/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/Enemy/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to Enemy
+StateManager ready for: Enemy
+Entering idle state
+State manager added to Enemy
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 736)
+HealthComponent _initialize called on: /root/TestMap/Grid/Enemy/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/Enemy/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/Enemy/HealthComponent
+CombatComponent initialized for: Enemy
+Entity: Connecting component signals for Enemy
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for Enemy
+From: idle To: moving
 Transition valid, executing...
 Exiting idle state
-Entering attacking state
-State transition complete: idle -> attacking
-State changed: idle -> attacking
-Target set, checking attack conditions:
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-- Can attack: true
-- Current target: TargetEntity
-- Attack timer: 1
-Attack timer: 1.01666666666667 / 1
-Attack cooldown complete, checking target...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Target valid, performing attack
-
-Performing attack...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Starting attack on target: TargetEntity
-Entity: Attack started on TargetEntity
-Entity: Transitioning to attacking state
-
-Attempting state transition for TestEntity
-From: attacking To: attacking
-Already in state: attacking
-Attack started on: TargetEntity
-
-After target set:
-- Current state: attacking
-
-Processing combat...
-Attack timer: 1.11666666666667 / 1
-Attack cooldown complete, checking target...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Target valid, performing attack
-
-Performing attack...
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
-Can attack target - all checks passed
-Starting attack on target: TargetEntity
-Entity: Attack started on TargetEntity
-Entity: Transitioning to attacking state
-
-Attempting state transition for TestEntity
-From: attacking To: attacking
-Already in state: attacking
-Attack started on: TargetEntity
-Dealing 10 damage to target
-Attack completed, emitting signal
-Entity: Attack completed on TargetEntity
-Entity: Handling attack_completed event
-
-Handling event: attack_completed in state: attacking
-Event triggers transition to: idle
-
-Attempting state transition for TestEntity
-From: attacking To: idle
-Transition valid, executing...
-Exiting attacking state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@48
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@48/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@48/HealthComponent
+Health component added to @Node2D@48
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@48
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@48
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@48
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@48/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@48/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@48/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@48/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@48
+StateManager ready for: @Node2D@48
 Entering idle state
-State transition complete: attacking -> idle
-State changed: attacking -> idle
-Attack completed on: TargetEntity
-Dealing 10 damage to target
-Attack completed, emitting signal
-Entity: Attack completed on TargetEntity
-Entity: Handling attack_completed event
+State manager added to @Node2D@48
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 544)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@48/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@48/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@48/HealthComponent
+CombatComponent initialized for: @Node2D@48
+Entity: Connecting component signals for @Node2D@48
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
 
-Handling event: attack_completed in state: idle
-No transition defined for event: attack_completed in state: idle
-Attack completed on: TargetEntity
-After first process:
-- Attack timer: 0
-- Current state: idle
+Attempting state transition for @Node2D@48
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@49
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@49/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@49/HealthComponent
+Health component added to @Node2D@49
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@49
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@49
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@49
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@49/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@49/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@49/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@49/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@49
+StateManager ready for: @Node2D@49
+Entering idle state
+State manager added to @Node2D@49
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 416)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@49/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@49/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@49/HealthComponent
+CombatComponent initialized for: @Node2D@49
+Entity: Connecting component signals for @Node2D@49
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
 
-Processing frame 1
-Attack timer: 0.3 / 1
-- Attack timer: 0.3/1
-- Current target: TargetEntity
-- Current state: idle
-Target health component search result: HealthComponent:<Node#33571210460>
-Target node path: /root/EntitySystemTest/TargetEntity
-Target children: [HealthComponent:<Node#33571210460>, MovementComponent:<Node#33587987687>, CombatComponent:<Node#33604764904>, StatusEffectComponent:<Node#33621542121>, VisualManager:<Node#33638319338>, StateManager:<Node#33738982637>]
+Attempting state transition for @Node2D@49
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@50
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@50/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@50/HealthComponent
+Health component added to @Node2D@50
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@50
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@50
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@50
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@50/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@50/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@50/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@50/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@50
+StateManager ready for: @Node2D@50
+Entering idle state
+State manager added to @Node2D@50
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 1184)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@50/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@50/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@50/HealthComponent
+CombatComponent initialized for: @Node2D@50
+Entity: Connecting component signals for @Node2D@50
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@50
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@51
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@51/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@51/HealthComponent
+Health component added to @Node2D@51
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@51
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@51
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@51
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@51/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@51/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@51/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@51/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@51
+StateManager ready for: @Node2D@51
+Entering idle state
+State manager added to @Node2D@51
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 352)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@51/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@51/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@51/HealthComponent
+CombatComponent initialized for: @Node2D@51
+Entity: Connecting component signals for @Node2D@51
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@51
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@52
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@52/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@52/HealthComponent
+Health component added to @Node2D@52
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@52
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@52
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@52
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@52/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@52/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@52/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@52/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@52
+StateManager ready for: @Node2D@52
+Entering idle state
+State manager added to @Node2D@52
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 736)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@52/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@52/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@52/HealthComponent
+CombatComponent initialized for: @Node2D@52
+Entity: Connecting component signals for @Node2D@52
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@52
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@53
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@53/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@53/HealthComponent
+Health component added to @Node2D@53
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@53
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@53
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@53
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@53/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@53/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@53/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@53/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@53
+StateManager ready for: @Node2D@53
+Entering idle state
+State manager added to @Node2D@53
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 1184)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@53/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@53/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@53/HealthComponent
+CombatComponent initialized for: @Node2D@53
+Entity: Connecting component signals for @Node2D@53
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@53
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@54
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@54/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@54/HealthComponent
+Health component added to @Node2D@54
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@54
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@54
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@54
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@54/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@54/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@54/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@54/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@54
+StateManager ready for: @Node2D@54
+Entering idle state
+State manager added to @Node2D@54
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 1248)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@54/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@54/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@54/HealthComponent
+CombatComponent initialized for: @Node2D@54
+Entity: Connecting component signals for @Node2D@54
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@54
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@55
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@55/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@55/HealthComponent
+Health component added to @Node2D@55
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@55
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@55
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@55
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@55/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@55/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@55/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@55/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@55
+StateManager ready for: @Node2D@55
+Entering idle state
+State manager added to @Node2D@55
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 992)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@55/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@55/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@55/HealthComponent
+CombatComponent initialized for: @Node2D@55
+Entity: Connecting component signals for @Node2D@55
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@55
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@56
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@56/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@56/HealthComponent
+Health component added to @Node2D@56
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@56
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@56
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@56
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@56/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@56/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@56/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@56/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@56
+StateManager ready for: @Node2D@56
+Entering idle state
+State manager added to @Node2D@56
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 672)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@56/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@56/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@56/HealthComponent
+CombatComponent initialized for: @Node2D@56
+Entity: Connecting component signals for @Node2D@56
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@56
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@57
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@57/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@57/HealthComponent
+Health component added to @Node2D@57
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@57
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@57
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@57
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@57/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@57/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@57/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@57/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@57
+StateManager ready for: @Node2D@57
+Entering idle state
+State manager added to @Node2D@57
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 224)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@57/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@57/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@57/HealthComponent
+CombatComponent initialized for: @Node2D@57
+Entity: Connecting component signals for @Node2D@57
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@57
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@58
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@58/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@58/HealthComponent
+Health component added to @Node2D@58
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@58
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@58
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@58
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@58/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@58/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@58/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@58/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@58
+StateManager ready for: @Node2D@58
+Entering idle state
+State manager added to @Node2D@58
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 608)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@58/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@58/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@58/HealthComponent
+CombatComponent initialized for: @Node2D@58
+Entity: Connecting component signals for @Node2D@58
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@58
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@59
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@59/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@59/HealthComponent
+Health component added to @Node2D@59
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@59
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@59
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@59
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@59/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@59/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@59/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@59/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@59
+StateManager ready for: @Node2D@59
+Entering idle state
+State manager added to @Node2D@59
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 736)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@59/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@59/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@59/HealthComponent
+CombatComponent initialized for: @Node2D@59
+Entity: Connecting component signals for @Node2D@59
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@59
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@61
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@61/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@61/HealthComponent
+Health component added to @Node2D@61
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@61
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@61
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@61
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@61/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@61/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@61/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@61/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@61
+StateManager ready for: @Node2D@61
+Entering idle state
+State manager added to @Node2D@61
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 928)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@61/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@61/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@61/HealthComponent
+CombatComponent initialized for: @Node2D@61
+Entity: Connecting component signals for @Node2D@61
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@61
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Spawning enemy...
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Entity _ready called for: @Node2D@63
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@63/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@63/HealthComponent
+Health component added to @Node2D@63
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@63
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@63
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@63
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@63/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@63/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@63/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@63/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@63
+StateManager ready for: @Node2D@63
+Entering idle state
+State manager added to @Node2D@63
+Enemy stats:
+- Health: 120
+- Speed: 110
+- Gold: 11
+- Damage: 1
+Enemy spawned at: (32, 480)
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@63/HealthComponent
+Health initialized to: 120 on: /root/TestMap/Grid/@Node2D@63/HealthComponent
+HealthComponent _initialize completed with health: 120 on: /root/TestMap/Grid/@Node2D@63/HealthComponent
+CombatComponent initialized for: @Node2D@63
+Entity: Connecting component signals for @Node2D@63
+USER ERROR: Signal 'died' is already connected to given callable 'Node2D(Enemy.gd)::_on_died' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Health signals connected
+USER ERROR: Signal 'path_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_path_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Movement signals connected
+USER ERROR: Signal 'attack_completed' is already connected to given callable 'Node2D(Enemy.gd)::_on_attack_completed' in that object.
+   at: connect (core/object/object.cpp:1358)
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Attempting state transition for @Node2D@63
+From: idle To: moving
+Transition valid, executing...
+Exiting idle state
+Entering moving state
+State transition complete: idle -> moving
+Setting target: Flag
+Target health component search result: HealthComponent:<Node#36842767575>
+Target node path: /root/TestMap/Flag
+Target children: [FlagShape:<ColorRect#36976985361>, Sprite2D:<Sprite2D#36825990367>, HealthComponent:<Node#36842767575>, HealthBarBG:<ColorRect#37010539803>, MovementComponent:<Node#36859544800>, CombatComponent:<Node#36876322005>, StatusEffectComponent:<Node#36893099238>, HealthBarBG:<ColorRect#36909876504>, VisualManager:<Node#37681628475>, StateManager:<Node#37782291777>]
 Can attack target - all checks passed
-- Can attack: true
-- Target health: 80
-- Attack signals: 2
-Attack completed, breaking loop
+Target set successfully
+Transitioning to attack state on target set
 
-Final test state:
-Attack signals received: 2
-Current state: idle
-Target health: 80
-Attack timer: 0.31666666666667 / 1
+Handling event: attack in state: moving
+Event triggers transition to: attacking
 
-Entity System Tests Complete
+Attempting state transition for @Node2D@56
+From: moving To: attacking
+Transition valid, executing...
+Exiting moving state
+Entering attacking state
+State transition complete: moving -> attacking
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target health component search result: HealthComponent:<Node#36842767575>
+Target node path: /root/TestMap/Flag
+Target children: [FlagShape:<ColorRect#36976985361>, Sprite2D:<Sprite2D#36825990367>, HealthComponent:<Node#36842767575>, HealthBarBG:<ColorRect#37010539803>, MovementComponent:<Node#36859544800>, CombatComponent:<Node#36876322005>, StatusEffectComponent:<Node#36893099238>, HealthBarBG:<ColorRect#36909876504>, VisualManager:<Node#37681628475>, StateManager:<Node#37782291777>]
+Can attack target - all checks passed
+Target set successfully
+Transitioning to attack state on target set
+
+Handling event: attack in state: moving
+Event triggers transition to: attacking
+
+Attempting state transition for @Node2D@55
+From: moving To: attacking
+Transition valid, executing...
+Exiting moving state
+Entering attacking state
+State transition complete: moving -> attacking
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target health component search result: HealthComponent:<Node#36842767575>
+Target node path: /root/TestMap/Flag
+Target children: [FlagShape:<ColorRect#36976985361>, Sprite2D:<Sprite2D#36825990367>, HealthComponent:<Node#36842767575>, HealthBarBG:<ColorRect#37010539803>, MovementComponent:<Node#36859544800>, CombatComponent:<Node#36876322005>, StatusEffectComponent:<Node#36893099238>, HealthBarBG:<ColorRect#36909876504>, VisualManager:<Node#37681628475>, StateManager:<Node#37782291777>]
+Can attack target - all checks passed
+Target set successfully
+Transitioning to attack state on target set
+
+Handling event: attack in state: moving
+Event triggers transition to: attacking
+
+Attempting state transition for @Node2D@54
+From: moving To: attacking
+Transition valid, executing...
+Exiting moving state
+Entering attacking state
+State transition complete: moving -> attacking
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target health component search result: HealthComponent:<Node#36842767575>
+Target node path: /root/TestMap/Flag
+Target children: [FlagShape:<ColorRect#36976985361>, Sprite2D:<Sprite2D#36825990367>, HealthComponent:<Node#36842767575>, HealthBarBG:<ColorRect#37010539803>, MovementComponent:<Node#36859544800>, CombatComponent:<Node#36876322005>, StatusEffectComponent:<Node#36893099238>, HealthBarBG:<ColorRect#36909876504>, VisualManager:<Node#37681628475>, StateManager:<Node#37782291777>]
+Can attack target - all checks passed
+Target set successfully
+Transitioning to attack state on target set
+
+Handling event: attack in state: moving
+Event triggers transition to: attacking
+
+Attempting state transition for @Node2D@58
+From: moving To: attacking
+Transition valid, executing...
+Exiting moving state
+Entering attacking state
+State transition complete: moving -> attacking
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target health component search result: HealthComponent:<Node#36842767575>
+Target node path: /root/TestMap/Flag
+Target children: [FlagShape:<ColorRect#36976985361>, Sprite2D:<Sprite2D#36825990367>, HealthComponent:<Node#36842767575>, HealthBarBG:<ColorRect#37010539803>, MovementComponent:<Node#36859544800>, CombatComponent:<Node#36876322005>, StatusEffectComponent:<Node#36893099238>, HealthBarBG:<ColorRect#36909876504>, VisualManager:<Node#37681628475>, StateManager:<Node#37782291777>]
+Can attack target - all checks passed
+Target set successfully
+Transitioning to attack state on target set
+
+Handling event: attack in state: moving
+Event triggers transition to: attacking
+
+Attempting state transition for @Node2D@61
+From: moving To: attacking
+Transition valid, executing...
+Exiting moving state
+Entering attacking state
+State transition complete: moving -> attacking
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+USER ERROR: Flag: Cannot take damage, no Attackable component!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set
+Setting target: Flag
+Target already set

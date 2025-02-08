@@ -1,4 +1,4 @@
-extends Node2D
+extends Entity
 
 signal flag_destroyed
 
@@ -7,6 +7,7 @@ signal flag_destroyed
 @onready var health_bar_bg = $HealthBarBG
 
 func _ready():
+	super._ready()
 	add_to_group("flags")
 	
 	# Initialize appearance first

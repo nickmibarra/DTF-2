@@ -26,9 +26,27 @@ var wall_preview_cells: Array = []
 var wall_preview_nodes: Array = []
 
 # Preload scenes
-var tower_scene = preload("res://scenes/Tower.tscn")
+@onready var tower_scene = preload("res://scenes/Tower.tscn")
 
 func _ready():
+	print("\nTestMap: Initializing...")
+	# Verify scenes
+	print("Checking scenes...")
+	print("- Tower scene loaded: ", tower_scene != null)
+	
+	if not tower_scene:
+		push_error("Failed to load Tower scene!")
+		return
+	
+	# Test instantiation
+	var test_tower = tower_scene.instantiate()
+	if test_tower:
+		print("- Tower instantiation test: Success")
+		test_tower.queue_free()
+	else:
+		push_error("Failed to instantiate tower!")
+		return
+	
 	# Ensure grid is in group for CombatManager
 	grid.add_to_group("grid")
 	
@@ -40,7 +58,12 @@ func _ready():
 	wave_manager.wave_started.connect(_on_wave_started)
 	wave_manager.wave_completed.connect(_on_wave_completed)
 	wave_manager.all_waves_completed.connect(_on_all_waves_completed)
-	flag.flag_destroyed.connect(_on_flag_destroyed)
+	
+	# Connect to flag's health component for game over
+	if flag and flag.health_component:
+		flag.health_component.died.connect(_on_flag_destroyed)
+	else:
+		push_error("Flag or its health component not found!")
 	
 	# Connect UI signals
 	start_wave_button.pressed.connect(_on_start_wave_pressed)
@@ -56,107 +79,108 @@ func _ready():
 	var preview_container = Node2D.new()
 	preview_container.name = "WallPreview"
 	add_child(preview_container)
+	
+	print("TestMap: Initialization complete")
+	print("TestMap: Starting gold: ", gold)
+	print("TestMap: Input actions configured:")
+	print("- place_tower (Left Click): ", InputMap.has_action("place_tower"))
+	print("- place_wall (Right Click): ", InputMap.has_action("place_wall"))
+	print("TestMap: Tower scene loaded: ", tower_scene != null)
 
 func _input(event):
-	if game_over:
-		return
-		
-	# Only handle mouse input if not clicking on UI
 	if event is InputEventMouseButton:
-		# Check if mouse is over actual UI elements
-		var mouse_pos = event.position
-		var top_bar = $CanvasLayer/UI/TopBar
-		var tower_panel = $CanvasLayer/UI/TowerPanel
-		
-		# Convert mouse position to UI space
-		var top_bar_rect = top_bar.get_global_rect()
-		var tower_panel_rect = tower_panel.get_global_rect()
-		
-		# If clicking on actual UI elements, ignore placement
-		if top_bar_rect.has_point(mouse_pos) or tower_panel_rect.has_point(mouse_pos):
-			return
-			
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				attempt_place_tower()
-		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			if event.pressed:
-				# Start wall placement
-				is_placing_wall = true
-				var world_pos = camera.get_screen_to_canvas(get_viewport().get_mouse_position())
-				wall_start_pos = grid.world_to_grid(world_pos)
-				update_wall_preview()
-			else:
-				# End wall placement and place walls
-				is_placing_wall = false
-				place_walls()
-				clear_wall_preview()
-	
-	# Update wall preview while dragging
-	elif event is InputEventMouseMotion and is_placing_wall:
-		update_wall_preview()
+		if event.pressed:
+			match event.button_index:
+				MOUSE_BUTTON_LEFT:
+					print("\nLeft click detected at: ", event.position)
+					attempt_place_tower()
+				MOUSE_BUTTON_RIGHT:
+					print("\nRight click detected at: ", event.position)
+					attempt_place_wall()
+	elif event.is_action_pressed("start_wave"):
+		print("\nStart wave action detected")
+		_on_start_wave_pressed()
 
 func attempt_place_tower():
-	# Get mouse position relative to viewport
-	var viewport_mouse_pos = get_viewport().get_mouse_position()
-	
-	# Convert to world space considering camera
-	var world_pos = camera.get_screen_to_canvas(viewport_mouse_pos)
-	
-	# Convert to grid coordinates
+	var screen_pos = get_viewport().get_mouse_position()
+	var world_pos = camera.get_screen_to_canvas(screen_pos)
 	var grid_pos = grid.world_to_grid(world_pos)
 	
+	print("\nAttempting tower placement:")
+	print("- Screen pos: ", screen_pos)
+	print("- World pos: ", world_pos)
+	print("- Grid pos: ", grid_pos)
+	print("- Selected tower type: ", selected_tower_type)
+	print("- Current gold: ", gold)
+	print("- Tower cost: ", GameSettings.TOWER_COSTS[selected_tower_type])
+	
 	if not grid.is_valid_cell(grid_pos):
+		print("Failed: Invalid grid position")
 		return
 	
 	if grid.get_cell_type(grid_pos) != grid.TILE_TYPE.EMPTY:
+		print("Failed: Cell not empty")
 		return
 	
 	var cost = GameSettings.TOWER_COSTS[selected_tower_type]
 	if gold < cost:
+		print("Failed: Not enough gold")
 		return
 	
-	# Place tower
-	var tower = tower_scene.instantiate()
-	tower.position = grid.grid_to_world(grid_pos)
-	tower.set_type(selected_tower_type)
-	grid.add_child(tower)
-	
-	# Register tower with grid
-	grid.register_tower(tower)
-	
-	# Update gold
-	gold -= cost
-	update_gold_display()
-	update_tower_buttons()
+	print("Placing tower...")
+	if grid.place_tower(grid_pos, selected_tower_type):
+		gold -= cost
+		update_gold_display()
+		update_tower_buttons()
+		print("Tower placed successfully")
+	else:
+		print("Failed: Could not place tower")
 
 func attempt_place_wall():
-	# Get mouse position relative to viewport
-	var viewport_mouse_pos = get_viewport().get_mouse_position()
-	
-	# Convert to world space considering camera
-	var world_pos = camera.get_screen_to_canvas(viewport_mouse_pos)
-	
-	# Convert to grid coordinates
+	var screen_pos = get_viewport().get_mouse_position()
+	var world_pos = camera.get_screen_to_canvas(screen_pos)
 	var grid_pos = grid.world_to_grid(world_pos)
 	
+	print("\nAttempting wall placement:")
+	print("- Screen pos: ", screen_pos)
+	print("- World pos: ", world_pos)
+	print("- Grid pos: ", grid_pos)
+	print("- Current gold: ", gold)
+	print("- Wall cost: ", GameSettings.WALL_COST)
+	
 	if not grid.is_valid_cell(grid_pos):
+		print("Failed: Invalid grid position")
 		return
 	
 	if grid.get_cell_type(grid_pos) != grid.TILE_TYPE.EMPTY:
+		print("Failed: Cell not empty")
 		return
 	
 	if gold < GameSettings.WALL_COST:
+		print("Failed: Not enough gold")
 		return
 	
+	print("Placing wall...")
 	if grid.set_cell_type(grid_pos, grid.TILE_TYPE.WALL):
 		gold -= GameSettings.WALL_COST
 		update_gold_display()
 		update_tower_buttons()
+		print("Wall placed successfully")
+	else:
+		print("Failed: set_cell_type returned false")
 
 func _on_start_wave_pressed():
-	wave_manager.start_wave()
-	start_wave_button.disabled = true
+	print("\nAttempting to start wave...")
+	print("Wave manager exists: ", wave_manager != null)
+	print("Current wave: ", wave_manager.current_wave if wave_manager else "N/A")
+	print("Wave in progress: ", wave_manager.wave_in_progress if wave_manager else "N/A")
+	
+	if wave_manager:
+		wave_manager.start_wave()
+		start_wave_button.disabled = true
+		print("Wave started successfully")
+	else:
+		push_error("Wave manager not found!")
 
 func _on_wave_started(wave_number):
 	update_wave_display()

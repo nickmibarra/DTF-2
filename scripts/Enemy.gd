@@ -1,4 +1,4 @@
-extends Node2D
+extends Entity
 
 signal died(gold_value)
 signal reached_flag(damage)
@@ -67,6 +67,7 @@ var last_obstacle_check_time: float = 0.0
 const OBSTACLE_CHECK_INTERVAL: float = 0.2  # Check obstacles every 200ms
 
 func _ready():
+	super._ready()
 	add_to_group("enemies")
 	assert(behavior != null, "Enemy must have EnemyBehavior component")
 	assert(grid != null, "Enemy needs Grid node for pathfinding")
@@ -79,6 +80,16 @@ func _ready():
 	
 	# Connect to grid signals
 	grid.obstacle_changed.connect(_on_obstacle_changed)
+	
+	# Connect to component signals
+	if health_component:
+		health_component.died.connect(_on_died)
+	
+	if movement_component:
+		movement_component.path_completed.connect(_on_path_completed)
+	
+	if combat_component:
+		combat_component.attack_completed.connect(_on_attack_completed)
 
 func _on_obstacle_changed(pos: Vector2):
 	# Only recalculate if the changed obstacle is near our path
@@ -95,6 +106,69 @@ func _on_obstacle_changed(pos: Vector2):
 		
 		if should_recalc:
 			_recalculate_path_if_needed()
+
+func _physics_process(delta: float) -> void:
+	if not _initialized:
+		return
+	
+	# Update behavior
+	if behavior:
+		behavior.process(delta)
+	
+	# Check if we can attack flag from current position
+	var flag = _find_flag()
+	if flag:
+		var dist = position.distance_to(flag.position)
+		if dist <= combat_component.attack_range:
+			combat_component.set_target(flag)
+			return
+	
+	# Otherwise follow path or attack obstacles
+	if movement_component and movement_component.current_path.is_empty():
+		_update_path()
+
+func _find_flag() -> Node2D:
+	if not _flag:
+		_flag = get_tree().get_first_node_in_group("flags")
+		if not _flag:
+			push_error("Enemy: No flag found in scene!")
+			return null
+	
+	return _flag
+
+func _update_path() -> void:
+	var grid = get_tree().get_first_node_in_group("grid")
+	if not grid:
+		return
+	
+	var flag = _find_flag()
+	if not flag:
+		return
+	
+	var current_grid_pos = grid.world_to_grid(position)
+	var flag_grid_pos = grid.world_to_grid(flag.position)
+	
+	var path_result = grid.find_path(current_grid_pos, flag_grid_pos)
+	
+	if path_result.blocked_by_obstacle:
+		var obstacle = grid.get_blocking_object_at(path_result.obstacle_target)
+		if obstacle:
+			combat_component.set_target(obstacle)
+			return
+	
+	if not path_result.path.is_empty():
+		movement_component.follow_path(path_result.path)
+
+func _on_died():
+	died.emit(gold_value)
+	queue_free()
+
+func _on_path_completed():
+	_update_path()
+
+func _on_attack_completed(target: Node2D):
+	if target.is_in_group("flags"):
+		reached_flag.emit(FLAG_DAMAGE)
 
 func _process(delta):
 	# Wait for initialization delay
@@ -116,7 +190,7 @@ func _process(delta):
 
 func _process_movement(delta, should_update: bool):
 	# Always check if we can attack flag from current position first
-	var flag = _find_target()
+	var flag = _find_flag()
 	if flag:
 		var dist = position.distance_to(flag.position)
 		if dist <= ATTACK_RANGE:
@@ -155,7 +229,7 @@ func _process_movement(delta, should_update: bool):
 		_follow_path(delta)
 
 func _find_obstacle_to_attack() -> Node2D:
-	var flag = _find_target()
+	var flag = _find_flag()
 	if not flag:
 		return null
 	
@@ -234,22 +308,13 @@ func _find_obstacle_to_attack() -> Node2D:
 	
 	return best_target
 
-func _find_target() -> Node2D:
-	if not _flag:
-		_flag = get_tree().get_first_node_in_group("flags")
-		if not _flag:
-			push_error("Enemy: No flag found in scene!")
-			return null
-	
-	return _flag
-
 func _move_towards(target_pos: Vector2, delta: float):
 	var direction = (target_pos - position).normalized()
 	var move_speed = behavior.get_effective_speed() * delta
 	var proposed_position = position + direction * move_speed
 	
 	# Check if we're moving towards the flag
-	var flag = _find_target()
+	var flag = _find_flag()
 	if flag:
 		var dist_to_flag = position.distance_to(flag.position)
 		# If we're getting close to attack range, ignore collisions
@@ -353,7 +418,7 @@ func _recalculate_path_if_needed(force: bool = false):
 			return
 		else:
 			# If still no path and no obstacle, try moving towards flag while avoiding obstacles
-			var flag = _find_target()
+			var flag = _find_flag()
 			if flag:
 				var direction_to_flag = (flag.position - position).normalized()
 				# Try a few angles to find a clear direction
@@ -380,7 +445,7 @@ func _follow_path(delta: float):
 		return
 	
 	# Check attack range before moving
-	var flag = _find_target()
+	var flag = _find_flag()
 	if flag:
 		var dist = position.distance_to(flag.position)
 		if dist <= ATTACK_RANGE:
@@ -466,10 +531,16 @@ func _play_attack_effects():
 	create_tween().tween_property(sprite, "scale", Vector2.ONE, 0.2)
 
 func set_stats(new_health: float, new_speed: float, new_gold: int, new_damage: int):
-	max_health = new_health
-	health = new_health
-	behavior.movement_speed = new_speed
-	behavior.attack_damage = new_damage
+	if health_component:
+		health_component.max_health = new_health
+		health_component.current_health = new_health
+	
+	if movement_component:
+		movement_component.movement_speed = new_speed
+	
+	if combat_component:
+		combat_component.damage = new_damage
+	
 	gold_value = new_gold
 	_update_health_bar()
 

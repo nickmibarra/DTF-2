@@ -1,5 +1,5 @@
 class_name EnemyBehavior
-extends Node
+extends EntityComponent
 
 # Core stats (matching existing Enemy.gd)
 @export var attack_damage: float = 10.0
@@ -13,7 +13,7 @@ extends Node
 # Debug mode for testing
 @export var debug_mode: bool = false
 
-func _ready():
+func _initialize() -> void:
     # Validate configuration
     assert(attack_damage > 0, "Attack damage must be positive")
     assert(movement_speed > 0, "Movement speed must be positive")
@@ -25,6 +25,33 @@ func _ready():
         print("- Can Break Walls: ", can_break_walls)
         print("- Path Weight: ", path_weight)
         print("- Attack Weight: ", attack_weight)
+
+# Override process from EntityComponent
+func process(delta: float) -> void:
+    # This function is called every frame to update behavior
+    if not entity:
+        return
+    
+    # Update behavior based on current state
+    match entity.state_manager.get_current_state():
+        "moving":
+            _process_movement(delta)
+        "attacking":
+            _process_combat(delta)
+        "idle":
+            _process_idle(delta)
+
+func _process_movement(_delta: float) -> void:
+    # Movement behavior handled by MovementComponent
+    pass
+
+func _process_combat(_delta: float) -> void:
+    # Combat behavior handled by CombatComponent
+    pass
+
+func _process_idle(_delta: float) -> void:
+    # Check for targets or objectives while idle
+    pass
 
 # Helper function to get effective damage per second
 func get_dps() -> float:
@@ -51,4 +78,4 @@ func should_attack_target(target_health: float, distance_to_target: float) -> bo
         return true
     
     # Simple decision: attack if it's faster than moving
-    return time_to_destroy < time_to_move 
+    return time_to_destroy < time_to_move

@@ -1,0 +1,63 @@
+Godot Engine v4.2.1.stable.official.b09f793f5 - https://godotengine.org
+Vulkan API 1.3.292 - Forward+ - Using Vulkan Device #0: AMD - AMD Radeon RX 7800 XT
+ 
+USER ERROR: res://scenes/Tower.tscn:10 - Parse Error: Can't load cached ext-resource id: res://resources/sprites/towers/ballista.tres
+   at: _parse_node_tag (scene/resources/resource_format_text.cpp:284)
+USER ERROR: Failed loading resource: res://scenes/Tower.tscn. Make sure resources have been imported by opening the project in the editor at least once.
+   at: _load (core/io/resource_loader.cpp:274)
+HealthComponent _ready called on: /root/TestMap/Flag/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Flag/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+USER ERROR: Node not found: "Attackable" (relative to "/root/TestMap/Flag").
+   at: get_node (scene/main/node.cpp:1638)
+Entity _ready called for: Flag
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Flag/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Flag/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Flag/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Flag/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to Flag
+StateManager ready for: Flag
+Entering idle state
+State manager added to Flag
+USER ERROR: Flag: Attackable component not found!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+
+TestMap: Initializing...
+TestMap: Initialization complete
+TestMap: Starting gold: 1000
+TestMap: Input actions configured:
+- place_tower (Left Click): true
+- place_wall (Right Click): true
+HealthComponent _initialize called on: /root/TestMap/Flag/HealthComponent
+Health initialized to: 1000 on: /root/TestMap/Flag/HealthComponent
+HealthComponent _initialize completed with health: 1000 on: /root/TestMap/Flag/HealthComponent
+CombatComponent initialized for: Flag
+Entity: Connecting component signals for Flag
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Left click detected at: (872.5, 284)
+
+Attempting tower placement:
+- Screen pos: (872.5, 284)
+- World pos: (1308.758, 365.1503)
+- Grid pos: (20, 6)
+- Selected tower type: 0
+- Current gold: 1000
+- Tower cost: 50
+Placing tower...
+USER ERROR: Failed to instantiate scene state of "res://scenes/Tower.tscn", node count is 0. Make sure the PackedScene resource is valid.
+   at: instantiate (scene/resources/packed_scene.cpp:141)

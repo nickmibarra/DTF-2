@@ -1,0 +1,742 @@
+Godot Engine v4.2.1.stable.official.b09f793f5 - https://godotengine.org
+Vulkan API 1.3.292 - Forward+ - Using Vulkan Device #0: AMD - AMD Radeon RX 7800 XT
+ 
+USER ERROR: res://scenes/Tower.tscn:10 - Parse Error: Can't load cached ext-resource id: res://resources/sprites/towers/ballista.tres
+   at: _parse_node_tag (scene/resources/resource_format_text.cpp:284)
+USER ERROR: Failed loading resource: res://scenes/Tower.tscn. Make sure resources have been imported by opening the project in the editor at least once.
+   at: _load (core/io/resource_loader.cpp:274)
+HealthComponent _ready called on: /root/TestMap/Flag/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Flag/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+USER ERROR: Node not found: "Attackable" (relative to "/root/TestMap/Flag").
+   at: get_node (scene/main/node.cpp:1638)
+Entity _ready called for: Flag
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Flag/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Flag/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Flag/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Flag/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to Flag
+StateManager ready for: Flag
+Entering idle state
+State manager added to Flag
+USER ERROR: Flag: Attackable component not found!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+
+TestMap: Initializing...
+Checking scenes...
+- Tower scene loaded: true
+USER ERROR: Failed to instantiate scene state of "res://scenes/Tower.tscn", node count is 0. Make sure the PackedScene resource is valid.
+   at: instantiate (scene/resources/packed_scene.cpp:141)
+USER ERROR: Failed to instantiate tower!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+HealthComponent _initialize called on: /root/TestMap/Flag/HealthComponent
+Health initialized to: 1000 on: /root/TestMap/Flag/HealthComponent
+HealthComponent _initialize completed with health: 1000 on: /root/TestMap/Flag/HealthComponent
+CombatComponent initialized for: Flag
+USER ERROR: CombatManager: No grid found in scene
+   at: push_error (core/variant/variant_utility.cpp:1091)
+Entity: Connecting component signals for Flag
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Left click detected at: (827, 258.5)
+
+Attempting tower placement:
+- Screen pos: (827, 258.5)
+- World pos: (1204.078, 306.4836)
+- Grid pos: (19, 5)
+- Selected tower type: 0
+- Current gold: 1000
+- Tower cost: 50
+Placing tower...
+USER ERROR: Failed to instantiate scene state of "res://scenes/Tower.tscn", node count is 0. Make sure the PackedScene resource is valid.
+   at: instantiate (scene/resources/packed_scene.cpp:141)
+USER ERROR: Failed to instantiate tower!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+
+Left click detected at: (822.5, 340.5)
+
+Attempting tower placement:
+- Screen pos: (823, 341)
+- World pos: (1194.876, 496.2876)
+- Grid pos: (19, 8)
+- Selected tower type: 0
+- Current gold: 1000
+- Tower cost: 50
+Placing tower...
+USER ERROR: Failed to instantiate scene state of "res://scenes/Tower.tscn", node count is 0. Make sure the PackedScene resource is valid.
+   at: instantiate (scene/resources/packed_scene.cpp:141)
+USER ERROR: Failed to instantiate tower!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+
+Right click detected at: (851, 372.5)
+
+Attempting wall placement:
+- Screen pos: (851, 373)
+- World pos: (1259.294, 569.9085)
+- Grid pos: (20, 9)
+- Current gold: 1000
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: Wall
+HealthComponent _ready called on: /root/TestMap/Grid/Wall/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/Wall/HealthComponent
+Health component added to Wall
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to Wall
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to Wall
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to Wall
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/Wall/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/Wall/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/Wall/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/Wall/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to Wall
+StateManager ready for: Wall
+Entering idle state
+State manager added to Wall
+Wall placed successfully
+Entity: Connecting component signals for Wall
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+HealthComponent _initialize called on: /root/TestMap/Grid/Wall/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/Wall/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/Wall/HealthComponent
+CombatComponent initialized for: Wall
+
+Right click detected at: (866, 385)
+
+Attempting wall placement:
+- Screen pos: (866, 385)
+- World pos: (1293.804, 597.5164)
+- Grid pos: (20, 9)
+- Current gold: 980
+- Wall cost: 20
+Failed: Cell not empty
+
+Right click detected at: (941.5, 399)
+
+Attempting wall placement:
+- Screen pos: (941.5, 399)
+- World pos: (1467.503, 629.7255)
+- Grid pos: (23, 10)
+- Current gold: 980
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@4
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@4/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@4/HealthComponent
+Health component added to @Node2D@4
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@4
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@4
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@4
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@4/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@4/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@4/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@4/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@4
+StateManager ready for: @Node2D@4
+Entering idle state
+State manager added to @Node2D@4
+Wall placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@4/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@4/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@4/HealthComponent
+CombatComponent initialized for: @Node2D@4
+Entity: Connecting component signals for @Node2D@4
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Right click detected at: (951.5, 384)
+
+Attempting wall placement:
+- Screen pos: (951.5, 384)
+- World pos: (1490.51, 595.2157)
+- Grid pos: (23, 9)
+- Current gold: 960
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@5
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@5/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@5/HealthComponent
+Health component added to @Node2D@5
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@5
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@5
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@5
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@5/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@5/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@5/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@5/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@5
+StateManager ready for: @Node2D@5
+Entering idle state
+State manager added to @Node2D@5
+Wall placed successfully
+Entity: Connecting component signals for @Node2D@5
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@5/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@5/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@5/HealthComponent
+CombatComponent initialized for: @Node2D@5
+
+Right click detected at: (960.5, 341.5)
+
+Attempting wall placement:
+- Screen pos: (960.5, 342)
+- World pos: (1511.216, 498.5882)
+- Grid pos: (24, 8)
+- Current gold: 940
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@6
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@6/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@6/HealthComponent
+Health component added to @Node2D@6
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@6
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@6
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@6
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@6/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@6/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@6/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@6/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@6
+StateManager ready for: @Node2D@6
+Entering idle state
+State manager added to @Node2D@6
+Wall placed successfully
+Entity: Connecting component signals for @Node2D@6
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@6/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@6/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@6/HealthComponent
+CombatComponent initialized for: @Node2D@6
+
+Right click detected at: (955.5, 336.5)
+
+Attempting wall placement:
+- Screen pos: (955.5, 336.5)
+- World pos: (1499.712, 485.9346)
+- Grid pos: (23, 8)
+- Current gold: 920
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@7
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@7/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@7/HealthComponent
+Health component added to @Node2D@7
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@7
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@7
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@7
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@7/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@7/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@7/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@7/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@7
+StateManager ready for: @Node2D@7
+Entering idle state
+State manager added to @Node2D@7
+Wall placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@7/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@7/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@7/HealthComponent
+CombatComponent initialized for: @Node2D@7
+Entity: Connecting component signals for @Node2D@7
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Left click detected at: (908, 284)
+
+Attempting tower placement:
+- Screen pos: (907, 284)
+- World pos: (1388.131, 365.1503)
+- Grid pos: (22, 6)
+- Selected tower type: 0
+- Current gold: 900
+- Tower cost: 50
+Placing tower...
+USER ERROR: Failed to instantiate scene state of "res://scenes/Tower.tscn", node count is 0. Make sure the PackedScene resource is valid.
+   at: instantiate (scene/resources/packed_scene.cpp:141)
+USER ERROR: Failed to instantiate tower!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+
+Right click detected at: (955.5, 310.5)
+
+Attempting wall placement:
+- Screen pos: (955.5, 310)
+- World pos: (1499.712, 424.9673)
+- Grid pos: (23, 7)
+- Current gold: 900
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@8
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@8/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@8/HealthComponent
+Health component added to @Node2D@8
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@8
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@8
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@8
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@8/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@8/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@8/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@8/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@8
+StateManager ready for: @Node2D@8
+Entering idle state
+State manager added to @Node2D@8
+Wall placed successfully
+Entity: Connecting component signals for @Node2D@8
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@8/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@8/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@8/HealthComponent
+CombatComponent initialized for: @Node2D@8
+
+Right click detected at: (984, 311)
+
+Attempting wall placement:
+- Screen pos: (984, 311)
+- World pos: (1565.281, 427.268)
+- Grid pos: (24, 7)
+- Current gold: 880
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@9
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@9/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@9/HealthComponent
+Health component added to @Node2D@9
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@9
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@9
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@9
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@9/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@9/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@9/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@9/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@9
+StateManager ready for: @Node2D@9
+Entering idle state
+State manager added to @Node2D@9
+Wall placed successfully
+Entity: Connecting component signals for @Node2D@9
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@9/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@9/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@9/HealthComponent
+CombatComponent initialized for: @Node2D@9
+
+Right click detected at: (956, 291.5)
+
+Attempting wall placement:
+- Screen pos: (956, 291.5)
+- World pos: (1500.863, 382.4052)
+- Grid pos: (23, 6)
+- Current gold: 860
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@10
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+Health component added to @Node2D@10
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@10
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@10
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@10
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@10/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@10/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@10/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@10/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@10
+StateManager ready for: @Node2D@10
+Entering idle state
+State manager added to @Node2D@10
+Wall placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@10/HealthComponent
+CombatComponent initialized for: @Node2D@10
+Entity: Connecting component signals for @Node2D@10
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Right click detected at: (958, 289)
+
+Attempting wall placement:
+- Screen pos: (958, 289)
+- World pos: (1505.464, 376.6536)
+- Grid pos: (24, 6)
+- Current gold: 840
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@11
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+Health component added to @Node2D@11
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@11
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@11
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@11
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@11/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@11/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@11/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@11/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@11
+StateManager ready for: @Node2D@11
+Entering idle state
+State manager added to @Node2D@11
+Wall placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@11/HealthComponent
+CombatComponent initialized for: @Node2D@11
+Entity: Connecting component signals for @Node2D@11
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Right click detected at: (965, 251.5)
+
+Attempting wall placement:
+- Screen pos: (965, 251.5)
+- World pos: (1521.569, 290.3791)
+- Grid pos: (24, 5)
+- Current gold: 820
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@12
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+Health component added to @Node2D@12
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@12
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@12
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@12
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@12/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@12/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@12/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@12/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@12
+StateManager ready for: @Node2D@12
+Entering idle state
+State manager added to @Node2D@12
+Wall placed successfully
+Entity: Connecting component signals for @Node2D@12
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@12/HealthComponent
+CombatComponent initialized for: @Node2D@12
+
+Right click detected at: (856, 238.5)
+
+Attempting wall placement:
+- Screen pos: (854.5, 239)
+- World pos: (1267.346, 261.6209)
+- Grid pos: (20, 4)
+- Current gold: 800
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@13
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+Health component added to @Node2D@13
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@13
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@13
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@13
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@13/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@13/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@13/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@13/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@13
+StateManager ready for: @Node2D@13
+Entering idle state
+State manager added to @Node2D@13
+Wall placed successfully
+Entity: Connecting component signals for @Node2D@13
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@13/HealthComponent
+CombatComponent initialized for: @Node2D@13
+
+Right click detected at: (838, 316)
+
+Attempting wall placement:
+- Screen pos: (837.5, 317)
+- World pos: (1228.235, 441.0719)
+- Grid pos: (19, 7)
+- Current gold: 780
+- Wall cost: 20
+Placing wall...
+Entity _ready called for: @Node2D@14
+HealthComponent _ready called on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+HealthComponent _ready completed on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+Health component added to @Node2D@14
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Movement component added to @Node2D@14
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Combat component added to @Node2D@14
+EntityComponent _ready called for Node
+EntityComponent _ready completed for Node
+Status component added to @Node2D@14
+USER ERROR: Node not found: "Sprite" (relative to "/root/TestMap/Grid/@Node2D@14/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "AnimationPlayer" (relative to "/root/TestMap/Grid/@Node2D@14/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "HealthBar" (relative to "/root/TestMap/Grid/@Node2D@14/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+USER ERROR: Node not found: "EffectContainer" (relative to "/root/TestMap/Grid/@Node2D@14/VisualManager").
+   at: get_node (scene/main/node.cpp:1638)
+Visual manager added to @Node2D@14
+StateManager ready for: @Node2D@14
+Entering idle state
+State manager added to @Node2D@14
+Wall placed successfully
+HealthComponent _initialize called on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+Health initialized to: 100 on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+HealthComponent _initialize completed with health: 100 on: /root/TestMap/Grid/@Node2D@14/HealthComponent
+CombatComponent initialized for: @Node2D@14
+Entity: Connecting component signals for @Node2D@14
+Entity: Health signals connected
+Entity: Movement signals connected
+Entity: Combat signals connected
+Entity: Status signals connected
+
+Right click detected at: (873, 363)
+
+Attempting wall placement:
+- Screen pos: (873, 363)
+- World pos: (1309.908, 546.902)
+- Grid pos: (20, 9)
+- Current gold: 760
+- Wall cost: 20
+Failed: Cell not empty
+
+Left click detected at: (1675, 23.5)
+
+Attempting tower placement:
+- Screen pos: (1675, 23.5)
+- World pos: (3155.033, -234.1699)
+- Grid pos: (39, 0)
+- Selected tower type: 0
+- Current gold: 760
+- Tower cost: 50
+Placing tower...
+USER ERROR: Failed to instantiate scene state of "res://scenes/Tower.tscn", node count is 0. Make sure the PackedScene resource is valid.
+   at: instantiate (scene/resources/packed_scene.cpp:141)
+USER ERROR: Failed to instantiate tower!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+
+Left click detected at: (1616, 45.5)
+
+Attempting tower placement:
+- Screen pos: (1616, 45.5)
+- World pos: (3019.294, -183.5555)
+- Grid pos: (39, 0)
+- Selected tower type: 0
+- Current gold: 760
+- Tower cost: 50
+Placing tower...
+USER ERROR: Failed to instantiate scene state of "res://scenes/Tower.tscn", node count is 0. Make sure the PackedScene resource is valid.
+   at: instantiate (scene/resources/packed_scene.cpp:141)
+USER ERROR: Failed to instantiate tower!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+
+Left click detected at: (1630, 31.5)
+
+Attempting tower placement:
+- Screen pos: (1630, 31.5)
+- World pos: (3051.503, -215.7647)
+- Grid pos: (39, 0)
+- Selected tower type: 0
+- Current gold: 760
+- Tower cost: 50
+Placing tower...
+USER ERROR: Failed to instantiate scene state of "res://scenes/Tower.tscn", node count is 0. Make sure the PackedScene resource is valid.
+   at: instantiate (scene/resources/packed_scene.cpp:141)
+USER ERROR: Failed to instantiate tower!
+   at: push_error (core/variant/variant_utility.cpp:1091)
+
+Left click detected at: (1612, 28)
+
+Attempting tower placement:
+- Screen pos: (1612, 28)
+- World pos: (3010.092, -223.817)
+- Grid pos: (39, 0)
+- Selected tower type: 0
+- Current gold: 760
+- Tower cost: 50
+Placing tower...
+USER ERROR: Failed to instantiate scene state of "res://scenes/Tower.tscn", node count is 0. Make sure the PackedScene resource is valid.
+   at: instantiate (scene/resources/packed_scene.cpp:141)
+USER ERROR: Failed to instantiate tower!
+   at: push_error (core/variant/variant_utility.cpp:1091)
